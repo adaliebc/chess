@@ -7,26 +7,36 @@ package chess;
  * signature of the existing methods.
  */
 public class ChessMove {
+    ChessPosition startPosition = null;
+    ChessPosition endPosition = null;
+    ChessPiece.PieceType promotionPiece = null;
+
+    @Override
+    public String toString() {
+        return String.format("%d,%d,%d,%d", startPosition.getRow(), startPosition.getColumn() ,endPosition.getRow(), endPosition.getColumn());
+    }
+
 
     public ChessMove(ChessPosition startPosition, ChessPosition endPosition,
                      ChessPiece.PieceType promotionPiece) {
-        
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
+        this.promotionPiece = promotionPiece;
     }
 
     /**
      * @return ChessPosition of starting location
      */
     public ChessPosition getStartPosition() {
-        throw new RuntimeException("Not implemented");
+        return startPosition;
     }
 
     /**
      * @return ChessPosition of ending location
      */
     public ChessPosition getEndPosition() {
-        throw new RuntimeException("Not implemented");
+        return endPosition;
     }
-
     /**
      * Gets the type of piece to promote a pawn to if pawn promotion is part of this
      * chess move
@@ -34,6 +44,6 @@ public class ChessMove {
      * @return Type of piece to promote a pawn to, or null if no promotion
      */
     public ChessPiece.PieceType getPromotionPiece() {
-        throw new RuntimeException("Not implemented");
+        return promotionPiece;
     }
 }
