@@ -54,8 +54,34 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         Collection<ChessMove> validMoves = new HashSet<ChessMove>();
+        int rowMax = 7;
+        int colMax = 7;
+        int rowMin = 0;
+        int colMin = 0;
         if (type == PieceType.BISHOP) {
-            // valid moves here
+            // top right diagonal
+            // while col is between colMin and colMax, and row is between rowMin and rowMax
+            //      col++ and row++
+            //      add coordinates to validMoves
+            //      return col and row
+
+            //top left diagonal
+            //while col is between colMin and colMax, and row is between rowMin and rowMax
+            //      col = col -1 and row ++
+            //      add coordinates to validMoves
+            //      return col and row
+
+            //bottom left diagonal
+            //while col is between colMin and colMax, and row is between rowMin and rowMax
+            //      col = col-1 and row = row-1
+            //      add coordinates to validMoves
+            //      return col and row
+
+            //bottom right diagonal
+            //while col is between colMin and colMax, and row is between rowMin and rowMax
+            //      col = col-1 and row++
+            //      add coordinated to validMoves
+            //      return col and row
         }
         //return valid moves
         return validMoves;
