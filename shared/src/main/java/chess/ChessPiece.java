@@ -222,7 +222,188 @@ public class ChessPiece {
 
         return validMoves;
     }
+    public Collection<ChessMove> getPawnMoves(ChessBoard board, ChessPosition myPosition, int rowMax, int colMax, int rowMin, int colMin) {
+        Collection<ChessMove> validMoves = new HashSet<ChessMove>();
 
+        int currentCol = myPosition.getColumn();
+        int currentRow = myPosition.getRow();
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+            if (currentRow == 2) {
+                rowMax = rowMax + 1;
+            }
+            // top
+            while (currentRow <= rowMax) {
+                currentRow++;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+                ChessPiece unknown = board.getPiece(coordinates);
+                if (unknown != null) {
+                    break;
+                }
+                if (currentRow == 8) {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                    validMoves.add(moves);
+                    moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                    validMoves.add(moves);
+                    moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                    validMoves.add(moves);
+                    moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                    validMoves.add(moves);
+                    break;
+                } else {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(moves);
+                }
+                ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                validMoves.add(moves);
+            }
+
+            currentCol = myPosition.getColumn();
+            currentRow = myPosition.getRow();
+            // top right diagonal
+            while (currentRow <= rowMax && currentCol <= colMax) {
+                currentCol++;
+                currentRow++;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+                ChessPiece unknown = board.getPiece(coordinates);
+                if (unknown != null) {
+                    if (unknown.pieceColor != this.pieceColor) {
+                        if (currentRow == 8) {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(moves);
+                        } else {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                            validMoves.add(moves);
+                        }
+                    }
+                    break;
+                }
+            }
+
+            currentCol = myPosition.getColumn();
+            currentRow = myPosition.getRow();
+
+            //top left diagonal
+            while (currentRow <= rowMax && currentCol > colMin) {
+                currentCol--;
+                currentRow++;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+                ChessPiece unknown = board.getPiece(coordinates);
+                if (unknown != null) {
+                    if (unknown.pieceColor != this.pieceColor) {
+                        if (currentRow == 8) {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(moves);
+                        } else {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                            validMoves.add(moves);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        if (pieceColor == ChessGame.TeamColor.BLACK) {
+            if (currentRow == 7) {
+                rowMin = rowMin - 1;
+            }
+            // bottom
+            while (currentRow > rowMin) {
+                currentRow--;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+                ChessPiece unknown = board.getPiece(coordinates);
+                if (unknown != null) {
+                    break;
+                }
+                if (currentRow == 1) {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                    validMoves.add(moves);
+                    moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                    validMoves.add(moves);
+                    moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                    validMoves.add(moves);
+                    moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                    validMoves.add(moves);
+                    break;
+                } else {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(moves);
+                }
+                ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                validMoves.add(moves);
+            }
+
+            currentCol = myPosition.getColumn();
+            currentRow = myPosition.getRow();
+            // bottom right diagonal
+            while (currentRow > rowMin && currentCol <= colMax) {
+                currentCol++;
+                currentRow--;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+                ChessPiece unknown = board.getPiece(coordinates);
+                if (unknown != null) {
+                    if (unknown.pieceColor != this.pieceColor) {
+                        if (currentRow == 1) {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(moves);
+                        } else {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                            validMoves.add(moves);
+                        }
+                    }
+                    break;
+                }
+            }
+
+            currentCol = myPosition.getColumn();
+            currentRow = myPosition.getRow();
+
+            //bottom left diagonal
+            while (currentRow > rowMin && currentCol > colMin) {
+                currentCol--;
+                currentRow--;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+                ChessPiece unknown = board.getPiece(coordinates);
+                if (unknown != null) {
+                    if (unknown.pieceColor != this.pieceColor) {
+                        if (currentRow == 1) {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(moves);
+                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(moves);
+                        } else {
+                            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                            validMoves.add(moves);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        return validMoves;
+    }
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
@@ -266,6 +447,29 @@ public class ChessPiece {
             validMoves.addAll(getStraightMoves(board, myPosition, 7, 7, 1, 1));
         }
         if (type == PieceType.ROOK) {
+            validMoves.addAll(getStraightMoves(board, myPosition, 7, 7, 1, 1));
+        }
+        if (type == PieceType.PAWN) {
+            int rowMax = myPosition.getRow();
+            int colMax = myPosition.getColumn();
+            int rowMin = myPosition.getRow();
+            int colMin = myPosition.getColumn();
+            if (rowMax > 7) {
+                rowMax = 7;
+            }
+            if (colMax > 7) {
+                colMax = 7;
+            }
+            if (rowMin > 1) {
+                rowMin--;}
+            if (colMin > 1) {
+                colMin--;
+            } else {
+                colMin = 1;
+            }
+            validMoves.addAll(getPawnMoves(board, myPosition, rowMax, colMax, rowMin, colMin));
+        }
+        if (type == PieceType.KNIGHT) {
             validMoves.addAll(getStraightMoves(board, myPosition, 7, 7, 1, 1));
         }
         //return valid moves
