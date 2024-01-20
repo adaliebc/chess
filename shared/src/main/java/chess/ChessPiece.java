@@ -265,6 +265,9 @@ public class ChessPiece {
             validMoves.addAll(getDiagonalMoves(board, myPosition, 7, 7, 1, 1));
             validMoves.addAll(getStraightMoves(board, myPosition, 7, 7, 1, 1));
         }
+        if (type == PieceType.ROOK) {
+            validMoves.addAll(getStraightMoves(board, myPosition, 7, 7, 1, 1));
+        }
         //return valid moves
         return validMoves;
     }
