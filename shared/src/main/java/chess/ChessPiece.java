@@ -80,38 +80,38 @@ public class ChessPiece {
                 validMoves.add(moves);
             }
 
-            int currentCol2 = myPosition.getColumn();
-            int currentRow2 = myPosition.getRow();
+            currentCol = myPosition.getColumn();
+            currentRow = myPosition.getRow();
 
             //top left diagonal
-            while (currentRow2 <= rowMax && currentCol2 > colMin) {
-                currentCol2 --;
-                currentRow2 ++;
-                ChessPosition coordinates = new ChessPosition(currentRow2, currentCol2);
+            while (currentRow <= rowMax && currentCol > colMin) {
+                currentCol --;
+                currentRow ++;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
                 validMoves.add(moves);
             }
 
             //bottom left diagonal
-            int currentCol3 = myPosition.getColumn();
-            int currentRow3 = myPosition.getRow();
+            currentCol = myPosition.getColumn();
+            currentRow = myPosition.getRow();
 
-            while (currentRow3 > rowMin && currentCol3 > colMin) {
-                currentCol3 --;
-                currentRow3 --;
-                ChessPosition coordinates = new ChessPosition(currentRow3, currentCol3);
+            while (currentRow > rowMin && currentCol > colMin) {
+                currentCol --;
+                currentRow --;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
                 validMoves.add(moves);
             }
 
             //bottom right diagonal
-            int currentCol4 = myPosition.getColumn();
-            int currentRow4 = myPosition.getRow();
+            currentCol = myPosition.getColumn();
+            currentRow = myPosition.getRow();
 
-            while (currentRow4 > rowMin && currentCol <= colMax) {
-                currentCol4 ++;
-                currentRow4 --;
-                ChessPosition coordinates = new ChessPosition(currentRow4, currentCol4);
+            while (currentRow > rowMin && currentCol <= colMax) {
+                currentCol ++;
+                currentRow --;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
                 validMoves.add(moves);
             }
