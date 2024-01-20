@@ -28,7 +28,8 @@ public class ChessPiece {
         BISHOP,
         KNIGHT,
         ROOK,
-        PAWN
+        PAWN;
+
     }
 
     /**
@@ -50,6 +51,38 @@ public class ChessPiece {
         if (this == o) return true;
         if (!(o instanceof ChessPiece that)) return false;
         return pieceColor == that.pieceColor && type == that.type;
+    }
+    @Override
+    public String toString() {
+        if (pieceColor == ChessGame.TeamColor.WHITE) {
+            if (type == PieceType.QUEEN){
+                return "Q";
+            } else if (type == PieceType.KING) {
+                return "K";
+            } else if (type == PieceType.BISHOP) {
+                return "B";
+            } else if (type == PieceType.KNIGHT){
+                return "N";
+            } else if (type == PieceType.ROOK) {
+                return "R";
+            } else if (type == PieceType.PAWN) {
+                return "P";
+            }
+        } else if (pieceColor == ChessGame.TeamColor.BLACK) {
+            if (type == PieceType.QUEEN){
+                return "q";
+            } else if (type == PieceType.KING) {
+                return "k";
+            } else if (type == PieceType.BISHOP) {
+                return "b";
+            } else if (type == PieceType.KNIGHT){
+                return "n";
+            } else if (type == PieceType.ROOK) {
+                return "r";
+            } else if (type == PieceType.PAWN) {
+                return "p";
+            }
+        } return null;
     }
 
     @Override
