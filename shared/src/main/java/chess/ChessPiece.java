@@ -1,9 +1,6 @@
 package chess;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * Represents a single chess piece
@@ -45,6 +42,18 @@ public class ChessPiece {
         return type;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChessPiece that)) return false;
+        return pieceColor == that.pieceColor && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pieceColor, type);
+    }
+
     /**
      * Calculates all the positions a chess piece can move to
      * Does not take into account moves that are illegal due to leaving the king in
@@ -53,35 +62,59 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+
         Collection<ChessMove> validMoves = new HashSet<ChessMove>();
         int rowMax = 7;
         int colMax = 7;
-        int rowMin = 0;
-        int colMin = 0;
+        int rowMin = 1;
+        int colMin = 1;
         if (type == PieceType.BISHOP) {
+            int currentCol = myPosition.getColumn();
+            int currentRow = myPosition.getRow();
             // top right diagonal
-            // while col is between colMin and colMax, and row is between rowMin and rowMax
-            //      col++ and row++
-            //      add coordinates to validMoves
-            //      return col and row
+            while (currentRow <= rowMax && currentCol <= colMax) {
+                currentCol ++;
+                currentRow ++;
+                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+                ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                validMoves.add(moves);
+            }
+
+            int currentCol2 = myPosition.getColumn();
+            int currentRow2 = myPosition.getRow();
 
             //top left diagonal
-            //while col is between colMin and colMax, and row is between rowMin and rowMax
-            //      col = col -1 and row ++
-            //      add coordinates to validMoves
-            //      return col and row
+            while (currentRow2 <= rowMax && currentCol2 > colMin) {
+                currentCol2 --;
+                currentRow2 ++;
+                ChessPosition coordinates = new ChessPosition(currentRow2, currentCol2);
+                ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                validMoves.add(moves);
+            }
 
             //bottom left diagonal
-            //while col is between colMin and colMax, and row is between rowMin and rowMax
-            //      col = col-1 and row = row-1
-            //      add coordinates to validMoves
-            //      return col and row
+            int currentCol3 = myPosition.getColumn();
+            int currentRow3 = myPosition.getRow();
+
+            while (currentRow3 > rowMin && currentCol3 > colMin) {
+                currentCol3 --;
+                currentRow3 --;
+                ChessPosition coordinates = new ChessPosition(currentRow3, currentCol3);
+                ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                validMoves.add(moves);
+            }
 
             //bottom right diagonal
-            //while col is between colMin and colMax, and row is between rowMin and rowMax
-            //      col = col-1 and row++
-            //      add coordinated to validMoves
-            //      return col and row
+            int currentCol4 = myPosition.getColumn();
+            int currentRow4 = myPosition.getRow();
+
+            while (currentRow4 > rowMin && currentCol <= colMax) {
+                currentCol4 ++;
+                currentRow4 --;
+                ChessPosition coordinates = new ChessPosition(currentRow4, currentCol4);
+                ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                validMoves.add(moves);
+            }
         }
         //return valid moves
         return validMoves;

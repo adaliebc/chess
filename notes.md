@@ -36,4 +36,4 @@ Object
 record PetRecord(int id, String name, String type) {}
 - shortcut syntax
 - adds getters not setters
-- creates data that is not editable
+- creates data that is not immutable
