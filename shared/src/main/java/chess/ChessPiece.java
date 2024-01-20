@@ -13,6 +13,7 @@ import static java.util.Collections.addAll;
 public class ChessPiece {
     ChessGame.TeamColor pieceColor = null;
     ChessPiece.PieceType type = null;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
@@ -56,102 +57,102 @@ public class ChessPiece {
         return Objects.hash(pieceColor, type);
     }
 
-    public Collection<ChessMove> getDiagonalMoves(ChessBoard board, ChessPosition myPosition, int rowMax, int colMax, int rowMin, int colMin){
+    public Collection<ChessMove> getDiagonalMoves(ChessBoard board, ChessPosition myPosition, int rowMax, int colMax, int rowMin, int colMin) {
         Collection<ChessMove> validMoves = new HashSet<ChessMove>();
 
-            int currentCol = myPosition.getColumn();
-            int currentRow = myPosition.getRow();
-            // top right diagonal
-            while (currentRow <= rowMax && currentCol <= colMax) {
-                currentCol ++;
-                currentRow ++;
-                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
-                ChessPiece unknown = board.getPiece(coordinates);
-                if(unknown != null){
-                    if (unknown.pieceColor != this.pieceColor) {
-                        ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                        validMoves.add(moves);
-                    }
-                    break;
+        int currentCol = myPosition.getColumn();
+        int currentRow = myPosition.getRow();
+        // top right diagonal
+        while (currentRow <= rowMax && currentCol <= colMax) {
+            currentCol++;
+            currentRow++;
+            ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+            ChessPiece unknown = board.getPiece(coordinates);
+            if (unknown != null) {
+                if (unknown.pieceColor != this.pieceColor) {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(moves);
                 }
-                ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                validMoves.add(moves);
+                break;
             }
+            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+            validMoves.add(moves);
+        }
 
-            currentCol = myPosition.getColumn();
-            currentRow = myPosition.getRow();
+        currentCol = myPosition.getColumn();
+        currentRow = myPosition.getRow();
 
-            //top left diagonal
-            while (currentRow <= rowMax && currentCol > colMin) {
-                currentCol --;
-                currentRow ++;
-                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
-                ChessPiece unknown = board.getPiece(coordinates);
-                if(unknown != null){
-                    if (unknown.pieceColor != this.pieceColor) {
-                        ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                        validMoves.add(moves);
-                    }
-                    break;
+        //top left diagonal
+        while (currentRow <= rowMax && currentCol > colMin) {
+            currentCol--;
+            currentRow++;
+            ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+            ChessPiece unknown = board.getPiece(coordinates);
+            if (unknown != null) {
+                if (unknown.pieceColor != this.pieceColor) {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(moves);
                 }
-                ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                validMoves.add(moves);
+                break;
             }
+            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+            validMoves.add(moves);
+        }
 
-            //bottom left diagonal
-            currentCol = myPosition.getColumn();
-            currentRow = myPosition.getRow();
+        //bottom left diagonal
+        currentCol = myPosition.getColumn();
+        currentRow = myPosition.getRow();
 
-            while (currentRow > rowMin && currentCol > colMin) {
-                currentCol --;
-                currentRow --;
-                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
-                ChessPiece unknown = board.getPiece(coordinates);
-                if(unknown != null){
-                    if (unknown.pieceColor != this.pieceColor) {
-                        ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                        validMoves.add(moves);
-                    }
-                    break;
+        while (currentRow > rowMin && currentCol > colMin) {
+            currentCol--;
+            currentRow--;
+            ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+            ChessPiece unknown = board.getPiece(coordinates);
+            if (unknown != null) {
+                if (unknown.pieceColor != this.pieceColor) {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(moves);
                 }
-                ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                validMoves.add(moves);
+                break;
             }
+            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+            validMoves.add(moves);
+        }
 
-            //bottom right diagonal
-            currentCol = myPosition.getColumn();
-            currentRow = myPosition.getRow();
+        //bottom right diagonal
+        currentCol = myPosition.getColumn();
+        currentRow = myPosition.getRow();
 
-            while (currentRow > rowMin && currentCol <= colMax) {
-                currentCol ++;
-                currentRow --;
-                ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
-                ChessPiece unknown = board.getPiece(coordinates);
-                if(unknown != null){
-                    if (unknown.pieceColor != this.pieceColor) {
-                        ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                        validMoves.add(moves);
-                    }
-                    break;
+        while (currentRow > rowMin && currentCol <= colMax) {
+            currentCol++;
+            currentRow--;
+            ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
+            ChessPiece unknown = board.getPiece(coordinates);
+            if (unknown != null) {
+                if (unknown.pieceColor != this.pieceColor) {
+                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(moves);
                 }
-                ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                validMoves.add(moves);
+                break;
             }
+            ChessMove moves = new ChessMove(myPosition, coordinates, null);
+            validMoves.add(moves);
+        }
 
         return validMoves;
     }
 
-    public Collection<ChessMove> getStraightMoves(ChessBoard board, ChessPosition myPosition, int rowMax, int colMax, int rowMin, int colMin){
+    public Collection<ChessMove> getStraightMoves(ChessBoard board, ChessPosition myPosition, int rowMax, int colMax, int rowMin, int colMin) {
         Collection<ChessMove> validMoves = new HashSet<ChessMove>();
 
         int currentCol = myPosition.getColumn();
         int currentRow = myPosition.getRow();
         // top
         while (currentRow <= rowMax) {
-            currentRow ++;
+            currentRow++;
             ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
             ChessPiece unknown = board.getPiece(coordinates);
-            if(unknown != null){
+            if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
                     ChessMove moves = new ChessMove(myPosition, coordinates, null);
                     validMoves.add(moves);
@@ -167,10 +168,10 @@ public class ChessPiece {
 
         //right
         while (currentCol <= colMax) {
-            currentCol ++;
+            currentCol++;
             ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
             ChessPiece unknown = board.getPiece(coordinates);
-            if(unknown != null){
+            if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
                     ChessMove moves = new ChessMove(myPosition, coordinates, null);
                     validMoves.add(moves);
@@ -186,10 +187,10 @@ public class ChessPiece {
         currentRow = myPosition.getRow();
 
         while (currentRow > rowMin) {
-            currentRow --;
+            currentRow--;
             ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
             ChessPiece unknown = board.getPiece(coordinates);
-            if(unknown != null){
+            if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
                     ChessMove moves = new ChessMove(myPosition, coordinates, null);
                     validMoves.add(moves);
@@ -205,10 +206,10 @@ public class ChessPiece {
         currentRow = myPosition.getRow();
 
         while (currentCol > colMin) {
-            currentCol --;
+            currentCol--;
             ChessPosition coordinates = new ChessPosition(currentRow, currentCol);
             ChessPiece unknown = board.getPiece(coordinates);
-            if(unknown != null){
+            if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
                     ChessMove moves = new ChessMove(myPosition, coordinates, null);
                     validMoves.add(moves);
@@ -241,22 +242,28 @@ public class ChessPiece {
             int colMax = myPosition.getColumn();
             int rowMin = myPosition.getRow();
             int colMin = myPosition.getColumn();
-            if(rowMax > 7){
-                rowMax = 7;}
-            if(colMax > 7){
-                colMax = 7;}
-            if(rowMin > 1){
-                rowMin -- ;}
-            else {
+            if (rowMax > 7) {
+                rowMax = 7;
+            }
+            if (colMax > 7) {
+                colMax = 7;
+            }
+            if (rowMin > 1) {
+                rowMin--;
+            } else {
                 rowMin = 1;
             }
-            if(colMin > 1){
-                colMin --;}
-            else {
+            if (colMin > 1) {
+                colMin--;
+            } else {
                 colMin = 1;
             }
             validMoves.addAll(getDiagonalMoves(board, myPosition, rowMax, colMax, rowMin, colMin));
             validMoves.addAll(getStraightMoves(board, myPosition, rowMax, colMax, rowMin, colMin));
+        }
+        if (type == PieceType.QUEEN) {
+            validMoves.addAll(getDiagonalMoves(board, myPosition, 7, 7, 1, 1));
+            validMoves.addAll(getStraightMoves(board, myPosition, 7, 7, 1, 1));
         }
         //return valid moves
         return validMoves;
