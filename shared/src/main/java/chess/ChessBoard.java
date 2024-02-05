@@ -11,7 +11,6 @@ import java.util.Arrays;
 public class ChessBoard {
     private final ChessPiece[][] squares = new ChessPiece[9][9];
     public ChessBoard() {
-        
     }
 
     /**
@@ -131,4 +130,3 @@ public class ChessBoard {
         }
         }
     }
-
