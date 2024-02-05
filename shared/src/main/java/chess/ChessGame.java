@@ -27,7 +27,13 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        if (team == TeamColor.WHITE) {
+            team = TeamColor.BLACK;
+        } else if (team == TeamColor.BLACK) {
+            team = TeamColor.WHITE;
+        } else {
+            team = TeamColor.WHITE;
+        }
     }
 
     /**
@@ -57,6 +63,13 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         throw new RuntimeException("Not implemented");
+        /*if move is not in vaidMoves
+            throw exception
+            isincheck
+            is incheckmate
+            is instalemate
+
+         */
     }
 
     /**
@@ -67,6 +80,19 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         throw new RuntimeException("Not implemented");
+        /* ChessPosition kingPos = King's Position
+        teamcolor enemy;
+        if (teamcolor == black) {
+        enemy = white;
+        } else {
+        enemy = black;
+        }
+        for pieces in enemy
+            if kingPos in their validMoves
+            return true
+           else
+           return false
+         */
     }
 
     /**
@@ -77,6 +103,20 @@ public class ChessGame {
      */
     public boolean isInCheckmate(TeamColor teamColor) {
         throw new RuntimeException("Not implemented");
+        /*
+            if teamcolor is in check
+            kingsMoves = king's valid moves
+            for moves in validMoves
+            if move is in check,
+                remove it
+            if kingsMoves is empty
+                return true
+            else
+                return false
+
+             else
+                return false
+         */
     }
 
     /**
@@ -88,6 +128,13 @@ public class ChessGame {
      */
     public boolean isInStalemate(TeamColor teamColor) {
         throw new RuntimeException("Not implemented");
+        /* kingMoves = kings valid moves
+        if kingmoves == empty
+        return true
+
+        else
+        return false
+         */
     }
 
     /**
@@ -96,7 +143,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+        board.resetBoard();
     }
 
     /**
