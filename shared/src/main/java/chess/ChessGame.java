@@ -19,6 +19,10 @@ public class ChessGame {
      */
     public TeamColor getTeamTurn() {
         throw new RuntimeException("Not implemented");
+        /*
+        setTeamTurn(currentteamcolor)
+        return team
+         */
     }
 
     /**
@@ -53,6 +57,9 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         throw new RuntimeException("Not implemented");
+        /*
+        validmoves = piecemoves(startpositionm=, current piece);
+         */
     }
 
     /**
@@ -62,14 +69,23 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
-        /*if move is not in vaidMoves
-            throw exception
-            isincheck
-            is incheckmate
-            is instalemate
+        ChessBoard board = getBoard();
 
-         */
+        ChessPosition startPosition = move.startPosition;
+        ChessPosition endPosition = move.endPosition;
+        ChessPiece currentPiece = board.getPiece(startPosition);
+        ChessPiece.PieceType promotionPiece = move.promotionPiece;
+        ChessPiece newPiece = new ChessPiece(currentPiece.pieceColor, promotionPiece);
+
+        //removing piece from startPosition
+        board.addPiece(startPosition, null);
+
+        //add piece to end position
+        if (promotionPiece != null) {
+            board.addPiece(endPosition, newPiece);
+        } else {
+            board.addPiece(endPosition, currentPiece);
+        }
     }
 
     /**
