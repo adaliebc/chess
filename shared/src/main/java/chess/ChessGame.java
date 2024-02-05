@@ -12,6 +12,7 @@ import java.util.HashSet;
 public class ChessGame {
 
     private ChessBoard board;
+    private TeamColor team;
 
     public ChessGame() {
 
@@ -23,8 +24,7 @@ public class ChessGame {
     public TeamColor getTeamTurn() {
         throw new RuntimeException("Not implemented");
         /*
-        setTeamTurn(currentteamcolor)
-        return team
+        get the team color
          */
     }
 
@@ -34,13 +34,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        if (team == TeamColor.WHITE) {
-            team = TeamColor.BLACK;
-        } else if (team == TeamColor.BLACK) {
-            team = TeamColor.WHITE;
-        } else {
-            team = TeamColor.WHITE;
-        }
+        this.team = team;
     }
 
     /**
@@ -64,7 +58,7 @@ public class ChessGame {
         validMoves.addAll(ChessPiece.pieceMoves(this.board, startPosition));
         return validMoves;
         /*
-        validmoves = piecemoves(startpositionm=, current piece);
+
          */
     }
 
@@ -108,7 +102,7 @@ public class ChessGame {
     public boolean isInCheck(TeamColor teamColor) {
         /* ChessPosition kingPos = King's Position
         teamcolor enemy;
-        if (teamcolor == black) {
+        if (this.team == black) {
         enemy = white;
         } else {
         enemy = black;
@@ -119,6 +113,14 @@ public class ChessGame {
            else
            return false
          */
+        ChessPosition kingPos;
+        TeamColor enemy;
+
+        if (team == TeamColor.BLACK) {
+            enemy = TeamColor.WHITE;
+        }else {
+            enemy = TeamColor.BLACK;
+        }
 
     }
 
@@ -179,6 +181,6 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        return squares;
+        throw new RuntimeException("Not implemented");
     }
 }
