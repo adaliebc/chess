@@ -100,6 +100,12 @@ public class ChessGame {
         } else {
             throw new InvalidMoveException();
         }
+
+        if (this.team == TeamColor.WHITE){
+            this.team = TeamColor.BLACK;
+        } else {
+            this.team = TeamColor.WHITE;
+        }
     }
 
     /**
