@@ -88,46 +88,46 @@ public class ChessBoard {
         ChessPiece whitePawn = new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN);
 
         //Create Positions
-        ChessPosition place = new ChessPosition(1, 1);
+        ChessPosition place = new ChessPosition(8, 1);
         addPiece(place, blackRook);
-        place = new ChessPosition(1, 8);
+        place = new ChessPosition(8, 8);
         addPiece(place, blackRook);
-        place = new ChessPosition(1, 2);
+        place = new ChessPosition(8, 2);
         addPiece(place, blackKnight);
-        place = new ChessPosition(1, 7);
+        place = new ChessPosition(8, 7);
         addPiece(place, blackKnight);
-        place = new ChessPosition(1, 3);
+        place = new ChessPosition(8, 3);
         addPiece(place, blackBishop);
-        place = new ChessPosition(1, 6);
+        place = new ChessPosition(8, 6);
         addPiece(place, blackBishop);
-        place = new ChessPosition(1, 5);
+        place = new ChessPosition(8, 4);
         addPiece(place, blackQueen);
-        place = new ChessPosition(1, 4);
+        place = new ChessPosition(8, 5);
         addPiece(place, blackKing);
 
         for (int i = 1; i < 9; i ++) {
-            place = new ChessPosition(2, i);
+            place = new ChessPosition(7, i);
             addPiece(place, blackPawn);
         }
-        place = new ChessPosition(8, 1);
+        place = new ChessPosition(1, 1);
         addPiece(place, whiteRook);
-        place = new ChessPosition(8, 8);
+        place = new ChessPosition(1, 8);
         addPiece(place, whiteRook);
-        place = new ChessPosition(8, 2);
+        place = new ChessPosition(1, 2);
         addPiece(place, whiteKnight);
-        place = new ChessPosition(8, 7);
+        place = new ChessPosition(1, 7);
         addPiece(place, whiteKnight);
-        place = new ChessPosition(8, 3);
+        place = new ChessPosition(1, 3);
         addPiece(place, whiteBishop);
-        place = new ChessPosition(8, 6);
+        place = new ChessPosition(1, 6);
         addPiece(place, whiteBishop);
-        place = new ChessPosition(8, 5);
+        place = new ChessPosition(1, 4);
         addPiece(place, whiteQueen);
-        place = new ChessPosition(8, 4);
+        place = new ChessPosition(1, 5);
         addPiece(place, whiteKing);
 
         for (int i = 1; i < 9; i ++) {
-            place = new ChessPosition(7, i);
+            place = new ChessPosition(2, i);
             addPiece(place, whitePawn);
         }
         }
