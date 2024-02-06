@@ -46,11 +46,28 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece currentPiece = board.getPiece(startPosition);
-        Collection<ChessMove> validMoves = new HashSet<ChessMove>(currentPiece.pieceMoves(this.board, startPosition));
+        Collection<ChessMove> possibleMoves = new HashSet<ChessMove>(currentPiece.pieceMoves(this.board, startPosition));
+        Collection<ChessMove> validMoves = new HashSet<ChessMove>();
+        ChessBoard originalBoard = board;
+        for (ChessMove move : possibleMoves) {
+            board = originalBoard;
+            //removing piece from startPosition
+            board.addPiece(startPosition, null);
 
-        for (ChessMove move : validMoves) {
+            //add piece to end position
+            if (move.promotionPiece != null) {
+                ChessPiece newPiece = new ChessPiece(currentPiece.pieceColor, move.promotionPiece);
+                board.addPiece(move.endPosition, newPiece);
+            } else {
+                board.addPiece(move.endPosition, currentPiece);
+            }
+            if (!isInCheck(team) || !isInStalemate(team)) {
+                validMoves.add(move);
+            }
+
 
         }
+        board = originalBoard;
         return validMoves;
     }
 
@@ -61,8 +78,6 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        ChessBoard board = getBoard();
-
         ChessPosition startPosition = move.startPosition;
         ChessPosition endPosition = move.endPosition;
         ChessPiece currentPiece = board.getPiece(startPosition);

@@ -137,9 +137,10 @@ public class ChessBoard {
             for (int y = 1; y < 9; y++){
                 ChessPosition place = new ChessPosition(x, y);
                 ChessPiece piece = getPiece(place);
-
-                    if (piece.getTeamColor() == team && piece.getPieceType() == ChessPiece.PieceType.KING) {
-                        return place;
+                    if (piece != null){
+                        if (piece.getTeamColor() == team && piece.getPieceType() == ChessPiece.PieceType.KING) {
+                            return place;
+                        }
                     }
                 }
             }
@@ -153,9 +154,10 @@ public class ChessBoard {
             for (int y = 1; y < 9; y++) {
                 ChessPosition place = new ChessPosition(x, y);
                 ChessPiece piece = getPiece(place);
-
-                if (piece.getTeamColor() == team && piece.getPieceType() == ChessPiece.PieceType.KING) {
-                    pieceLocations.add(place);
+                if (piece != null){
+                    if (piece.getTeamColor() == team) {
+                        pieceLocations.add(place);
+                    }
                 }
             }
         }
