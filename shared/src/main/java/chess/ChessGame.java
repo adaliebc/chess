@@ -53,7 +53,7 @@ public class ChessGame {
             //board = originalBoard;
             //removing piece from startPosition
             //board.addPiece(startPosition, null);
-
+            ChessPiece oldPiece = board.getPiece(move.endPosition);
             //add piece to end position
             if (move.promotionPiece != null) {
                 ChessPiece newPiece = new ChessPiece(currentPiece.pieceColor, move.promotionPiece);
@@ -65,7 +65,7 @@ public class ChessGame {
                 validMoves.add(move);
             }
             //removing piece from endPosition
-            board.addPiece(move.endPosition, null);
+            board.addPiece(move.endPosition, oldPiece);
 
 
         }
