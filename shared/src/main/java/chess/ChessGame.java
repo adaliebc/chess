@@ -92,27 +92,27 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        /* ChessPosition kingPos = King's Position
-        teamcolor enemy;
-        if (this.team == black) {
-        enemy = white;
-        } else {
-        enemy = black;
-        }
-        for pieces in enemy
-            if kingPos in their validMoves
-            return true
-           else
-           return false
-         */
-        ChessPosition kingPos;
+        ChessPosition kingPos =  board.getKing(team);
         TeamColor enemy;
 
-        if (team == TeamColor.BLACK) {
+        if (teamColor == TeamColor.BLACK) {
             enemy = TeamColor.WHITE;
         } else {
             enemy = TeamColor.BLACK;
         }
+
+        Collection<ChessPosition> enemyPositions = board.getOtherPieces(enemy);
+        Collection<ChessMove> possibleMoves = new HashSet<ChessMove>();
+
+        for (ChessPosition piece : enemyPositions){
+            possibleMoves = validMoves(piece);
+        }
+        for (ChessMove move : possibleMoves){
+            if (move.endPosition == kingPos) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
