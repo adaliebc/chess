@@ -72,7 +72,7 @@ public class ChessBoard {
 
         //Create Pieces
         ChessPiece blackQueen = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN);
-        ChessPiece blackKing = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING);
+        ChessPiece blackKing= new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING);
         ChessPiece blackKnight = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT);
         ChessPiece blackBishop = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP);
         ChessPiece blackRook = new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK);
@@ -129,4 +129,18 @@ public class ChessBoard {
             addPiece(place, whitePawn);
         }
         }
+
+    public ChessPosition getKing(ChessGame.TeamColor team) {
+        for (int x = 1; x < 9; x++){
+            for (int y = 1; y < 9; y++){
+                ChessPosition place = new ChessPosition(x, y);
+                ChessPiece piece = getPiece(place);
+
+                    if (piece.getTeamColor() == team && piece.getPieceType() == ChessPiece.PieceType.KING) {
+                        return place;
+                    }
+                }
+            }
+        return null;
+    }
     }
