@@ -119,8 +119,9 @@ public class ChessGame {
         Collection<ChessPosition> enemyPositions = board.getOtherPieces(enemy);
         Collection<ChessMove> possibleMoves = new HashSet<ChessMove>();
 
-        for (ChessPosition piece : enemyPositions) {
-            possibleMoves = validMoves(piece);
+        for (ChessPosition piecePos : enemyPositions) {
+            ChessPiece piece = board.getPiece(piecePos);
+            possibleMoves = piece.pieceMoves(board, piecePos);
         }
         for (ChessMove move : possibleMoves) {
             if (move.endPosition == kingPos) {
@@ -139,7 +140,8 @@ public class ChessGame {
     public boolean isInCheckmate(TeamColor teamColor) {
         if (isInCheck(teamColor)) {
             ChessPosition kingPos = board.getKing(teamColor);
-            Collection<ChessMove> kingsMoves = validMoves(kingPos);
+            ChessPiece king = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
+            Collection<ChessMove> kingsMoves = king.pieceMoves(board, kingPos);
 
             for (ChessMove location : kingsMoves) {
                 kingPos = location.endPosition;
@@ -154,8 +156,9 @@ public class ChessGame {
                 Collection<ChessPosition> enemyPositions = board.getOtherPieces(enemy);
                 Collection<ChessMove> possibleMoves = new HashSet<ChessMove>();
 
-                for (ChessPosition piece : enemyPositions) {
-                    possibleMoves = validMoves(piece);
+                for (ChessPosition piecePos : enemyPositions) {
+                    ChessPiece piece = board.getPiece(piecePos);
+                    possibleMoves = piece.pieceMoves(board, piecePos);
                 }
                 for (ChessMove move : possibleMoves) {
                     if (move.endPosition == kingPos) {
@@ -181,7 +184,8 @@ public class ChessGame {
      */
     public boolean isInStalemate(TeamColor teamColor) {
         ChessPosition kingPos = board.getKing(teamColor);
-        Collection<ChessMove> kingsMoves = validMoves(kingPos);
+        ChessPiece king = new ChessPiece(teamColor, ChessPiece.PieceType.KING);
+        Collection<ChessMove> kingsMoves = king.pieceMoves(board, kingPos);
 
         return kingsMoves.isEmpty();
     }
