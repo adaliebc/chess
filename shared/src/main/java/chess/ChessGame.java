@@ -48,11 +48,11 @@ public class ChessGame {
         ChessPiece currentPiece = board.getPiece(startPosition);
         Collection<ChessMove> possibleMoves = new HashSet<ChessMove>(currentPiece.pieceMoves(this.board, startPosition));
         Collection<ChessMove> validMoves = new HashSet<ChessMove>();
-        ChessBoard originalBoard = board;
+        //ChessBoard originalBoard = board;
         for (ChessMove move : possibleMoves) {
-            board = originalBoard;
+            //board = originalBoard;
             //removing piece from startPosition
-            board.addPiece(startPosition, null);
+            //board.addPiece(startPosition, null);
 
             //add piece to end position
             if (move.promotionPiece != null) {
@@ -64,10 +64,12 @@ public class ChessGame {
             if (!isInCheck(team) || !isInStalemate(team)) {
                 validMoves.add(move);
             }
+            //removing piece from endPosition
+            board.addPiece(move.endPosition, null);
 
 
         }
-        board = originalBoard;
+        //board = originalBoard;
         return validMoves;
     }
 
