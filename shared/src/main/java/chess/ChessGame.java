@@ -61,7 +61,7 @@ public class ChessGame {
             } else {
                 board.addPiece(move.endPosition, currentPiece);
             }
-            if (!isInCheck(team) && !isInStalemate(team)) {
+            if (!isInCheck(currentPiece.getTeamColor()) && !isInStalemate(currentPiece.getTeamColor())) {
                 validMoves.add(move);
             }
             //undoing change
@@ -163,7 +163,7 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        Collection<ChessPosition> ownPositions = board.getOtherPieces(team);
+        Collection<ChessPosition> ownPositions = board.getOtherPieces(teamColor);
 
         for (ChessPosition piecePos : ownPositions) {
             ChessPiece currentPiece = board.getPiece(piecePos);
