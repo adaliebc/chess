@@ -22,10 +22,13 @@ public class Server {
         Spark.awaitInitialization();
         return Spark.port();
     }
-    private Object clearBody(Request req, Response res) /*throws ResponseException*/ {
-        ChessService service = new ChessService.clearService();
-        res.status(204);
-        return "";
+    private Object clearBody(Request req, Response res) {
+        ChessService.clearData();
+        var body = new Gson().toJson(Map.of("success", true));
+        res.type("application/json");
+        res.status(200);
+        res.body(body);
+        return body;
     }
     private Object userBody(Request req, Response res) {
         var body = new Gson().toJson(Map.of("success", true));
