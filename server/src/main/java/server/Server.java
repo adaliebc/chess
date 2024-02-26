@@ -23,7 +23,9 @@ public class Server {
         return Spark.port();
     }
     private Object clearBody(Request req, Response res) {
+        //call service, who calls DAO, who clears data
         ChessService.clearData();
+        //if no errors are called we return success, which is 200
         var body = new Gson().toJson(Map.of("success", true));
         res.type("application/json");
         res.status(200);
@@ -36,6 +38,10 @@ public class Server {
         res.status(200);
         res.body(body);
         return body;
+    }
+    public void response(int code, String message){
+        //message can be null
+        //throw error code: message
     }
     public void stop() {
         Spark.stop();

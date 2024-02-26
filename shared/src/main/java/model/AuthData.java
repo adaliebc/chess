@@ -6,6 +6,5 @@ public class AuthData {
         //create new authToken
         //UUID.randomUUID().toString()
         //match username to user
-        //clear all data
     }
 }
