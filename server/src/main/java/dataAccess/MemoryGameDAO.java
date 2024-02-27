@@ -1,5 +1,6 @@
 package dataAccess;
 
+import model.AuthData;
 import model.GameInfo;
 import model.UserData;
 
@@ -7,7 +8,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class MemoryGameDAO implements GameDAO{
-    Collection<Record> gameRecord = new HashSet<Record>();
+    //may change from GameInfo to GameData once I am able to add the implemented game
+    Collection<GameInfo> gameRecord = new HashSet<GameInfo>();
     public boolean clear(){
         gameRecord.clear();
         return true;
@@ -15,6 +17,24 @@ public class MemoryGameDAO implements GameDAO{
     public boolean createGame(GameInfo game){
         gameRecord.add(game);
         return true;
+
+    }
+    public GameInfo getGame(int gameID) {
+        for (GameInfo user : gameRecord){
+            if (user.gameID() == gameID){
+                return user;
+            }
+        }
+        return null;
+    }
+    public void addPlayer(GameInfo oldGame, GameInfo newGame){
+        gameRecord.remove(oldGame);
+        gameRecord.add(newGame);
+
+    }
+
+    public Collection<GameInfo> getGameRecord() {
+        return gameRecord;
     }
     /* createGame: Create a new game.
     getGame: Retrieve a specified game with the given game ID.

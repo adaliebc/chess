@@ -24,7 +24,8 @@ public class Server {
         Spark.delete("/db", this::clearBody);
         Spark.post("/user", this::registerBody);
         Spark.post("/game", this::createGameBody);
-        Spark.put("/game", this::putGameBody);
+        Spark.put("/game", this::joinGameBody);
+        Spark.get("/game", this::listGamesBody);
         Spark.post("/session", this::loginBody);
         Spark.delete("/session", this::logoutBody);
         Spark.awaitInitialization();
@@ -96,13 +97,67 @@ public class Server {
         res.status(200);
         return new Gson().toJson(gameID);
     }
-    private Object putGameBody(Request req, Response res) {
-        //Call service and send in username, password, and email
-        var body = new Gson().toJson(Map.of("success", true));
+    private Object joinGameBody(Request req, Response res) {
+        /*Verifies that the specified game exists, and, if a color is specified,
+        adds the caller as the requested color to the game. If no color is specified the user is joined as an observer.
+        This request is idempotent.
+         */
+        var user = new Gson().fromJson(req.body(), JoinGameRequest.class);
+        int gameID = user.gameID();
+        String playerColor = user.playerColor();
+        String token = req.headers("Authorization");
+
+        //error 400 verify
+        if (token == null || user.gameID() == 0){
+            res.status(400);
+            var message = new FailureResponse("Error: bad request");
+            return new Gson().toJson(message);
+        }
+        //verify token
+        try {
+            userService.verifyToken(token);
+        } catch(ResponseException r) {
+            if (r.StatusCode() == 401) {
+                res.status(401);
+                var message = new FailureResponse("Error: unauthorized");
+                return new Gson().toJson(message);
+            }
+        }
+        //get username
+        String username = userService.getUsername(token);
+
+        MResponse response = gameService.joinGame(gameID, playerColor, username);
+        res.type("application/json");
+        res.status(response.code());
+        res.body(response.message());
+        return "";
+    }
+
+    private Object listGamesBody(Request req, Response res) {
+        /*VGives a list of all games.*/
+        String token = req.headers("Authorization");
+
+        //error 400 verify
+        if (token == null){
+            res.status(400);
+            var message = new FailureResponse("Error: bad request");
+            return new Gson().toJson(message);
+        }
+        //verify token
+        try {
+            userService.verifyToken(token);
+        } catch(ResponseException r) {
+            if (r.StatusCode() == 401) {
+                res.status(401);
+                var message = new FailureResponse("Error: unauthorized");
+                return new Gson().toJson(message);
+            }
+        }
+        //get list of games
+        GameList gameList = gameService.getGameList();
         res.type("application/json");
         res.status(200);
-        res.body(body);
-        return body;
+        return new Gson().toJson(gameList);
     }
     private Object loginBody(Request req, Response res) {
         //Call service and send in username, password, and email

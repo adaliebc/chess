@@ -55,6 +55,10 @@ public class UserService {
             return new MResponse(500, "{ \"message\": \"Error: description\" }");
         }
     }
+    public String getUsername(String token){
+        AuthData user = adao.getAuth(token);
+        return user.username();
+    }
 
 }
 
