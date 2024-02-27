@@ -8,6 +8,7 @@ import java.util.Objects;
 public class UserService {
     MemoryUserDAO udao = new MemoryUserDAO();
     MemoryAuthDAO adao = new MemoryAuthDAO();
+    MemoryGameDAO gdao = new MemoryGameDAO();
     AuthService authservice = new AuthService();
     public AuthData register(UserData user) throws ResponseException{
         //create new user
@@ -32,7 +33,24 @@ public class UserService {
             return token;
         }
     }
-    public void logout(UserData user) {}
+    public void logout(String token) throws ResponseException{
+        AuthData user = adao.getAuth(token);
+        if(user == null){
+            throw new ResponseException(401, "{ \"message\": \"Error: unauthorized\" }");
+        } else {
+            adao.deleteToken(user);
+        }
+
+    }
+    public MResponse clearData(){
+        //when you create gameService, move game clear over there
+        if(gdao.clear() && udao.clear() && adao.clear()){
+            return new MResponse(200, "");
+        } else {
+            return new MResponse(500, "{ \"message\": \"Error: description\" }");
+        }
+    }
+
 }
 
 

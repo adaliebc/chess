@@ -7,8 +7,8 @@ import service.*;
 import model.*;
 
 public class Server {
-    ChessService chessService = new ChessService();
     UserService userService = new UserService();
+    AuthService authService = new AuthService();
     public static void main(String[] args) {
         new Server().run(8080);
     }
@@ -31,7 +31,8 @@ public class Server {
     }
     private Object clearBody(Request req, Response res) {
         //call service, who calls DAO, who clears data
-        MResponse response = chessService.clearData();
+        MResponse response = userService.clearData();
+        //add game service.clear data here
         //if no errors are called we return success, which is 200
         res.type("application/json");
         res.status(response.code());
@@ -103,17 +104,17 @@ public class Server {
         return body;
     }
 
-    private Object loginBody(Request req, Response res) {
+    private Object logoutBody(Request req, Response res) {
         //Call service and send in username, password, and email
-        var user = new Gson().fromJson(req.body(), LoginRequest.class);
-        AuthData token = null;
-        if (user.password() == null || user.username() == null){
-            res.status(400);
-            var message = new FailureResponse("Error: bad request");
+        String token = req.headers("Authorization");
+
+        if (token == null){
+            res.status(500);
+            var message = new FailureResponse("Error: description");
             return new Gson().toJson(message);
         }
         try {
-            token = userService.login(user);
+            userService.logout(token);
         } catch(ResponseException r) {
             if (r.StatusCode() == 401) {
                 res.status(401);
@@ -123,9 +124,7 @@ public class Server {
         }
         res.type("application/json");
         res.status(200);
-        var body = new Gson().toJson(token);
-        res.body(body);
-        return body;
+        return "";
     }
     public void stop() {
         Spark.stop();
