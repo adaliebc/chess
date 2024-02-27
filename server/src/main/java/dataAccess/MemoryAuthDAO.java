@@ -28,6 +28,14 @@ public class MemoryAuthDAO implements AuthDAO{
         }
         return null;
     }
+    public boolean verifyAuth(String token) {
+        for (AuthData user : authRecord){
+            if (user.authToken().equals(token)){
+                return true;
+            }
+        }
+        return false;
+    }
     public void deleteToken(AuthData token){
         authRecord.remove(token);
     }

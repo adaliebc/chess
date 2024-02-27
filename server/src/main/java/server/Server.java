@@ -9,6 +9,7 @@ import model.*;
 public class Server {
     UserService userService = new UserService();
     AuthService authService = new AuthService();
+    GameService gameService = new GameService();
     public static void main(String[] args) {
         new Server().run(8080);
     }
@@ -22,7 +23,7 @@ public class Server {
         Spark.get("/hello", (req, resp) -> "Hello World");
         Spark.delete("/db", this::clearBody);
         Spark.post("/user", this::registerBody);
-        Spark.post("/game", this::postGameBody);
+        Spark.post("/game", this::createGameBody);
         Spark.put("/game", this::putGameBody);
         Spark.post("/session", this::loginBody);
         Spark.delete("/session", this::logoutBody);
@@ -31,8 +32,16 @@ public class Server {
     }
     private Object clearBody(Request req, Response res) {
         //call service, who calls DAO, who clears data
-        MResponse response = userService.clearData();
-        //add game service.clear data here
+        MResponse response = null;
+        MResponse userResponse = userService.clearData();
+        MResponse gameResponse = gameService.clearData();
+        if (userResponse.code() != 200) {
+            response = userResponse;
+        } else if (gameResponse.code() != 200) {
+            response = gameResponse;
+        } else {
+            response = userResponse;
+        }
         //if no errors are called we return success, which is 200
         res.type("application/json");
         res.status(response.code());
@@ -63,13 +72,29 @@ public class Server {
         res.body(body);
         return body;
     }
-    private Object postGameBody(Request req, Response res) {
-        //Call service and send in username, password, and email
-        var body = new Gson().toJson(Map.of("success", true));
+    private Object createGameBody(Request req, Response res) {
+        GameID gameID = null;
+        String gameName = req.body();
+        String token = req.headers("Authorization");
+        if (token == null || gameName == null){
+            res.status(400);
+            var message = new FailureResponse("Error: bad request");
+            return new Gson().toJson(message);
+        }
+        //verify token
+        try {
+            userService.verifyToken(token);
+        } catch(ResponseException r) {
+            if (r.StatusCode() == 401) {
+                res.status(401);
+                var message = new FailureResponse("Error: unauthorized");
+                return new Gson().toJson(message);
+            }
+        }
+        gameID = gameService.createGame(gameName);
         res.type("application/json");
         res.status(200);
-        res.body(body);
-        return body;
+        return new Gson().toJson(gameID);
     }
     private Object putGameBody(Request req, Response res) {
         //Call service and send in username, password, and email

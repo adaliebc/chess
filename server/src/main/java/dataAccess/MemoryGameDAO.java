@@ -1,5 +1,8 @@
 package dataAccess;
 
+import model.GameInfo;
+import model.UserData;
+
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -7,6 +10,10 @@ public class MemoryGameDAO implements GameDAO{
     Collection<Record> gameRecord = new HashSet<Record>();
     public boolean clear(){
         gameRecord.clear();
+        return true;
+    }
+    public boolean createGame(GameInfo game){
+        gameRecord.add(game);
         return true;
     }
     /* createGame: Create a new game.
