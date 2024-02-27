@@ -33,6 +33,7 @@ public class Server {
         return body;
     }
     private Object userBody(Request req, Response res) {
+        //Call service and send in username, password, and email
         var body = new Gson().toJson(Map.of("success", true));
         res.type("application/json");
         res.status(200);
