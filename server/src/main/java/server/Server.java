@@ -125,11 +125,19 @@ public class Server {
         }
         //get username
         String username = userService.getUsername(token);
+        MResponse response = null;
 
-        MResponse response = gameService.joinGame(gameID, playerColor, username);
+        try {
+            response = gameService.joinGame(gameID, playerColor, username);
+        } catch(ResponseException r) {
+            if (r.StatusCode() == 403) {
+                res.status(403);
+                var message = new FailureResponse("Error: already taken");
+                return new Gson().toJson(message);
+            }
+        }
         res.type("application/json");
-        res.status(response.code());
-        res.body(response.message());
+        res.status(200);
         return "";
     }
 

@@ -31,7 +31,7 @@ public class GameService {
         return new GameID(gameID);
     }
 
-    public MResponse joinGame(int gameID, String playerColor, String username){
+    public MResponse joinGame(int gameID, String playerColor, String username) throws ResponseException{
         GameInfo game = gdao.getGame(gameID);
         if (playerColor == null || playerColor.isEmpty()){
             return new MResponse(200, "");
@@ -41,7 +41,7 @@ public class GameService {
                 GameInfo newGame = new GameInfo(gameID, username, game.blackUsername(), game.gameName());
                 gdao.addPlayer(game, newGame);
             } else {
-                return new MResponse(403, "{ \"message\": \"Error: already taken\" }");
+                throw new ResponseException(403, "{ \"message\": \"Error: already taken\" }");
             }
         }
          else if (playerColor.equalsIgnoreCase("Black")){
@@ -49,9 +49,10 @@ public class GameService {
                 GameInfo newGame = new GameInfo(gameID, game.whiteUsername(), username, game.gameName());
                 gdao.addPlayer(game, newGame);
             } else {
-                return new MResponse(403, "{ \"message\": \"Error: already taken\" }");
+                throw new ResponseException(403, "{ \"message\": \"Error: already taken\" }");
             }
-        }return new MResponse(200, "");
+        }
+         return new MResponse(200, "");
     }
     public GameList getGameList() {
         Collection<GameInfo> gameRecord = gdao.getGameRecord();
