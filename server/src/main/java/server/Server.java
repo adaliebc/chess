@@ -7,7 +7,8 @@ import service.*;
 import model.*;
 
 public class Server {
-    ChessService service = new ChessService();
+    ChessService chessService = new ChessService();
+    UserService userService = new UserService();
     public static void main(String[] args) {
         new Server().run(8080);
     }
@@ -23,25 +24,40 @@ public class Server {
         Spark.post("/user", this::userBody);
         Spark.post("/game", this::postGameBody);
         Spark.put("/game", this::putGameBody);
-        Spark.post("/session", this::sessionBody);
+        Spark.post("/session", this::loginBody);
         Spark.awaitInitialization();
         return Spark.port();
     }
     private Object clearBody(Request req, Response res) {
         //call service, who calls DAO, who clears data
-        MResponse response = service.clearData();
+        MResponse response = chessService.clearData();
         //if no errors are called we return success, which is 200
-        var body = new Gson().toJson(Map.of("success", true));
         res.type("application/json");
         res.status(response.code());
         res.body(response.message());
-        return body;
+        return "";
     }
-    private Object userBody(Request req, Response res) {
+    private Object userBody(Request req, Response res){
         //Call service and send in username, password, and email
-        var body = new Gson().toJson(Map.of("success", true));
+        var user = new Gson().fromJson(req.body(), UserData.class);
+        AuthData token = null;
+        if (user.email() == null || user.password() == null || user.username() == null){
+            res.status(400);
+            var message = new FailureResponse("Error: bad request");
+            return new Gson().toJson(message);
+        }
+        try {
+            token = userService.register(user);
+        } catch(ResponseException r) {
+            if (r.StatusCode() == 403) {
+                res.status(403);
+                var message = new FailureResponse("Error: already taken");
+                return new Gson().toJson(message);
+            }
+        }
         res.type("application/json");
         res.status(200);
+        var body = new Gson().toJson(token);
         res.body(body);
         return body;
     }
@@ -61,7 +77,7 @@ public class Server {
         res.body(body);
         return body;
     }
-    private Object sessionBody(Request req, Response res) {
+    private Object loginBody(Request req, Response res) {
         //Call service and send in username, password, and email
         var body = new Gson().toJson(Map.of("success", true));
         res.type("application/json");
