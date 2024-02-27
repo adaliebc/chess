@@ -2,6 +2,9 @@ package service;
 
 import model.*;
 import dataAccess.*;
+
+import java.util.Objects;
+
 public class UserService {
     MemoryUserDAO udao = new MemoryUserDAO();
     MemoryAuthDAO adao = new MemoryAuthDAO();
@@ -19,8 +22,15 @@ public class UserService {
         //get user, if null, carry on, else: [403] { "message": "Error: already taken" }
         //send info to userDAO.java to create record and add to memory;
     }
-    public AuthData login(UserData user) {
-        return null;
+    public AuthData login(LoginRequest input) throws ResponseException{
+        UserData user = udao.getUser(input.username());
+        if(udao.getUser(input.username()) == null || !Objects.equals(input.password(), user.password())){
+            throw new ResponseException(401, "{ \"message\": \"Error: unauthorized\" }");
+        } else {
+            AuthData token = authservice.createAuthToken(user.username());
+            adao.addToken(token);
+            return token;
+        }
     }
     public void logout(UserData user) {}
 }

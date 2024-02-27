@@ -21,10 +21,11 @@ public class Server {
         // Register your endpoints and handle exceptions here.
         Spark.get("/hello", (req, resp) -> "Hello World");
         Spark.delete("/db", this::clearBody);
-        Spark.post("/user", this::userBody);
+        Spark.post("/user", this::registerBody);
         Spark.post("/game", this::postGameBody);
         Spark.put("/game", this::putGameBody);
         Spark.post("/session", this::loginBody);
+        Spark.delete("/session", this::logoutBody);
         Spark.awaitInitialization();
         return Spark.port();
     }
@@ -37,7 +38,7 @@ public class Server {
         res.body(response.message());
         return "";
     }
-    private Object userBody(Request req, Response res){
+    private Object registerBody(Request req, Response res){
         //Call service and send in username, password, and email
         var user = new Gson().fromJson(req.body(), UserData.class);
         AuthData token = null;
@@ -79,9 +80,50 @@ public class Server {
     }
     private Object loginBody(Request req, Response res) {
         //Call service and send in username, password, and email
-        var body = new Gson().toJson(Map.of("success", true));
+        var user = new Gson().fromJson(req.body(), LoginRequest.class);
+        AuthData token = null;
+        if (user.password() == null || user.username() == null){
+            res.status(400);
+            var message = new FailureResponse("Error: bad request");
+            return new Gson().toJson(message);
+        }
+        try {
+            token = userService.login(user);
+        } catch(ResponseException r) {
+            if (r.StatusCode() == 401) {
+                res.status(401);
+                var message = new FailureResponse("Error: unauthorized");
+                return new Gson().toJson(message);
+            }
+        }
         res.type("application/json");
         res.status(200);
+        var body = new Gson().toJson(token);
+        res.body(body);
+        return body;
+    }
+
+    private Object loginBody(Request req, Response res) {
+        //Call service and send in username, password, and email
+        var user = new Gson().fromJson(req.body(), LoginRequest.class);
+        AuthData token = null;
+        if (user.password() == null || user.username() == null){
+            res.status(400);
+            var message = new FailureResponse("Error: bad request");
+            return new Gson().toJson(message);
+        }
+        try {
+            token = userService.login(user);
+        } catch(ResponseException r) {
+            if (r.StatusCode() == 401) {
+                res.status(401);
+                var message = new FailureResponse("Error: unauthorized");
+                return new Gson().toJson(message);
+            }
+        }
+        res.type("application/json");
+        res.status(200);
+        var body = new Gson().toJson(token);
         res.body(body);
         return body;
     }
