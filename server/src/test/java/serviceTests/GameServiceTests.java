@@ -64,7 +64,7 @@ public class GameServiceTests {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @DisplayName("joinNegativeGameTest")
     public void joinNegativeGameTest() throws TestException {
         GameService gameService = new GameService();
@@ -82,5 +82,14 @@ public class GameServiceTests {
             Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
                     "Server response code was not 403 Forbidden");
         }
+    }
+    @Test
+    @Order(6)
+    @DisplayName("listGameTest")
+    public void listGameTest() throws TestException {
+        GameService gameService = new GameService();
+        GameList gameList = gameService.getGameList();
+        Assertions.assertNotNull(gameList,
+                "gameList was not empty");
     }
 }
