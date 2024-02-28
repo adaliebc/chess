@@ -108,8 +108,8 @@ public class ChessPiece {
                 }
                 break;
             }
-            ChessMove moves = new ChessMove(myPosition, coordinates, null);
-            validMoves.add(moves);
+            ChessMove diagonalMoves = new ChessMove(myPosition, coordinates, null);
+            validMoves.add(diagonalMoves);
         }
 
         currentCol = myPosition.getColumn();
@@ -187,8 +187,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove straightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(straightMoves);
                 }
                 break;
             }
