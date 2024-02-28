@@ -9,6 +9,7 @@ public class UserService {
     MemoryUserDAO udao = new MemoryUserDAO();
     MemoryAuthDAO adao = new MemoryAuthDAO();
     AuthService authservice = new AuthService();
+
     public AuthData register(UserData user) throws ResponseException{
         //create new user
         if(udao.getUser(user.username()) != null){

@@ -19,14 +19,14 @@ public class GameService {
             return new MResponse(500, "{ \"message\": \"Error: description\" }");
         }
     }
-    public int generateGameID(){
+    private int generateGameID(){
         //create gameID
         Random gameID = new Random();
         return gameID.nextInt(10000);
     }
     public GameID createGame(String gameName){
         int gameID = generateGameID();
-        GameInfo game = new GameInfo(gameID, "", "", gameName);
+        GameInfo game = new GameInfo(gameID, null, null, gameName);
         gdao.createGame(game);
         return new GameID(gameID);
     }
@@ -37,7 +37,7 @@ public class GameService {
             return new MResponse(200, "");
         }
         else if (playerColor.equalsIgnoreCase("White")){
-            if (game.whiteUsername().isEmpty()){
+            if (game.whiteUsername() == null){
                 GameInfo newGame = new GameInfo(gameID, username, game.blackUsername(), game.gameName());
                 gdao.addPlayer(game, newGame);
             } else {
@@ -45,7 +45,7 @@ public class GameService {
             }
         }
          else if (playerColor.equalsIgnoreCase("Black")){
-            if (game.blackUsername().isEmpty()){
+            if (game.blackUsername() == null){
                 GameInfo newGame = new GameInfo(gameID, game.whiteUsername(), username, game.gameName());
                 gdao.addPlayer(game, newGame);
             } else {

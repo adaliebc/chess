@@ -7,8 +7,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class AuthService {
-    MemoryAuthDAO adao = new MemoryAuthDAO();
-    public String createAuth() {
+    private String createAuth() {
         return UUID.randomUUID().toString();
     }
     public AuthData createAuthToken(String username){
