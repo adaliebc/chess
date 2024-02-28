@@ -25,6 +25,9 @@ public class GameService {
         return gameID.nextInt(10000);
     }
     public GameID createGame(String gameName){
+        if(gameName == null){
+            return null;
+        }
         int gameID = generateGameID();
         GameInfo game = new GameInfo(gameID, null, null, gameName);
         gdao.createGame(game);
