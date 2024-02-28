@@ -49,16 +49,18 @@ public class UserService {
 
     }
     public MResponse clearData(){
-        //when you create gameService, move game clear over there
         if(udao.clear() && adao.clear()){
             return new MResponse(200, "");
         } else {
             return new MResponse(500, "{ \"message\": \"Error: description\" }");
         }
     }
-    public String getUsername(String token){
+    public String getUsername(String token) {
         AuthData user = adao.getAuth(token);
-        return user.username();
+        if (user != null) {
+            return user.username();
+        }
+        return null;
     }
 
 }
