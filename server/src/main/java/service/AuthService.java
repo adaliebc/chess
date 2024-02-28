@@ -11,6 +11,9 @@ public class AuthService {
         return UUID.randomUUID().toString();
     }
     public AuthData createAuthToken(String username){
+        if(username  == null){
+            return null;
+        }
         return new AuthData(createAuth(), username);
     }
 
