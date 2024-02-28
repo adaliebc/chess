@@ -301,14 +301,14 @@ public class ChessPiece {
                 if (unknown != null) {
                     if (unknown.pieceColor != this.pieceColor) {
                         if (currentRow == 8) {
-                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
-                            validMoves.add(moves);
+                            ChessMove topRightDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(topRightDiagonalWhitePawnMoves);
+                            topRightDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(topRightDiagonalWhitePawnMoves);
+                            topRightDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(topRightDiagonalWhitePawnMoves);
+                            topRightDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(topRightDiagonalWhitePawnMoves);
                         } else {
                             ChessMove moves = new ChessMove(myPosition, coordinates, null);
                             validMoves.add(moves);
@@ -330,14 +330,14 @@ public class ChessPiece {
                 if (unknown != null) {
                     if (unknown.pieceColor != this.pieceColor) {
                         if (currentRow == 8) {
-                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
-                            validMoves.add(moves);
+                            ChessMove topLeftDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(topLeftDiagonalWhitePawnMoves);
+                            topLeftDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(topLeftDiagonalWhitePawnMoves);
+                            topLeftDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(topLeftDiagonalWhitePawnMoves);
+                            topLeftDiagonalWhitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(topLeftDiagonalWhitePawnMoves);
                         } else {
                             ChessMove moves = new ChessMove(myPosition, coordinates, null);
                             validMoves.add(moves);
@@ -388,14 +388,14 @@ public class ChessPiece {
                 if (unknown != null) {
                     if (unknown.pieceColor != this.pieceColor) {
                         if (currentRow == 1) {
-                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
-                            validMoves.add(moves);
+                            ChessMove bottomRightDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(bottomRightDiagonalBlackPawnMoves);
+                            bottomRightDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(bottomRightDiagonalBlackPawnMoves);
+                            bottomRightDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(bottomRightDiagonalBlackPawnMoves);
+                            bottomRightDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(bottomRightDiagonalBlackPawnMoves);
                         } else {
                             ChessMove moves = new ChessMove(myPosition, coordinates, null);
                             validMoves.add(moves);
@@ -417,14 +417,14 @@ public class ChessPiece {
                 if (unknown != null) {
                     if (unknown.pieceColor != this.pieceColor) {
                         if (currentRow == 1) {
-                            ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
-                            validMoves.add(moves);
-                            moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
-                            validMoves.add(moves);
+                            ChessMove bottomLeftDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                            validMoves.add(bottomLeftDiagonalBlackPawnMoves);
+                            bottomLeftDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                            validMoves.add(bottomLeftDiagonalBlackPawnMoves);
+                            bottomLeftDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                            validMoves.add(bottomLeftDiagonalBlackPawnMoves);
+                            bottomLeftDiagonalBlackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                            validMoves.add(bottomLeftDiagonalBlackPawnMoves);
                         } else {
                             ChessMove moves = new ChessMove(myPosition, coordinates, null);
                             validMoves.add(moves);
@@ -451,8 +451,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove topRightKnightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(topRightKnightMoves);
                 }
             }else {
             ChessMove moves = new ChessMove(myPosition, coordinates, null);
@@ -469,8 +469,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove topLeftKnightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(topLeftKnightMoves);
                 }
             }else {
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
@@ -505,8 +505,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove rightBottomKnightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(rightBottomKnightMoves);
                 }
             }else {
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
@@ -523,8 +523,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove leftTopKnightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(leftTopKnightMoves);
                 }
             }else {
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
@@ -541,8 +541,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove leftBottomKnightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(leftBottomKnightMoves);
                 }
             }else {
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
@@ -559,8 +559,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove bottomRightKnightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(bottomRightKnightMoves);
                 }
             }else {
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
@@ -577,8 +577,8 @@ public class ChessPiece {
             ChessPiece unknown = board.getPiece(coordinates);
             if (unknown != null) {
                 if (unknown.pieceColor != this.pieceColor) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, null);
-                    validMoves.add(moves);
+                    ChessMove bottomLeftKnightMoves = new ChessMove(myPosition, coordinates, null);
+                    validMoves.add(bottomLeftKnightMoves);
                 }
             }else {
                 ChessMove moves = new ChessMove(myPosition, coordinates, null);
