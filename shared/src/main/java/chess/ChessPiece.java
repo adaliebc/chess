@@ -273,14 +273,14 @@ public class ChessPiece {
                     break;
                 }
                 if (currentRow == 8) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
-                    validMoves.add(moves);
-                    moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
-                    validMoves.add(moves);
-                    moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
-                    validMoves.add(moves);
-                    moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
-                    validMoves.add(moves);
+                    ChessMove whitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                    validMoves.add(whitePawnMoves);
+                    whitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                    validMoves.add(whitePawnMoves);
+                    whitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                    validMoves.add(whitePawnMoves);
+                    whitePawnMoves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                    validMoves.add(whitePawnMoves);
                     break;
                 } else {
                     ChessMove moves = new ChessMove(myPosition, coordinates, null);
@@ -360,14 +360,14 @@ public class ChessPiece {
                     break;
                 }
                 if (currentRow == 1) {
-                    ChessMove moves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
-                    validMoves.add(moves);
-                    moves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
-                    validMoves.add(moves);
-                    moves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
-                    validMoves.add(moves);
-                    moves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
-                    validMoves.add(moves);
+                    ChessMove blackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.QUEEN);
+                    validMoves.add(blackPawnMoves);
+                    blackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.BISHOP);
+                    validMoves.add(blackPawnMoves);
+                    blackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.KNIGHT);
+                    validMoves.add(blackPawnMoves);
+                    blackPawnMoves = new ChessMove(myPosition, coordinates, PieceType.ROOK);
+                    validMoves.add(blackPawnMoves);
                     break;
                 } else {
                     ChessMove moves = new ChessMove(myPosition, coordinates, null);

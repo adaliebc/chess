@@ -23,12 +23,6 @@ public class MemoryUserDAO implements UserDAO{
         return true;
     }
 
-    /*getUser: Retrieve a user with the given username.
-    userRecord.contains(username);
-    if it's there, userRecord.get(username);
-    return record;
-    */
-
     public UserData getUser(String username) {
         for (UserData user : userRecord){
             if (user.username().equals(username)){

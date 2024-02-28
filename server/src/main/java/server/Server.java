@@ -2,7 +2,6 @@ package server;
 
 import com.google.gson.Gson;
 import spark.*;
-import java.util.*;
 import service.*;
 import model.*;
 
@@ -61,7 +60,7 @@ public class Server {
         try {
             token = userService.register(user);
         } catch(ResponseException r) {
-            if (r.StatusCode() == 403) {
+            if (r.statusCode() == 403) {
                 res.status(403);
                 var message = new FailureResponse("Error: already taken");
                 return new Gson().toJson(message);
@@ -86,7 +85,7 @@ public class Server {
         try {
             userService.verifyToken(token);
         } catch(ResponseException r) {
-            if (r.StatusCode() == 401) {
+            if (r.statusCode() == 401) {
                 res.status(401);
                 var message = new FailureResponse("Error: unauthorized");
                 return new Gson().toJson(message);
@@ -117,7 +116,7 @@ public class Server {
         try {
             userService.verifyToken(token);
         } catch(ResponseException r) {
-            if (r.StatusCode() == 401) {
+            if (r.statusCode() == 401) {
                 res.status(401);
                 var message = new FailureResponse("Error: unauthorized");
                 return new Gson().toJson(message);
@@ -130,7 +129,7 @@ public class Server {
         try {
             response = gameService.joinGame(gameID, playerColor, username);
         } catch(ResponseException r) {
-            if (r.StatusCode() == 403) {
+            if (r.statusCode() == 403) {
                 res.status(403);
                 var message = new FailureResponse("Error: already taken");
                 return new Gson().toJson(message);
@@ -155,7 +154,7 @@ public class Server {
         try {
             userService.verifyToken(token);
         } catch(ResponseException r) {
-            if (r.StatusCode() == 401) {
+            if (r.statusCode() == 401) {
                 res.status(401);
                 var message = new FailureResponse("Error: unauthorized");
                 return new Gson().toJson(message);
@@ -179,7 +178,7 @@ public class Server {
         try {
             token = userService.login(user);
         } catch(ResponseException r) {
-            if (r.StatusCode() == 401) {
+            if (r.statusCode() == 401) {
                 res.status(401);
                 var message = new FailureResponse("Error: unauthorized");
                 return new Gson().toJson(message);
@@ -204,7 +203,7 @@ public class Server {
         try {
             userService.logout(token);
         } catch(ResponseException r) {
-            if (r.StatusCode() == 401) {
+            if (r.statusCode() == 401) {
                 res.status(401);
                 var message = new FailureResponse("Error: unauthorized");
                 return new Gson().toJson(message);
