@@ -1,7 +1,6 @@
 package dataAccess;
 
 import model.AuthData;
-import model.UserData;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,14 +10,12 @@ public class MemoryAuthDAO implements AuthDAO{
     //clear data
     //authRecord.removeAll(authRecord);
     // if returns false, throw error, else return 200
-    public boolean clear(){
+    public void clear(){
         authRecord.clear();
-        return true;
     }
 
-    public boolean addToken(AuthData token) {
+    public void addToken(AuthData token) {
         authRecord.add(token);
-        return true;
     }
     public AuthData getAuth(String token) {
         for (AuthData user : authRecord){
