@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class UserService {
     MemoryUserDAO udao = new MemoryUserDAO();
-    MemoryAuthDAO adao = new MemoryAuthDAO();
+    SQLAuthDAO adao = new SQLAuthDAO();
     AuthService authservice = new AuthService();
 
     public AuthData register(UserData user) throws ResponseException{

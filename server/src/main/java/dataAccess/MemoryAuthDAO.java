@@ -10,8 +10,9 @@ public class MemoryAuthDAO implements AuthDAO{
     //clear data
     //authRecord.removeAll(authRecord);
     // if returns false, throw error, else return 200
-    public void clear(){
+    public boolean clear(){
         authRecord.clear();
+        return true;
     }
 
     public void addToken(AuthData token) {
