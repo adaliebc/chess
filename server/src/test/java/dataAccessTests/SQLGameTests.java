@@ -3,15 +3,18 @@ package dataAccessTests;
 import dataAccess.SQLGameDAO;
 import dataAccess.SQLUserDAO;
 import model.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import passoffTests.obfuscatedTestClasses.TestServerFacade;
 import passoffTests.testClasses.TestException;
+import passoffTests.testClasses.TestModels;
+import server.Server;
 import service.ResponseException;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class SQLGameTests {
     @Test
@@ -19,6 +22,7 @@ public class SQLGameTests {
     @DisplayName("Clear Positive Test")
     public void clearPositiveTest() throws TestException {
         SQLGameDAO sql = new SQLGameDAO();
+        sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
         GameInfo game = new GameInfo(gameID, null, null, gameName);
@@ -33,6 +37,7 @@ public class SQLGameTests {
     @DisplayName("Create Game Positive Test")
     public void createGamePositiveTest() throws TestException {
         SQLGameDAO sql = new SQLGameDAO();
+        sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
         GameInfo game = new GameInfo(gameID, null, null, gameName);
@@ -48,6 +53,7 @@ public class SQLGameTests {
     @DisplayName("Create Game Negative Test")
     public void createGameNegativeTest() throws TestException {
         SQLGameDAO sql = new SQLGameDAO();
+        sql.clear();
         int gameID = 1234;
         String gameName = "game'name";
         GameInfo game = new GameInfo(gameID, null, null, gameName);
@@ -62,6 +68,7 @@ public class SQLGameTests {
     @DisplayName("Get Game Positive Test")
     public void getGamePositiveTest() throws TestException {
         SQLGameDAO sql = new SQLGameDAO();
+        sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
         GameInfo game = new GameInfo(gameID, null, null, gameName);
@@ -78,6 +85,7 @@ public class SQLGameTests {
     @DisplayName("Get Game Negative Test")
     public void getGameNegativeTest() throws TestException {
         SQLGameDAO sql = new SQLGameDAO();
+        sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
         GameInfo game = new GameInfo(gameID, null, null, gameName);
@@ -95,6 +103,7 @@ public class SQLGameTests {
     public void joinGamePositiveTest() throws TestException {
         try {
             SQLGameDAO sql = new SQLGameDAO();
+            sql.clear();
             int gameID = 1234;
             String gameName = "gamename";
             GameInfo game = new GameInfo(gameID, null, null, gameName);
@@ -125,6 +134,7 @@ public class SQLGameTests {
     public void joinGameNegativeTest() throws TestException {
         try {
             SQLGameDAO sql = new SQLGameDAO();
+            sql.clear();
             int gameID = 1234;
             String gameName = "gamename";
             GameInfo game = new GameInfo(gameID, null, null, gameName);
@@ -141,6 +151,44 @@ public class SQLGameTests {
             Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.statusCode(),
                     "Server response code was 403 Unable to Add User");
         }
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("Get GameRecord Positive Test")
+    public void getGameRecordPositiveTest() throws TestException {
+        Collection<GameInfo> gameRecord = new ArrayList<>();
+        SQLGameDAO sql = new SQLGameDAO();
+        sql.clear();
+        int gameID = 1234;
+        String gameName = "gamename";
+        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        sql.createGame(game);
+        gameRecord.add(game);
+
+        Collection<GameInfo> sqlGameRecord = sql.getGameRecord();
+
+        Assertions.assertEquals(gameRecord, sqlGameRecord);
+    }
+
+    @Test
+    @Order(9)
+    @DisplayName("Get GameRecord Negative Test")
+    public void getGameRecordNegativeTest() {
+        Collection<GameInfo> gameRecord = new ArrayList<GameInfo>();
+        SQLGameDAO sql = new SQLGameDAO();
+        sql.clear();
+        int gameID = 1234;
+        String gameName = "gamename";
+        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        sql.createGame(game);
+        gameRecord.add(game);
+
+        sql.clear();
+
+        Collection<GameInfo> sqlGameRecord = sql.getGameRecord();
+
+        Assertions.assertNotEquals(gameRecord, sqlGameRecord);
     }
 
 }

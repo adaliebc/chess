@@ -138,7 +138,6 @@ public class SQLGameDAO implements GameDAO{
             } else {
                 System.out.println("TABLE NOT CREATED");
             }
-            clear();
         } catch (Exception e) {
             throw new ResponseException(500, "{ \"message\": \"Error: Unable to Create Table\" }");
         }
