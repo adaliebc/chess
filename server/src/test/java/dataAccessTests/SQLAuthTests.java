@@ -108,4 +108,46 @@ public class SQLAuthTests {
                     "Server response code was 403 Unable to Add User");
         }
     }
+
+    @Test
+    @Order(5)
+    @DisplayName("Delete Token Positive Test")
+    public void deleteTokenPositiveTest() throws TestException {
+        //add token, verify auth, should return true
+        try {
+            SQLAuthDAO sql = new SQLAuthDAO();
+            String token = "token";
+            String username = "username";
+            AuthData user = new AuthData(token, username);
+            sql.addToken(user);
+            sql.deleteToken(user);
+
+            Assertions.assertFalse(sql.verifyAuth(token));
+        } catch (ResponseException r) {
+            Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                    "Server response code was 403 Unable to Add User");
+        }
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Delete Token Negative Test")
+    public void deleteTokenNegativeTest() throws TestException {
+        //add token, verify auth, should return true
+        try {
+            SQLAuthDAO sql = new SQLAuthDAO();
+            String token = "token";
+            String username = "username";
+            AuthData user = new AuthData(token, username);
+            sql.addToken(user);
+
+            token = "tokenzzzz";
+            AuthData badUser = new AuthData(token, username);
+            sql.deleteToken(badUser);
+
+        } catch (ResponseException r) {
+            Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                    "Server response code was 403 Unable to Delete User");
+        }
+    }
 }
