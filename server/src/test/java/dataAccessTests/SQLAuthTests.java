@@ -19,6 +19,7 @@ public class SQLAuthTests {
         //add auth, clear data, verify auth, should return false
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "username";
             AuthData user = new AuthData(token, username);
@@ -39,6 +40,7 @@ public class SQLAuthTests {
             //add token, verify auth, should return true
             try {
                 SQLAuthDAO sql = new SQLAuthDAO();
+                sql.clear();
                 String token = "token";
                 String username = "username";
                 AuthData user = new AuthData(token, username);
@@ -57,6 +59,7 @@ public class SQLAuthTests {
     public void addTokenNegativeTest() throws TestException {
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "user'name";
             AuthData user = new AuthData(token, username);
@@ -73,6 +76,7 @@ public class SQLAuthTests {
         //add token, verify auth, should return true
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "username";
             AuthData user = new AuthData(token, username);
@@ -92,6 +96,7 @@ public class SQLAuthTests {
     public void getTokenNegativeTest() throws TestException {
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "username";
             AuthData user = new AuthData(token, username);
@@ -113,6 +118,7 @@ public class SQLAuthTests {
     public void deleteTokenPositiveTest() throws TestException {
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "username";
             AuthData user = new AuthData(token, username);
@@ -132,6 +138,7 @@ public class SQLAuthTests {
     public void deleteTokenNegativeTest() throws TestException {
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "username";
             AuthData user = new AuthData(token, username);
@@ -152,6 +159,7 @@ public class SQLAuthTests {
     public void verifyTokenPositiveTest() throws TestException {
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "username";
             AuthData user = new AuthData(token, username);
@@ -170,6 +178,7 @@ public class SQLAuthTests {
     public void verifyTokenNegativeTest() throws TestException {
         try {
             SQLAuthDAO sql = new SQLAuthDAO();
+            sql.clear();
             String token = "token";
             String username = "username";
             AuthData user = new AuthData(token, username);

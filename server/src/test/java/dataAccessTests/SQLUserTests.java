@@ -1,8 +1,6 @@
 package dataAccessTests;
 
-import dataAccess.SQLAuthDAO;
 import dataAccess.SQLUserDAO;
-import model.AuthData;
 import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +20,7 @@ public class SQLUserTests {
         //add auth, clear data, verify auth, should return false
         try {
             SQLUserDAO sql = new SQLUserDAO();
+            sql.clear();
             String username = "username";
             String password = "password";
             String email = "email@email.com";
@@ -40,6 +39,7 @@ public class SQLUserTests {
     public void getUserPositiveTest() throws TestException {
         try {
             SQLUserDAO sql = new SQLUserDAO();
+            sql.clear();
             String username = "username";
             String password = "password";
             String email = "email@email.com";
@@ -62,6 +62,7 @@ public class SQLUserTests {
     public void getUserNegativeTest() throws TestException {
         try {
             SQLUserDAO sql = new SQLUserDAO();
+            sql.clear();
             String username = "username";
             String password = "password";
             String email = "email@email.com";
@@ -84,6 +85,7 @@ public class SQLUserTests {
     public void createUserPositiveTest() throws TestException {
         try {
             SQLUserDAO sql = new SQLUserDAO();
+            sql.clear();
             String username = "username";
             String password = "password";
             String email = "email@email.com";
@@ -105,6 +107,7 @@ public class SQLUserTests {
     public void createUserNegativeTest() throws TestException {
         try {
             SQLUserDAO sql = new SQLUserDAO();
+            sql.clear();
             String username = "user'name";
             String password = "password";
             String email = "email@email.com";
