@@ -37,8 +37,23 @@ public class SQLGameDAO implements GameDAO{
     }
 
 
-    public boolean createGame(GameInfo game) {
+    public boolean createGame(GameInfo game) {try {
+        var sql = "insert into gameRecord (gameID, whiteUsername, blackUsername, gameName)"
+                + " values('" + game.gameName() + "','" + game.whiteUsername() + "','" + game.blackUsername() + "','" + game.gameName() +"')";
+        Connection conn = DatabaseManager.getConnection();
+        Statement stmt = conn.createStatement();
+        int i = stmt.executeUpdate(sql);
+        if (i > 0) {
+            System.out.println("ROW INSERTED");
+            return true;
+        } else {
+            System.out.println("ROW NOT INSERTED");
+        }
+    } catch (Exception e) {
         return false;
+    }
+
+
     }
 
 
