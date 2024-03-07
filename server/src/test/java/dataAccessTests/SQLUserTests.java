@@ -44,12 +44,12 @@ public class SQLUserTests {
             String password = "password";
             String email = "email@email.com";
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String hashedPassword = encoder.encode(password);
             UserData user = new UserData(username, password, email);
             sql.createUser(user);
             UserData gotUser = sql.getUser(username);
 
-            Assertions.assertTrue(gotUser.username().equals(username) && gotUser.password().equals(hashedPassword) && gotUser.email().equals(email));
+            Assertions.assertTrue(encoder.matches(password, gotUser.password()));
+            Assertions.assertTrue(gotUser.username().equals(username) && gotUser.email().equals(email));
         } catch (ResponseException r) {
             Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
                     "Server response code was 403 Unable to Add User");
