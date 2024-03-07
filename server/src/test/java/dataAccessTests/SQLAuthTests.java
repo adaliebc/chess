@@ -47,8 +47,43 @@ public class SQLAuthTests {
 
                 Assertions.assertTrue(sql.verifyAuth(token));
             } catch (ResponseException r) {
-                Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
                         "Server response code was 403 Unable to Add User");
             }
         }
+
+    @Test
+    @Order(3)
+    @DisplayName("Add Token Negative Test")
+    public void addTokenNegativeTest() throws TestException {
+        try {
+            SQLAuthDAO sql = new SQLAuthDAO();
+            String token = "token";
+            String username = "user'name";
+            AuthData user = new AuthData(token, username);
+            sql.addToken(user);
+        } catch (ResponseException r) {
+            Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                    "Server response code was 403 Unable to Add User");
+        }
+    }
+    @Test
+    @Order(3)
+    @DisplayName("Get Token Positive Test")
+    public void getTokenPositiveTest() throws TestException {
+        //add token, verify auth, should return true
+        try {
+            SQLAuthDAO sql = new SQLAuthDAO();
+            String token = "token";
+            String username = "username";
+            AuthData user = new AuthData(token, username);
+            sql.addToken(user);
+            AuthData gotUser = sql.getAuth(token);
+
+            Assertions.assertTrue(gotUser.username().equals(username) && gotUser.authToken().equals(token));
+        } catch (ResponseException r) {
+            Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                    "Server response code was 403 Unable to Add User");
+        }
+    }
 }
