@@ -96,7 +96,7 @@ public class SQLAuthDAO implements AuthDAO {
 
     private void createTable() throws ResponseException {
         try{
-            String createStatements =  "CREATE TABLE IF NOT EXISTS  authRecord (authToken varchar(100) NOT NULL,username varchar(256) NOT NULL,)";
+            String createStatements =  "CREATE TABLE IF NOT EXISTS  authRecord (authToken varchar(100) NOT NULL,username varchar(256) NOT NULL)";
             Connection conn = DatabaseManager.getConnection();
             Statement stmt = conn.createStatement();
             int i = stmt.executeUpdate(createStatements);
