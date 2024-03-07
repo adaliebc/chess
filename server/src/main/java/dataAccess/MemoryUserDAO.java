@@ -18,9 +18,8 @@ public class MemoryUserDAO implements UserDAO{
     /* createUser: Create a new user.
         create record with UserData and push to MemoryUserDAO.java*/
 
-    public boolean createUser(UserData user){
+    public void createUser(UserData user){
         userRecord.add(user);
-        return true;
     }
 
     public UserData getUser(String username) {

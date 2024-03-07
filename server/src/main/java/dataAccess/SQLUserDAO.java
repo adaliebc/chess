@@ -4,6 +4,7 @@ import model.UserData;
 import service.ResponseException;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -36,13 +37,42 @@ public class SQLUserDAO implements UserDAO{
     }
 
     @Override
-    public UserData getUser(String username) {
-        return null;
+    public UserData getUser(String username) {var statement = "SELECT username, password, email FROM userRecord WHERE username='" + username +"'";
+        try{
+            Connection conn = DatabaseManager.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet user = stmt.executeQuery(statement);
+            String gotUsername = null;
+            String password = null;
+            String email = null;
+            while (user.next()) {
+                gotUsername = user.getString(1);
+                password = user.getString(2);
+                email = user.getString(3);
+            }
+            user.close();
+            return new UserData(gotUsername, password, email);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
-    public boolean createUser(UserData user) {
-        return false;
+    public void createUser(UserData user) throws ResponseException {
+        try {
+            var sql = "insert into userRecord (username, password, email)"
+                    + " values('" + user.username() + "','" + user.password() + "','" + user.email() +"')";
+            Connection conn = DatabaseManager.getConnection();
+            Statement stmt = conn.createStatement();
+            int i = stmt.executeUpdate(sql);
+            if (i > 0) {
+                System.out.println("ROW INSERTED");
+            } else {
+                System.out.println("ROW NOT INSERTED");
+            }
+        } catch (Exception e) {
+            throw new ResponseException(403, "{ \"message\": \"Error: Unable to Create User\" }");
+        }
     }
 
     private void createTable() throws ResponseException {
