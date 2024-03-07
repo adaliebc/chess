@@ -80,7 +80,7 @@ public class SQLUserDAO implements UserDAO{
 
     private void createTable() throws ResponseException {
         try{
-            String createStatements =  "CREATE TABLE IF NOT EXISTS  userRecord (`username` varchar(100) NOT NULL,`password` varchar(256) NOT NULL, `email` varchar(256) NOT NULL)";
+            String createStatements =  "CREATE TABLE IF NOT EXISTS  userRecord (username varchar(100) NOT NULL,password varchar(256) NOT NULL, email varchar(256) NOT NULL)";
             Connection conn = DatabaseManager.getConnection();
             Statement stmt = conn.createStatement();
             int i = stmt.executeUpdate(createStatements);
