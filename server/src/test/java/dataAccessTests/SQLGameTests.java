@@ -77,20 +77,68 @@ public class SQLGameTests {
     @Order(5)
     @DisplayName("Get Game Negative Test")
     public void getGameNegativeTest() throws TestException {
+        SQLGameDAO sql = new SQLGameDAO();
+        int gameID = 1234;
+        String gameName = "gamename";
+        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        sql.createGame(game);
+
+        GameInfo gotGame = sql.getGame(9876);
+
+        Assertions.assertNotEquals("gamename", gotGame.gameName());
+        Assertions.assertNotEquals(gotGame.gameID(), gameID);
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("Join Game Positive Test")
+    public void joinGamePositiveTest() throws TestException {
         try {
-            SQLUserDAO sql = new SQLUserDAO();
-            String username = "username";
-            String password = "password";
-            String email = "email@email.com";
-            UserData user = new UserData(username, password, email);
-            sql.createUser(user);
+            SQLGameDAO sql = new SQLGameDAO();
+            int gameID = 1234;
+            String gameName = "gamename";
+            GameInfo game = new GameInfo(gameID, null, null, gameName);
+            sql.createGame(game);
 
-            username = "uzzzername";
-            UserData gotUser = sql.getUser(username);
+            String playerColor = "whiteUsername";
+            String username = "user";
 
-            Assertions.assertTrue(gotUser.username() == null && gotUser.password() == null && gotUser.email() == null);
-        } catch (ResponseException r) {
-            Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+            sql.addPlayer(gameID, playerColor, username);
+
+            playerColor = "blackUsername";
+
+            sql.addPlayer(gameID, playerColor, username);
+
+            GameInfo gotGame = sql.getGame(1234);
+
+            Assertions.assertEquals(gotGame.whiteUsername(), username);
+            Assertions.assertEquals(gotGame.blackUsername(), username);
+        } catch (ResponseException e) {
+            Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, e.statusCode(),
+                    "Server response code was 403 Unable to Add User");
+        }
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("Join Game Negative Test")
+    public void joinGameNegativeTest() throws TestException {
+        try {
+            SQLGameDAO sql = new SQLGameDAO();
+            int gameID = 1234;
+            String gameName = "gamename";
+            GameInfo game = new GameInfo(gameID, null, null, gameName);
+            sql.createGame(game);
+
+            String playerColor = "whiteUsername";
+            String username = "us'er";
+
+            sql.addPlayer(gameID, playerColor, username);
+
+            GameInfo gotGame = sql.getGame(1234);
+
+        } catch (ResponseException e) {
+            Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.statusCode(),
                     "Server response code was 403 Unable to Add User");
         }
     }

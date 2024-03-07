@@ -40,8 +40,8 @@ public class SQLGameDAO implements GameDAO{
 
 
     public boolean createGame(GameInfo game) {try {
-        var sql = "insert into gameRecord (gameID, whiteUsername, blackUsername, gameName)"
-                + " values('" + game.gameID() + "','" + game.whiteUsername() + "','" + game.blackUsername() + "','" + game.gameName() +"')";
+        var sql = "insert into gameRecord (gameID, gameName)"
+                + " values('" + game.gameID() + "','" + game.gameName() +"')";
         Connection conn = DatabaseManager.getConnection();
         Statement stmt = conn.createStatement();
         int i = stmt.executeUpdate(sql);
@@ -84,12 +84,12 @@ public class SQLGameDAO implements GameDAO{
 
     public void addPlayer(int gameID, String playerColor, String username) throws ResponseException {
         try{
-        var sql = "update gameRecord set " + playerColor + "=" + "'" + username + "'" + "where gameID = '" + gameID + "'";
+        var sql = "update gameRecord set " + playerColor + "=" + "'" + username + "'" + "where gameID = " + gameID;
         Connection conn = DatabaseManager.getConnection();
         Statement stmt = conn.createStatement();
         int i = stmt.executeUpdate(sql);
         if (i > 0) {
-            System.out.println("ROW UPDATES");
+            System.out.println("ROW UPDATED");
         } else {
             System.out.println("ROW NOT UPDATED");
         }
