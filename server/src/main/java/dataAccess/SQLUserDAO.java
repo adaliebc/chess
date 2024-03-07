@@ -1,6 +1,7 @@
 package dataAccess;
 
 import model.UserData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import service.ResponseException;
 
 import java.sql.Connection;
@@ -59,9 +60,11 @@ public class SQLUserDAO implements UserDAO{
 
     @Override
     public void createUser(UserData user) throws ResponseException {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(user.password());
         try {
             var sql = "insert into userRecord (username, password, email)"
-                    + " values('" + user.username() + "','" + user.password() + "','" + user.email() +"')";
+                    + " values('" + user.username() + "','" + hashedPassword + "','" + user.email() +"')";
             Connection conn = DatabaseManager.getConnection();
             Statement stmt = conn.createStatement();
             int i = stmt.executeUpdate(sql);
@@ -91,4 +94,5 @@ public class SQLUserDAO implements UserDAO{
             throw new ResponseException(500, "{ \"message\": \"Error: Unable to Create Table\" }");
         }
     }
+
 }

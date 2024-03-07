@@ -2,6 +2,7 @@ package service;
 
 import model.*;
 import dataAccess.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Objects;
 
@@ -26,7 +27,9 @@ public class UserService {
     }
     public AuthData login(LoginRequest input) throws ResponseException{
         UserData user = udao.getUser(input.username());
-        if(udao.getUser(input.username()) == null || !Objects.equals(input.password(), user.password())){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(input.password());
+        if(udao.getUser(input.username()) == null || !Objects.equals(hashedPassword, user.password())){
             throw new ResponseException(401, "{ \"message\": \"Error: unauthorized\" }");
         } else {
             AuthData token = authservice.createAuthToken(user.username());
