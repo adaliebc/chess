@@ -54,7 +54,19 @@ public class SQLAuthDAO implements AuthDAO {
 
     @Override
     public void deleteToken(AuthData token) {
-
+    try{
+        var statement = "DELETE FROM authRecord WHERE authToken=" + token;
+        Connection conn = DatabaseManager.getConnection();
+        Statement stmt = conn.createStatement();
+        int i = stmt.executeUpdate(statement);
+        if (i > 0) {
+            System.out.println("ROW DELETED");
+        } else {
+            System.out.println("ROW NOT DELETED");
+        }
+    } catch (Exception e) {
+        System.out.println(e);
+    }
     }
 
     @Override
