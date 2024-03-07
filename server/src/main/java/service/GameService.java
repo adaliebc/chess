@@ -1,6 +1,7 @@
 package service;
 
 import dataAccess.MemoryGameDAO;
+import dataAccess.SQLGameDAO;
 import model.*;
 
 import java.util.Collection;
@@ -10,7 +11,7 @@ import java.util.Objects;
 
 public class GameService {
 
-    MemoryGameDAO gdao = new MemoryGameDAO();
+    SQLGameDAO gdao = new SQLGameDAO();
 
     public MResponse clearData(){
         if(gdao.clear()){
