@@ -12,5 +12,18 @@ import service.ResponseException;
 import java.net.HttpURLConnection;
 
 public class SQLGameTests {
+    @Test
+    @Order(1)
+    @DisplayName("Clear Positive Test")
+    public void clearPositiveTest() throws TestException {
+        SQLGameDAO sql = new SQLGameDAO();
+        int gameID = 1234;
+        String gameName = "gamename";
+        GameInfo game = new GameInfo(1234, null, null, gameName);
+        sql.createGame(game);
+        sql.clear();
+
+        Assertions.assertTrue(sql.getGameRecord().isEmpty());
+    }
 
 }
