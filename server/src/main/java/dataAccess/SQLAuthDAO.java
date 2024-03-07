@@ -1,4 +1,5 @@
 package dataAccess;
+import com.mysql.cj.protocol.Resultset;
 import model.AuthData;
 import service.ResponseException;
 
@@ -6,8 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static java.sql.Types.NULL;
+import java.sql.ResultSet;
 
 public class SQLAuthDAO implements AuthDAO {
 
@@ -49,13 +49,29 @@ public class SQLAuthDAO implements AuthDAO {
 
     @Override
     public AuthData getAuth(String token) {
+            var statement = "SELECT authToken FROM authRecord WHERE authToken=" + token;
+            try{
+                Connection conn = DatabaseManager.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet user = stmt.executeQuery(statement);
+                String authToken = null;
+                String username = null;
+                while (user.next()) {
+                    authToken = user.getString(1);
+                    username = user.getString(2);
+                }
+                user.close();
+                return new AuthData(authToken, username);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return null;
     }
 
     @Override
     public void deleteToken(AuthData token) {
     try{
-        var statement = "DELETE FROM authRecord WHERE authToken=" + token;
+        var statement = "DELETE FROM authRecord WHERE authToken=" + token.authToken();
         Connection conn = DatabaseManager.getConnection();
         Statement stmt = conn.createStatement();
         int i = stmt.executeUpdate(statement);
@@ -71,7 +87,8 @@ public class SQLAuthDAO implements AuthDAO {
 
     @Override
     public boolean verifyAuth(String token) {
-        return false;
+        AuthData user = getAuth(token);
+        return !(user.authToken().isEmpty() | user.username().isEmpty());
     }
 
 }
