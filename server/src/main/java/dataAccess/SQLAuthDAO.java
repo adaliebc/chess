@@ -1,5 +1,4 @@
 package dataAccess;
-import com.mysql.cj.protocol.Resultset;
 import model.AuthData;
 import service.ResponseException;
 
@@ -10,6 +9,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 public class SQLAuthDAO implements AuthDAO {
+    public SQLAuthDAO() {
+        try {
+            createTable();
+        }
+        catch (ResponseException ignored){
+
+        }
+    }
 
     public boolean clear(){
         var sql = "TRUNCATE authRecord";
@@ -18,9 +25,9 @@ public class SQLAuthDAO implements AuthDAO {
             Statement stmt = conn.createStatement();
             int i = stmt.executeUpdate(sql);
             if (i > 0) {
-                System.out.println("ROW INSERTED");
+                System.out.println("CLEAR UNSUCCESSFUL");
             } else {
-                System.out.println("ROW NOT INSERTED");
+                System.out.println("CLEAR SUCCESSFUL");
             }
         }
         catch (SQLException | DataAccessException r) {
@@ -29,7 +36,7 @@ public class SQLAuthDAO implements AuthDAO {
         return true;
     }
 
-    public void addToken (AuthData token) {
+    public void addToken (AuthData token) throws ResponseException {
         try {
             var sql = "insert into authRecord (authToken, username)"
                     + " values('" + token.authToken() + "','" + token.username()  + "')";
@@ -42,14 +49,13 @@ public class SQLAuthDAO implements AuthDAO {
                 System.out.println("ROW NOT INSERTED");
             }
         } catch (Exception e) {
-            System.out.println(e);
+            throw new ResponseException(403, "{ \"message\": \"Error: Unable to Add User\" }");
         }
 
     }
 
-    @Override
     public AuthData getAuth(String token) {
-            var statement = "SELECT authToken FROM authRecord WHERE authToken=" + token;
+            var statement = "SELECT authToken, username FROM authRecord WHERE authToken='" + token +"'";
             try{
                 Connection conn = DatabaseManager.getConnection();
                 Statement stmt = conn.createStatement();
@@ -63,15 +69,13 @@ public class SQLAuthDAO implements AuthDAO {
                 user.close();
                 return new AuthData(authToken, username);
         } catch (Exception e) {
-            System.out.println(e);
+                return null;
         }
-        return null;
     }
 
-    @Override
-    public void deleteToken(AuthData token) {
+    public void deleteToken(AuthData token) throws ResponseException {
     try{
-        var statement = "DELETE FROM authRecord WHERE authToken=" + token.authToken();
+        var statement = "DELETE FROM authRecord WHERE authToken='" + token.authToken() + "'";
         Connection conn = DatabaseManager.getConnection();
         Statement stmt = conn.createStatement();
         int i = stmt.executeUpdate(statement);
@@ -81,14 +85,28 @@ public class SQLAuthDAO implements AuthDAO {
             System.out.println("ROW NOT DELETED");
         }
     } catch (Exception e) {
-        System.out.println(e);
+        throw new ResponseException(403, "{ \"message\": \"Error: Unable to Delete User\" }");
     }
     }
 
-    @Override
     public boolean verifyAuth(String token) {
         AuthData user = getAuth(token);
-        return !(user.authToken().isEmpty() | user.username().isEmpty());
+        return (user.authToken() != null || user.username() != null);
     }
 
+    private void createTable() throws ResponseException {
+        try{
+            String createStatements =  "CREATE TABLE IF NOT EXISTS  authRecord (`authToken` varchar(100) NOT NULL,`username` varchar(256) NOT NULL,)";
+            Connection conn = DatabaseManager.getConnection();
+            Statement stmt = conn.createStatement();
+            int i = stmt.executeUpdate(createStatements);
+            if (i > 0) {
+                System.out.println("TABLE CREATED");
+            } else {
+                System.out.println("TABLE NOT CREATED");
+            }
+        } catch (Exception e) {
+            throw new ResponseException(500, "{ \"message\": \"Error: Unable to Create Table\" }");
+        }
+    }
 }
