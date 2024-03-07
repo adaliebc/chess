@@ -6,7 +6,7 @@ import dataAccess.*;
 import java.util.Objects;
 
 public class UserService {
-    MemoryUserDAO udao = new MemoryUserDAO();
+    SQLUserDAO udao = new SQLUserDAO();
     SQLAuthDAO adao = new SQLAuthDAO();
     AuthService authservice = new AuthService();
 
