@@ -105,7 +105,7 @@ public class SQLUserTests {
     public void createUserNegativeTest() throws TestException {
         try {
             SQLUserDAO sql = new SQLUserDAO();
-            String username = "username";
+            String username = "user'name";
             String password = "password";
             String email = "email@email.com";
             UserData user = new UserData(username, password, email);
