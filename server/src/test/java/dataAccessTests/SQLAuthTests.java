@@ -86,4 +86,26 @@ public class SQLAuthTests {
                     "Server response code was 403 Unable to Add User");
         }
     }
+
+    @Test
+    @Order(4)
+    @DisplayName("Get Token Negative Test")
+    public void getTokenNegativeTest() throws TestException {
+        //add token, verify auth, should return true
+        try {
+            SQLAuthDAO sql = new SQLAuthDAO();
+            String token = "token";
+            String username = "username";
+            AuthData user = new AuthData(token, username);
+            sql.addToken(user);
+
+            token = "tokenzzzz";
+            AuthData gotUser = sql.getAuth(token);
+
+            Assertions.assertTrue(gotUser.username() == null && gotUser.authToken() == null);
+        } catch (ResponseException r) {
+            Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                    "Server response code was 403 Unable to Add User");
+        }
+    }
 }
