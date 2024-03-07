@@ -42,6 +42,7 @@ public class UserServiceTests {
     public void loginTest() throws TestException {
         //add user
         UserService userService = new UserService();
+        userService.clearData();
         UserData user = new UserData("username", "password", "email@email.com");
         LoginRequest rightPassword = new LoginRequest("username", "password");
         LoginRequest wrongPassword = new LoginRequest("username", "invalid");
@@ -104,6 +105,7 @@ public class UserServiceTests {
     public void verifyPositiveTokenTest() throws TestException {
         //add user
         UserService userService = new UserService();
+        userService.clearData();
         UserData user = new UserData("username", "password", "email@email.com");
 
         try {
@@ -149,6 +151,7 @@ public class UserServiceTests {
     public void getPositiveUserTest() throws TestException {
         //add user
         UserService userService = new UserService();
+        userService.clearData();
         UserData user = new UserData("username", "password", "email@email.com");
 
         try {
