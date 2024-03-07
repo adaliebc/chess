@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class SQLGameDAO implements GameDAO{
@@ -64,14 +65,18 @@ public class SQLGameDAO implements GameDAO{
             Connection conn = DatabaseManager.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet user = stmt.executeQuery(statement);
-            String authToken = null;
-            String username = null;
+            int gotGameID = 0;
+            String whiteUsername = null;
+            String blackUsername = null;
+            String gameName = null;
             while (user.next()) {
-                authToken = user.getString(1);
-                username = user.getString(2);
+                gotGameID = user.getInt(1);
+                whiteUsername = user.getString(2);
+                blackUsername = user.getString(3);
+                gameName = user.getString(4);
             }
             user.close();
-            return new GameInfo(3, username);
+            return new GameInfo(gotGameID, whiteUsername, blackUsername, gameName);
         } catch (Exception e) {
             return null;
         }
@@ -84,7 +89,29 @@ public class SQLGameDAO implements GameDAO{
 
 
     public Collection<GameInfo> getGameRecord() {
-        return null;
+        int gotGameID;
+        String whiteUsername;
+        String blackUsername;
+        String gameName;
+        var result = new ArrayList<GameInfo>();
+        try (var conn = DatabaseManager.getConnection()) {
+            var statement = "SELECT * FROM gameRecord";
+            try (var ps = conn.prepareStatement(statement)) {
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        gotGameID = rs.getInt(1);
+                        whiteUsername = rs.getString(2);
+                        blackUsername = rs.getString(3);
+                        gameName = rs.getString(4);
+                       GameInfo gameInfo = new GameInfo(gotGameID, whiteUsername, blackUsername, gameName);
+                        result.add(gameInfo);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return result;
     }
 
     private void createTable() throws ResponseException {

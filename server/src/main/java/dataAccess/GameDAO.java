@@ -1,6 +1,7 @@
 package dataAccess;
 
 import model.GameInfo;
+import service.ResponseException;
 
 import java.util.Collection;
 
@@ -9,5 +10,5 @@ public interface GameDAO {
     public boolean createGame(GameInfo game);
     public GameInfo getGame(int gameID);
     public void addPlayer(GameInfo oldGame, GameInfo newGame);
-    public Collection<GameInfo> getGameRecord();
+    public Collection<GameInfo> getGameRecord() throws ResponseException;
 }
