@@ -12,7 +12,8 @@ public class UserService {
 
     public AuthData register(UserData user) throws ResponseException{
         //create new user
-        if(udao.getUser(user.username()) != null){
+        UserData gotUser = udao.getUser(user.username());
+        if(gotUser.username() != null && gotUser.password() != null && gotUser.email() != null){
             throw new ResponseException(403, "{ \"message\": \"Error: already taken\" }");
         } else {
             udao.createUser(user);
