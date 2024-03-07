@@ -36,7 +36,7 @@ public class UserService {
     }
     public void logout(String token) throws ResponseException{
         AuthData user = adao.getAuth(token);
-        if(user == null){
+        if(user.username() == null && user.authToken() == null){
             throw new ResponseException(401, "{ \"message\": \"Error: unauthorized\" }");
         } else {
             adao.deleteToken(user);
