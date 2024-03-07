@@ -74,4 +74,43 @@ public class SQLUserTests {
                     "Server response code was 403 Unable to Add User");
         }
     }
+
+    @Test
+    @Order(4)
+    @DisplayName("Create User Positive Test")
+    public void createUserPositiveTest() throws TestException {
+        try {
+            SQLUserDAO sql = new SQLUserDAO();
+            String username = "username";
+            String password = "password";
+            String email = "email@email.com";
+            UserData user = new UserData(username, password, email);
+            sql.createUser(user);
+
+            UserData gotUser = sql.getUser(username);
+
+            Assertions.assertFalse(gotUser.username() == null && gotUser.password() == null && gotUser.email() == null);
+        } catch (ResponseException r) {
+            Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                    "Server response code was 403 Unable to Add User");
+        }
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("Create User Negative Test")
+    public void createUserNegativeTest() throws TestException {
+        try {
+            SQLUserDAO sql = new SQLUserDAO();
+            String username = "username";
+            String password = "password";
+            String email = "email@email.com";
+            UserData user = new UserData(username, password, email);
+            sql.createUser(user);
+
+        } catch (ResponseException r) {
+            Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
+                    "Server response code was 403 Unable to Add User");
+        }
+    }
 }
