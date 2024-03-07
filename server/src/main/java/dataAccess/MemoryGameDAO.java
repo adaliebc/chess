@@ -27,10 +27,9 @@ public class MemoryGameDAO implements GameDAO{
         }
         return null;
     }
-    public void addPlayer(GameInfo oldGame, GameInfo newGame){
-        gameRecord.remove(oldGame);
-        gameRecord.add(newGame);
-
+    public void addPlayer(int gameID, String playerColor, String username){
+        //note, this no longer works
+        var placeholder = 0;
     }
 
     public Collection<GameInfo> getGameRecord() {

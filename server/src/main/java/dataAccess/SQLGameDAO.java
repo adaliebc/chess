@@ -83,9 +83,23 @@ public class SQLGameDAO implements GameDAO{
     }
 
 
-    public void addPlayer(GameInfo oldGame, GameInfo newGame) {
-
+    public void addPlayer(int gameID, String playerColor, String username) throws ResponseException {
+        try{
+        var sql = "update gameRecord set " + playerColor + "=" + "'" + username + "'" + "where gameID = '" + gameID + "'";
+        Connection conn = DatabaseManager.getConnection();
+        Statement stmt = conn.createStatement();
+        int i = stmt.executeUpdate(sql);
+        if (i > 0) {
+            System.out.println("ROW UPDATES");
+        } else {
+            System.out.println("ROW NOT UPDATED");
+        }
+    } catch (Exception e) {
+            throw new ResponseException(403, "{ \"message\": \"Error: Unable to Add User\" }");
     }
+
+
+}
 
 
     public Collection<GameInfo> getGameRecord() {

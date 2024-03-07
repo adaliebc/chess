@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import passoffTests.testClasses.TestException;
 import service.ResponseException;
 
@@ -42,11 +43,13 @@ public class SQLUserTests {
             String username = "username";
             String password = "password";
             String email = "email@email.com";
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String hashedPassword = encoder.encode(password);
             UserData user = new UserData(username, password, email);
             sql.createUser(user);
             UserData gotUser = sql.getUser(username);
 
-            Assertions.assertTrue(gotUser.username().equals(username) && gotUser.password().equals(password) && gotUser.email().equals(email));
+            Assertions.assertTrue(gotUser.username().equals(username) && gotUser.password().equals(hashedPassword) && gotUser.email().equals(email));
         } catch (ResponseException r) {
             Assertions.assertNotEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
                     "Server response code was 403 Unable to Add User");

@@ -42,16 +42,14 @@ public class GameService {
         }
         else if (playerColor.equalsIgnoreCase("White")){
             if (game.whiteUsername() == null){
-                GameInfo newGame = new GameInfo(gameID, username, game.blackUsername(), game.gameName());
-                gdao.addPlayer(game, newGame);
+                gdao.addPlayer(gameID, "whiteUsername", username);
             } else {
                 throw new ResponseException(403, "{ \"message\": \"Error: already taken\" }");
             }
         }
          else if (playerColor.equalsIgnoreCase("Black")){
             if (game.blackUsername() == null){
-                GameInfo newGame = new GameInfo(gameID, game.whiteUsername(), username, game.gameName());
-                gdao.addPlayer(game, newGame);
+                gdao.addPlayer(gameID, "blackUsername", username);
             } else {
                 throw new ResponseException(403, "{ \"message\": \"Error: already taken\" }");
             }
