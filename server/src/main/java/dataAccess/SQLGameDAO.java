@@ -43,7 +43,7 @@ public class SQLGameDAO implements GameDAO{
 
     public boolean createGame(GameData game) {try {
         var sql = "insert into gameRecord (gameID, gameName, chessGame)"
-                + " values('" + game.gameID() + "','" + game.gameName() + "','" + game.game() +"')";
+                + " values('" + game.gameID() + "','" + game.gameName().replaceAll("'", "''") + "','" + game.game() +"')";
         Connection conn = DatabaseManager.getConnection();
         Statement stmt = conn.createStatement();
         int i = stmt.executeUpdate(sql);
