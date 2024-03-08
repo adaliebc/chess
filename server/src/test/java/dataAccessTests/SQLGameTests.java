@@ -56,7 +56,7 @@ public class SQLGameTests {
         SQLGameDAO sql = new SQLGameDAO();
         sql.clear();
         int gameID = 1234;
-        String gameName = "game'name";
+        String gameName = "gamenamenadfufgiuevveiuiueriurgufrguiiugfrgilurgilufrgiurgiufrgiufrgiurgiluergiuregiurgiufrgiurgiurguigiufrgiufrgiugiulfgriluguilfrgiulfrgilufrgilufgiufrgilufrgiulfrgilufrgu";
         GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
 
