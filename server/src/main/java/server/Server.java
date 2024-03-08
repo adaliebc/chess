@@ -74,7 +74,8 @@ public class Server {
     }
     private Object createGameBody(Request req, Response res) {
         GameID gameID = null;
-        String gameName = req.body();
+        var game = new Gson().fromJson(req.body(), GameName.class);
+        String gameName = game.gameName();
         String token = req.headers("Authorization");
         if (token == null || gameName == null){
             res.status(400);

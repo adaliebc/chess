@@ -1,5 +1,7 @@
 package dataAccess;
 
+import chess.ChessGame;
+import model.GameData;
 import model.GameInfo;
 import service.ResponseException;
 
@@ -39,9 +41,9 @@ public class SQLGameDAO implements GameDAO{
     }
 
 
-    public boolean createGame(GameInfo game) {try {
-        var sql = "insert into gameRecord (gameID, gameName)"
-                + " values('" + game.gameID() + "','" + game.gameName() +"')";
+    public boolean createGame(GameData game) {try {
+        var sql = "insert into gameRecord (gameID, gameName, chessGame)"
+                + " values('" + game.gameID() + "','" + game.gameName() + "','" + game.game() +"')";
         Connection conn = DatabaseManager.getConnection();
         Statement stmt = conn.createStatement();
         int i = stmt.executeUpdate(sql);
@@ -58,7 +60,7 @@ public class SQLGameDAO implements GameDAO{
     }
 
 
-    public GameInfo getGame(int gameID) {
+    public GameData getGame(int gameID) {
         var statement = "SELECT * FROM gameRecord WHERE gameID='" + gameID +"'";
         try{
             Connection conn = DatabaseManager.getConnection();
@@ -75,7 +77,7 @@ public class SQLGameDAO implements GameDAO{
                 gameName = user.getString(4);
             }
             user.close();
-            return new GameInfo(gotGameID, whiteUsername, blackUsername, gameName);
+            return new GameData(gotGameID, whiteUsername, blackUsername, gameName,null);
         } catch (Exception e) {
             return null;
         }
@@ -101,12 +103,13 @@ public class SQLGameDAO implements GameDAO{
 }
 
 
-    public Collection<GameInfo> getGameRecord() {
+    public Collection<GameData> getGameRecord() {
         int gotGameID;
         String whiteUsername;
         String blackUsername;
         String gameName;
-        var result = new ArrayList<GameInfo>();
+        String chessGame;
+        var result = new ArrayList<GameData>();
         try (var conn = DatabaseManager.getConnection()) {
             var statement = "SELECT * FROM gameRecord";
             try (var ps = conn.prepareStatement(statement)) {
@@ -116,8 +119,9 @@ public class SQLGameDAO implements GameDAO{
                         whiteUsername = rs.getString(2);
                         blackUsername = rs.getString(3);
                         gameName = rs.getString(4);
-                       GameInfo gameInfo = new GameInfo(gotGameID, whiteUsername, blackUsername, gameName);
-                        result.add(gameInfo);
+                        chessGame = rs.getString(5);
+                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, new ChessGame(chessGame));
+                        result.add(gameData);
                     }
                 }
             }
@@ -130,7 +134,7 @@ public class SQLGameDAO implements GameDAO{
     private void createTable() throws ResponseException {
         try{
             DatabaseManager.createDatabase();
-            String createStatements =  "CREATE TABLE IF NOT EXISTS  gameRecord (gameID int NOT NULL,whiteUsername varchar(256), blackUsername varchar(100), gameName varchar(100) NOT NULL)";
+            String createStatements =  "CREATE TABLE IF NOT EXISTS  gameRecord (gameID int NOT NULL,whiteUsername varchar(256), blackUsername varchar(100), gameName varchar(100) NOT NULL, chessGame varchar(256))";
             Connection conn = DatabaseManager.getConnection();
             Statement stmt = conn.createStatement();
             int i = stmt.executeUpdate(createStatements);

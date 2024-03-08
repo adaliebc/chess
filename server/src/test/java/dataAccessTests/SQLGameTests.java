@@ -1,5 +1,6 @@
 package dataAccessTests;
 
+import chess.ChessGame;
 import dataAccess.SQLGameDAO;
 import dataAccess.SQLUserDAO;
 import model.*;
@@ -25,7 +26,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
         sql.clear();
 
@@ -40,10 +41,10 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
 
-        GameInfo gotGame = sql.getGame(gameID);
+        GameData gotGame = sql.getGame(gameID);
 
         Assertions.assertEquals("gamename", gotGame.gameName());
     }
@@ -56,7 +57,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "game'name";
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
 
         Assertions.assertFalse(sql.createGame(game));
@@ -71,10 +72,10 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
 
-        GameInfo gotGame = sql.getGame(gameID);
+        GameData gotGame = sql.getGame(gameID);
 
         Assertions.assertEquals("gamename", gotGame.gameName());
         Assertions.assertEquals(gotGame.gameID(), gameID);
@@ -88,10 +89,10 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
 
-        GameInfo gotGame = sql.getGame(9876);
+        GameData gotGame = sql.getGame(9876);
 
         Assertions.assertNotEquals("gamename", gotGame.gameName());
         Assertions.assertNotEquals(gotGame.gameID(), gameID);
@@ -106,7 +107,7 @@ public class SQLGameTests {
             sql.clear();
             int gameID = 1234;
             String gameName = "gamename";
-            GameInfo game = new GameInfo(gameID, null, null, gameName);
+            GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
             sql.createGame(game);
 
             String playerColor = "whiteUsername";
@@ -118,7 +119,7 @@ public class SQLGameTests {
 
             sql.addPlayer(gameID, playerColor, username);
 
-            GameInfo gotGame = sql.getGame(1234);
+            GameData gotGame = sql.getGame(1234);
 
             Assertions.assertEquals(gotGame.whiteUsername(), username);
             Assertions.assertEquals(gotGame.blackUsername(), username);
@@ -137,7 +138,7 @@ public class SQLGameTests {
             sql.clear();
             int gameID = 1234;
             String gameName = "gamename";
-            GameInfo game = new GameInfo(gameID, null, null, gameName);
+            GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
             sql.createGame(game);
 
             String playerColor = "whiteUsername";
@@ -145,7 +146,7 @@ public class SQLGameTests {
 
             sql.addPlayer(gameID, playerColor, username);
 
-            GameInfo gotGame = sql.getGame(1234);
+            GameData gotGame = sql.getGame(1234);
 
         } catch (ResponseException e) {
             Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.statusCode(),
@@ -157,16 +158,16 @@ public class SQLGameTests {
     @Order(8)
     @DisplayName("Get GameRecord Positive Test")
     public void getGameRecordPositiveTest() throws TestException {
-        Collection<GameInfo> gameRecord = new ArrayList<>();
+        Collection<GameData> gameRecord = new ArrayList<>();
         SQLGameDAO sql = new SQLGameDAO();
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
         gameRecord.add(game);
 
-        Collection<GameInfo> sqlGameRecord = sql.getGameRecord();
+        Collection<GameData> sqlGameRecord = sql.getGameRecord();
 
         Assertions.assertEquals(gameRecord, sqlGameRecord);
     }
@@ -175,18 +176,18 @@ public class SQLGameTests {
     @Order(9)
     @DisplayName("Get GameRecord Negative Test")
     public void getGameRecordNegativeTest() {
-        Collection<GameInfo> gameRecord = new ArrayList<GameInfo>();
+        Collection<GameData> gameRecord = new ArrayList<>();
         SQLGameDAO sql = new SQLGameDAO();
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         sql.createGame(game);
         gameRecord.add(game);
 
         sql.clear();
 
-        Collection<GameInfo> sqlGameRecord = sql.getGameRecord();
+        Collection<GameData> sqlGameRecord = sql.getGameRecord();
 
         Assertions.assertNotEquals(gameRecord, sqlGameRecord);
     }

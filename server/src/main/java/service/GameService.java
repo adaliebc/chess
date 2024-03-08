@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessGame;
 import dataAccess.MemoryGameDAO;
 import dataAccess.SQLGameDAO;
 import model.*;
@@ -30,13 +31,13 @@ public class GameService {
             return null;
         }
         int gameID = generateGameID();
-        GameInfo game = new GameInfo(gameID, null, null, gameName);
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
         gdao.createGame(game);
         return new GameID(gameID);
     }
 
     public MResponse joinGame(int gameID, String playerColor, String username) throws ResponseException{
-        GameInfo game = gdao.getGame(gameID);
+        GameData game = gdao.getGame(gameID);
         if (playerColor == null || playerColor.isEmpty()){
             return new MResponse(200, "");
         }
@@ -57,7 +58,7 @@ public class GameService {
          return new MResponse(200, "");
     }
     public GameList getGameList() {
-        Collection<GameInfo> gameRecord = gdao.getGameRecord();
+        Collection<GameData> gameRecord = gdao.getGameRecord();
         return new GameList(gameRecord);
     }
 }

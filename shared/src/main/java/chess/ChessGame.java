@@ -17,6 +17,9 @@ public class ChessGame {
     public ChessGame() {
 
     }
+    public ChessGame(String chessGame) {
+
+    }
 
     /**
      * @return Which team's turn it is
