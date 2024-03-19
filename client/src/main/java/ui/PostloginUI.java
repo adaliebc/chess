@@ -18,7 +18,6 @@ public class PostloginUI {
         while (!inputList[0].equalsIgnoreCase("quit")) {
 
             if (inputList[0].equalsIgnoreCase("help")) {
-                System.out.println(getHelp());
             }
 //input is formed into a list
             //list[1] is keyword

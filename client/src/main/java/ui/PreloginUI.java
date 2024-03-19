@@ -5,8 +5,16 @@ import java.util.Scanner;
 
 public class PreloginUI {
 
+    public PreloginUI(){
+
+    }
+    public static void main(String [] args){
+        PreloginUI p = new PreloginUI();
+        p.start();
+    }
+
     //start function
-    void start(String [] args) {
+    public void start() {
         //print out prelogin ui to the screen
         System.out.println("Welcome to CS240 Chess Game!");
         System.out.println("Enter in a command or 'help' for your options");
