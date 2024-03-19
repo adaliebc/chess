@@ -1,5 +1,6 @@
 package ui;
 
+//import server
 public class UserUI {
     //here we have functions that include the user
     //ie login/out and register
@@ -8,12 +9,14 @@ public class UserUI {
     //register
     //sends input data to server.java
     //prints logged in as username if success
+    //prints authtokne
     //returns user to PostLoginUI
 
 
     //Login
     //sends input data to server.java
     //prints logged in as username if success
+    //prints authtoken
     //returns user to PostLoginUI
 
 
