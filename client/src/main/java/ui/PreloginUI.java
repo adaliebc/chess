@@ -1,20 +1,26 @@
 package ui;
 
+import java.io.InputStreamReader;
+import java.net.*;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class PreloginUI {
 
     public PreloginUI(){
 
     }
-    public static void main(String [] args){
+    public static void main(String [] args) throws IOException, URISyntaxException {
         PreloginUI p = new PreloginUI();
         p.start();
     }
 
     //start function
-    public void start() {
+    public void start() throws IOException, URISyntaxException {
         //print out prelogin ui to the screen
         System.out.println("Welcome to CS240 Chess Game!");
         System.out.println("Enter in a command or 'help' for your options");
@@ -31,25 +37,12 @@ public class PreloginUI {
                System.out.println(getHelp());
             }
 
-            /* URI uri = new URI("http://localhost:8080/name");
-        HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
-        http.setRequestMethod("GET");
-
-        // Make the request
-        http.connect();
-
-        // Output the response body
-        try (InputStream respBody = http.getInputStream()) {
-            InputStreamReader inputStreamReader = new InputStreamReader(respBody);
-            System.out.println(new Gson().fromJson(inputStreamReader, Map.class));
-        }*/
-
-
             //else if list[1] == register
             else if (inputList[0].equalsIgnoreCase("register")) {
                 if (inputList.length != 4){
                 System.out.println("insufficient arguments");
                     System.out.println(getHelp());
+                    continue;
                 }
             }
                 //            sends input data to server.java
@@ -62,6 +55,18 @@ public class PreloginUI {
                 if (inputList.length != 3){
                     System.out.println("insufficient arguments");
                     System.out.println(getHelp());
+                }
+                URI uri = new URI("http://localhost:8080/hello");
+                HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+                http.setRequestMethod("GET");
+
+                // Make the request
+                http.connect();
+
+                // Output the response body
+                try (InputStream respBody = http.getInputStream()) {
+                    InputStreamReader inputStreamReader = new InputStreamReader(respBody);
+                    System.out.println(inputStreamReader.toString());
                 }
                 //      call login function in UserUI
 //sends input data to server.java
