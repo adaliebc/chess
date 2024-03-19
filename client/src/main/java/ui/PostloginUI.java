@@ -35,4 +35,9 @@ public class PostloginUI {
     //sends link to server
     //prints out list of games
 
+    //logout
+    //sends input data to server.java
+    //prints successfully logged out as username if success
+    //returns user to PreloginUI
+
 }
