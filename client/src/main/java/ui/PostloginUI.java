@@ -36,7 +36,35 @@ public class PostloginUI {
                 System.out.println(getHelp());
             }
             // if logout
-            //send to userui
+            else if (inputList[0].equalsIgnoreCase("logout")){
+                try {
+                    URI uri = new URI("http://localhost:8080/session");
+                    HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+                    http.setRequestMethod("DELETE");
+                    http.addRequestProperty("Authorization", authToken);
+
+                    // Send get request
+                    http.connect();
+
+                    int responseCode = http.getResponseCode();
+                    String responseMessage;
+                    if(responseCode == 401){
+                        responseMessage = "Error: unauthorized";
+                        System.out.println("Response Message : " + responseMessage);
+                    } else if (responseCode == 500) {
+                        responseMessage = "Error: description";
+                        System.out.println("Response Message : " + responseMessage);
+                    }
+                    else {
+                        try (InputStream respBody = http.getInputStream()) {
+                            System.out.println("Successfully logged out");
+                            break;
+                            }
+                        }
+                } catch (Exception r) {
+                    System.out.println("Exception Message : " + r.getMessage());
+                }
+            }
             //if create game
             //send to gameUI
             //if join or observe
