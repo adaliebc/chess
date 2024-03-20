@@ -125,7 +125,7 @@ public class Server {
         }
         //get username
         String username = userService.getUsername(token);
-        MResponse response = null;
+        GameData response = null;
 
         try {
             response = gameService.joinGame(gameID, playerColor, username);
@@ -138,7 +138,7 @@ public class Server {
         }
         res.type("application/json");
         res.status(200);
-        return "";
+        return response;
     }
 
     private Object listGamesBody(Request req, Response res) {

@@ -36,10 +36,10 @@ public class GameService {
         return new GameID(gameID);
     }
 
-    public MResponse joinGame(int gameID, String playerColor, String username) throws ResponseException{
+    public GameData joinGame(int gameID, String playerColor, String username) throws ResponseException{
         GameData game = gdao.getGame(gameID);
         if (playerColor == null || playerColor.isEmpty()){
-            return new MResponse(200, "");
+            return game;
         }
         else if (playerColor.equalsIgnoreCase("White")){
             if (game.whiteUsername() == null){
@@ -51,11 +51,12 @@ public class GameService {
          else if (playerColor.equalsIgnoreCase("Black")){
             if (game.blackUsername() == null){
                 gdao.addPlayer(gameID, "blackUsername", username);
+                game = gdao.getGame(gameID);
             } else {
                 throw new ResponseException(403, "{ \"message\": \"Error: already taken\" }");
             }
         }
-         return new MResponse(200, "");
+         return game;
     }
     public GameList getGameList() {
         Collection<GameData> gameRecord = gdao.getGameRecord();

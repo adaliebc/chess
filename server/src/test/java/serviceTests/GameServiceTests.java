@@ -53,8 +53,8 @@ public class GameServiceTests {
         GameID gameID = gameService.createGame(gameName);
 
         try {
-            MResponse response = gameService.joinGame(gameID.gameID(), "White", "username");
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code(),
+            GameData response = gameService.joinGame(gameID.gameID(), "White", "username");
+            Assertions.assertNotNull(response,
                     "Server response code was not 200");
 
         } catch (ResponseException r) {
@@ -73,10 +73,10 @@ public class GameServiceTests {
         GameID gameID = gameService.createGame(gameName);
 
         try {
-            MResponse response = gameService.joinGame(gameID.gameID(), "White", "username");
-            Assertions.assertEquals(HttpURLConnection.HTTP_OK, response.code(),
+            GameData response = gameService.joinGame(gameID.gameID(), "White", "username");
+            Assertions.assertNotNull(response,
                     "Server response code was not 200");
-            MResponse secondResponse = gameService.joinGame(gameID.gameID(), "White", "username2");
+            GameData secondResponse = gameService.joinGame(gameID.gameID(), "White", "username2");
 
         } catch (ResponseException r) {
             Assertions.assertEquals(HttpURLConnection.HTTP_FORBIDDEN, r.statusCode(),
