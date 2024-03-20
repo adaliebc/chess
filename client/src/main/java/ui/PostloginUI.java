@@ -101,11 +101,6 @@ public class PostloginUI {
                                 System.out.println("Successfully created game: " + user);
                             }
                         }
-                        // Output the response body
-                        try (InputStream respBody = http.getInputStream()) {
-                            String result = IOUtils.toString(respBody);
-                            System.out.println(result);
-                        }
                     } catch (Exception r) {
                         System.out.println("Exception Message : " + r.getMessage());
                     }
@@ -117,27 +112,27 @@ public class PostloginUI {
                 int gameID;
                 try{
                     gameID = Integer.parseInt(inputList[1]);
+                    if (inputList[0].equalsIgnoreCase("join") && inputList.length != 3) {
+                        System.out.println("insufficient arguments");
+                        System.out.println(getHelp());
+                    } else if (inputList[0].equalsIgnoreCase("observe") && inputList.length != 2){
+                        System.out.println("insufficient arguments");
+                        System.out.println(getHelp());
+                    }else if (inputList[0].equalsIgnoreCase("observe")){
+                        JoinGameRequest request = new JoinGameRequest("", gameID);
+                        runJoinOrObserve(request);
+                    } else if (!inputList[2].equalsIgnoreCase("white") && !inputList[2].equalsIgnoreCase("black")){
+                        System.out.println("Player color must be black or white");
+                        System.out.println(getHelp());
+                    }
+                    else if (inputList[0].equalsIgnoreCase("join")) {
+                        JoinGameRequest request = new JoinGameRequest(inputList[2], gameID);
+                        runJoinOrObserve(request);
+                    }
                 }
                 catch (NumberFormatException e){
                     System.out.println("GameID is not an int");
                     System.out.println(getHelp());
-                }
-                if (inputList[0].equalsIgnoreCase("join") && inputList.length != 3) {
-                    System.out.println("insufficient arguments");
-                    System.out.println(getHelp());
-                } else if (inputList[0].equalsIgnoreCase("observe") && inputList.length != 2){
-                    System.out.println("insufficient arguments");
-                    System.out.println(getHelp());
-                }else if (inputList[0].equalsIgnoreCase("observe")){
-                    JoinGameRequest request = new JoinGameRequest("", gameID);
-                    runJoinOrObserve(request);
-                } else if (!inputList[2].equalsIgnoreCase("white") && !inputList[2].equalsIgnoreCase("black")){
-                    System.out.println("Player color must be black or white");
-                    System.out.println(getHelp());
-                }
-                else if (inputList[0].equalsIgnoreCase("join")) {
-                    JoinGameRequest request = new JoinGameRequest(inputList[2], gameID);
-                    runJoinOrObserve(request);
                 }
             }
 
@@ -219,14 +214,13 @@ public class PostloginUI {
                 String result = "";
                 try (InputStream respBody = http.getInputStream()) {
                     result = IOUtils.toString(respBody);
-                    System.out.println(result);
-                    System.out.println("Successfully joined game");
+                    if (!result.isEmpty()) {
+                        System.out.println(result);
+                    }
+                    else {
+                        System.out.println("Successfully joined game");
+                    }
                 }
-            }
-            // Output the response body
-            try (InputStream respBody = http.getInputStream()) {
-                String result = IOUtils.toString(respBody);
-                System.out.println(result);
             }
         } catch (Exception r) {
             System.out.println("Exception Message : " + r.getMessage());
