@@ -47,7 +47,7 @@ public class PreloginUI {
                 System.out.println(getHelp());
             }
 
-            //else if list[1] == register
+            //register
             else if (inputList[0].equalsIgnoreCase("register")) {
                 if (inputList.length != 4) {
                     System.out.println("insufficient arguments");
@@ -92,9 +92,8 @@ public class PreloginUI {
                     }
                 }
             }
-            //            returns user to PostLoginUI
 
-            // else if list[1] == login
+            //login
             else if (inputList[0].equalsIgnoreCase("login")) {
                 if (inputList.length != 3) {
                     System.out.println("insufficient arguments");
@@ -144,11 +143,6 @@ public class PreloginUI {
                         System.out.println("Exception Message : " + r.getMessage());
                     }
                 }
-                //      call login function in UserUI
-//sends input data to server.java
-                //prints logged in as username if success
-                //prints authtoken
-                //returns user to PostLoginUI
 
             } else {
                 System.out.println("I'm sorry, I did not understand your request. Please try again.");

@@ -1,7 +1,9 @@
 package ui;
 
 import com.google.gson.Gson;
+import model.AuthData;
 import model.LoginRequest;
+import model.UserData;
 import spark.utils.IOUtils;
 
 import java.io.IOException;
@@ -14,10 +16,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class PostloginUI {
-    public PostloginUI (String authToken){
-
+    public String authToken;
+    public PostloginUI (String inputAuthToken){
+        authToken = inputAuthToken;
     }
-
     public void postLogin () throws IOException, URISyntaxException {
         //when called prints postlogin ui page
         System.out.println("Welcome to CS240 Chess Game!");
@@ -28,9 +30,9 @@ public class PostloginUI {
 
         String userInput = in.nextLine();
         String[] inputList = userInput.split(" ");
-
+        while (!inputList[0].equalsIgnoreCase("quit")) {
             if (inputList[0].equalsIgnoreCase("help")) {
-
+                System.out.println(getHelp());
             }
             // if logout
             //send to userui
@@ -39,37 +41,37 @@ public class PostloginUI {
             //if join or observe
             //send to gameui, does same thing
             //list games
-            URI uri = new URI("http://localhost:8080/game");
-            HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
-            http.setRequestMethod("GET");
+            else if (inputList[0].equalsIgnoreCase("list")) {
+                try {
+                    URI uri = new URI("http://localhost:8080/game");
+                    HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+                    http.setRequestMethod("GET");
+                    http.addRequestProperty("Authorization", authToken);
 
-            // Send post request
-            http.setDoOutput(true);
-            OutputStream wr = http.getOutputStream();
+                    // Send get request
+                    http.connect();
 
-            wr.flush();
-            wr.close();
+                    int responseCode = http.getResponseCode();
+                    String responseMessage;
+                    if(responseCode == 401){
+                        responseMessage = "Error: unauthorized";
+                        System.out.println("Response Message : " + responseMessage);
+                    } else if (responseCode == 400) {
+                        responseMessage = "Error: bad request";
+                        System.out.println("Response Message : " + responseMessage);
+                    }
+                    else {
+                        String result = "";
+                        try (InputStream respBody = http.getInputStream()) {
+                            result = IOUtils.toString(respBody);
 
-            int responseCode = http.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + uri);
-            System.out.println("Response Code : " + responseCode);
-
-
-            // Make the request
-            //http.connect();
-
-            // Output the response body
-            try (InputStream respBody = http.getInputStream()) {
-                String result = IOUtils.toString(respBody);
-
-                System.out.println(result);
+                            System.out.println(result);
+                        }
+                    }
+                } catch (Exception r) {
+                    System.out.println("Exception Message : " + r.getMessage());
+                }
             }
-            //esle
-            //print out command unknown, try again, maybe the help screen
-
-
-            //class where we create and deal with games
-
             //create game
             //take input and send it to server
             //receives gameID and uses chessgame
@@ -88,8 +90,14 @@ public class PostloginUI {
             //sends input data to server.java
             //prints successfully logged out as username if success
             //returns user to PreloginUI
+            else {
+                System.out.println("I'm sorry, I did not understand your request. Please try again.");
+                System.out.println(getHelp());
+            }
+            userInput = in.nextLine();
+            inputList = userInput.split(" ");
         }
-
+    }
     private String getHelp() {
         return """
                 'create' <name> = create a chess game
