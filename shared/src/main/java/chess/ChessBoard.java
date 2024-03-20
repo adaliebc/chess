@@ -13,6 +13,7 @@ import java.util.HashSet;
 public class ChessBoard {
     private final ChessPiece[][] squares = new ChessPiece[9][9];
     public ChessBoard() {
+        resetBoard();
     }
 
     /**

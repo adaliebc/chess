@@ -2,6 +2,7 @@ package chess;
 
 import java.util.*;
 
+
 import static java.util.Collections.addAll;
 
 /**
@@ -60,33 +61,33 @@ public class ChessPiece {
     public String toString() {
         if (pieceColor == ChessGame.TeamColor.WHITE) {
             if (type == PieceType.QUEEN){
-                return "Q";
+                return " ♕ ";
             } else if (type == PieceType.KING) {
-                return "K";
+                return " ♔ ";
             } else if (type == PieceType.BISHOP) {
-                return "B";
+                return " ♗ ";
             } else if (type == PieceType.KNIGHT){
-                return "N";
+                return " ♘ ";
             } else if (type == PieceType.ROOK) {
-                return "R";
+                return " ♖ ";
             } else if (type == PieceType.PAWN) {
-                return "P";
+                return " ♙ ";
             }
         } else if (pieceColor == ChessGame.TeamColor.BLACK) {
             if (type == PieceType.QUEEN){
-                return "q";
+                return " ♛ ";
             } else if (type == PieceType.KING) {
-                return "k";
+                return " ♚ ";
             } else if (type == PieceType.BISHOP) {
-                return "b";
+                return " ♝ ";
             } else if (type == PieceType.KNIGHT){
-                return "n";
+                return " ♞ ";
             } else if (type == PieceType.ROOK) {
-                return "r";
+                return " ♜ ";
             } else if (type == PieceType.PAWN) {
-                return "p";
+                return " ♟ ";
             }
-        } return null;
+        } return " \u2003 ";
     }
 
     @Override

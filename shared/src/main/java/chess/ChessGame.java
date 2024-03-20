@@ -16,7 +16,6 @@ public class ChessGame {
     private TeamColor team;
 
     public ChessGame() {
-
     }
     public ChessGame(String chessGame) {
 
@@ -37,10 +36,7 @@ public class ChessGame {
 
     @Override
     public String toString() {
-        return "ChessGame{" +
-                "board=" + board +
-                ", team=" + team +
-                '}';
+        return board.toString();
     }
 
     /**
