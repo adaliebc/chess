@@ -97,8 +97,8 @@ public class PostloginUI {
                             try (InputStream respBody = http.getInputStream()) {
                                 result = IOUtils.toString(respBody);
                                 System.out.println(result);
-                                var user = new Gson().fromJson(result, GameData.class);
-                                System.out.println("Successfully created game: " + user);
+                                var game = new Gson().fromJson(result, GameData.class);
+                                System.out.println("Successfully created game: " + game);
                             }
                         }
                     } catch (Exception r) {
