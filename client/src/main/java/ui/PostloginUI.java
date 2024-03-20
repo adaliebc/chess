@@ -111,9 +111,36 @@ public class PostloginUI {
                     }
                 }
             }
-            //send to gameUI
+
             //if join or observe
-            //send to gameui, does same thing
+            else if (inputList[0].equalsIgnoreCase("join")|| inputList[0].equalsIgnoreCase("observe")) {
+                int gameID;
+                try{
+                    gameID = Integer.parseInt(inputList[1]);
+                }
+                catch (NumberFormatException e){
+                    System.out.println("GameID is not an int");
+                    System.out.println(getHelp());
+                }
+                if (inputList[0].equalsIgnoreCase("join") && inputList.length != 3) {
+                    System.out.println("insufficient arguments");
+                    System.out.println(getHelp());
+                } else if (inputList[0].equalsIgnoreCase("observe") && inputList.length != 2){
+                    System.out.println("insufficient arguments");
+                    System.out.println(getHelp());
+                }else if (inputList[0].equalsIgnoreCase("observe")){
+                    JoinGameRequest request = new JoinGameRequest("", gameID);
+                    runJoinOrObserve(request);
+                } else if (!inputList[2].equalsIgnoreCase("white") && !inputList[2].equalsIgnoreCase("black")){
+                    System.out.println("Player color must be black or white");
+                    System.out.println(getHelp());
+                }
+                else if (inputList[0].equalsIgnoreCase("join")) {
+                    JoinGameRequest request = new JoinGameRequest(inputList[2], gameID);
+                    runJoinOrObserve(request);
+                }
+            }
+
             //list games
             else if (inputList[0].equalsIgnoreCase("list")) {
                 try {
@@ -148,24 +175,7 @@ public class PostloginUI {
                     System.out.println("Exception Message : " + r.getMessage());
                 }
             }
-            //create game
-            //take input and send it to server
-            //receives gameID and uses chessgame
-            //sends to gameplayUI
 
-            //join game
-            // if the input list doesn't have info for joining as a player, fill in the blanks with null
-            //if success
-            //send to gameplayui
-
-            //list game
-            //sends link to server
-            //prints out list of games
-
-            //logout
-            //sends input data to server.java
-            //prints successfully logged out as username if success
-            //returns user to PreloginUI
             else {
                 System.out.println("I'm sorry, I did not understand your request. Please try again.");
                 System.out.println(getHelp());
@@ -182,5 +192,44 @@ public class PostloginUI {
                 'list' = list all chess games
                 'help' = show options
                 """;
+    }
+
+    private void runJoinOrObserve(JoinGameRequest request){
+        try {
+            URI uri = new URI("http://localhost:8080/game");
+            HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+            http.setRequestMethod("PUT");
+            http.addRequestProperty("Authorization", authToken);
+            // Send put request
+            http.setDoOutput(true);
+            OutputStream wr = http.getOutputStream();
+            wr.write(new Gson().toJson(request).getBytes(StandardCharsets.UTF_8));
+            wr.flush();
+            wr.close();
+
+            int responseCode = http.getResponseCode();
+            String responseMessage;
+            if (responseCode == 401) {
+                responseMessage = "Error: unauthorized";
+                System.out.println("Response Message : " + responseMessage);
+            } else if (responseCode == 400) {
+                responseMessage = "Error: bad request";
+                System.out.println("Response Message : " + responseMessage);
+            } else {
+                String result = "";
+                try (InputStream respBody = http.getInputStream()) {
+                    result = IOUtils.toString(respBody);
+                    System.out.println(result);
+                    System.out.println("Successfully joined game");
+                }
+            }
+            // Output the response body
+            try (InputStream respBody = http.getInputStream()) {
+                String result = IOUtils.toString(respBody);
+                System.out.println(result);
+            }
+        } catch (Exception r) {
+            System.out.println("Exception Message : " + r.getMessage());
+        }
     }
 }
