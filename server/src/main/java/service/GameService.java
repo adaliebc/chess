@@ -44,6 +44,7 @@ public class GameService {
         else if (playerColor.equalsIgnoreCase("White")){
             if (game.whiteUsername() == null){
                 gdao.addPlayer(gameID, "whiteUsername", username);
+                game = gdao.getGame(gameID);
             } else {
                 throw new ResponseException(403, "{ \"message\": \"Error: already taken\" }");
             }

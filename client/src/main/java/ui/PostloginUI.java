@@ -17,6 +17,7 @@ import java.util.Scanner;
 
 public class PostloginUI {
     public String authToken;
+    private GamePlayUI gamePlayUI = new GamePlayUI();
     public PostloginUI (String inputAuthToken){
         authToken = inputAuthToken;
     }
@@ -97,7 +98,7 @@ public class PostloginUI {
                             try (InputStream respBody = http.getInputStream()) {
                                 result = IOUtils.toString(respBody);
                                 System.out.println(result);
-                                var game = new Gson().fromJson(result, GameData.class);
+                                var game = new Gson().fromJson(result, GameID.class);
                                 System.out.println("Successfully created game: " + game);
                             }
                         }
@@ -214,12 +215,9 @@ public class PostloginUI {
                 String result = "";
                 try (InputStream respBody = http.getInputStream()) {
                     result = IOUtils.toString(respBody);
-                    if (!result.isEmpty()) {
-                        System.out.println(result);
-                    }
-                    else {
-                        System.out.println("Successfully joined game");
-                    }
+                    var game = new Gson().fromJson(result, GameData.class);
+                    System.out.print("Successfully joined the game!");
+                    gamePlayUI.printBoard(game.game());
                 }
             }
         } catch (Exception r) {

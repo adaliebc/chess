@@ -70,14 +70,17 @@ public class SQLGameDAO implements GameDAO{
             String whiteUsername = null;
             String blackUsername = null;
             String gameName = null;
+            String game = null;
             while (user.next()) {
                 gotGameID = user.getInt(1);
                 whiteUsername = user.getString(2);
                 blackUsername = user.getString(3);
                 gameName = user.getString(4);
+                game = user.getString(5);
             }
             user.close();
-            return new GameData(gotGameID, whiteUsername, blackUsername, gameName,null);
+            //fix game in phase 6
+            return new GameData(gotGameID, whiteUsername, blackUsername, gameName, new ChessGame());
         } catch (Exception e) {
             return null;
         }
@@ -120,7 +123,7 @@ public class SQLGameDAO implements GameDAO{
                         blackUsername = rs.getString(3);
                         gameName = rs.getString(4);
                         chessGame = rs.getString(5);
-                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, new ChessGame(chessGame));
+                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, new ChessGame());
                         result.add(gameData);
                     }
                 }

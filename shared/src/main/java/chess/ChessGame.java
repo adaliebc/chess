@@ -12,14 +12,15 @@ import java.util.Objects;
  */
 public class ChessGame {
 
-    private ChessBoard board;
+    private ChessBoard board = new ChessBoard();
     private TeamColor team;
 
     public ChessGame() {
-    }
-    public ChessGame(String chessGame) {
 
     }
+    //public ChessGame(String chessGame) {
+
+   // }
 
     @Override
     public boolean equals(Object o) {

@@ -138,7 +138,7 @@ public class Server {
         }
         res.type("application/json");
         res.status(200);
-        return response;
+        return new Gson().toJson(response);
     }
 
     private Object listGamesBody(Request req, Response res) {

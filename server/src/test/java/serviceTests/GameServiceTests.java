@@ -89,6 +89,7 @@ public class GameServiceTests {
     public void listGameTest() throws TestException {
         GameService gameService = new GameService();
         GameList gameList = gameService.getGameList();
+        System.out.println(gameList);
         Assertions.assertNotNull(gameList,
                 "gameList was not empty");
     }

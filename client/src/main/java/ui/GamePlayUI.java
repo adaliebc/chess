@@ -1,11 +1,9 @@
 package ui;
 
-public class GamePlayUI {
-    //posts board to screen when called
-    //for chessgame.tostring
-    //replace player with object and write to screen
-    //in next phase, include the options to play the game
+import chess.ChessGame;
 
-    //if input == exit
-    //send them back to postloginUI
+public class GamePlayUI {
+    public void printBoard(ChessGame game){
+        System.out.print(game.toString());
+    }
 }
