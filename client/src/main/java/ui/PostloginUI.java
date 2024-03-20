@@ -76,7 +76,7 @@ public class PostloginUI {
                         http.setRequestMethod("POST");
                         http.addRequestProperty("Authorization", authToken);
 
-                        ChessGame request = new ChessGame(inputList[1]);
+                        GameName request = new GameName(inputList[1]);
                         // Send post request
                         http.setDoOutput(true);
                         OutputStream wr = http.getOutputStream();
