@@ -3,8 +3,11 @@ package ui;
 import java.util.Scanner;
 
 public class PostloginUI {
+    public PostloginUI (String authToken){
 
-    public void postLogin (String [] args) {
+    }
+
+    public void postLogin () {
         //when called prints postlogin ui page
         System.out.println("Welcome to CS240 Chess Game!");
         System.out.println("Enter in a command or 'help' for your options");
