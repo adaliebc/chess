@@ -2,6 +2,7 @@ package ui;
 
 import com.google.gson.Gson;
 import model.AuthData;
+import model.GameList;
 import model.LoginRequest;
 import model.UserData;
 import spark.utils.IOUtils;
@@ -64,8 +65,10 @@ public class PostloginUI {
                         String result = "";
                         try (InputStream respBody = http.getInputStream()) {
                             result = IOUtils.toString(respBody);
-
-                            System.out.println(result);
+                            var list = new Gson().fromJson(result, GameList.class);
+                            for (var game: list.games()) {
+                                System.out.println(game);
+                            }
                         }
                     }
                 } catch (Exception r) {
