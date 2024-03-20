@@ -32,7 +32,7 @@ public class PreloginUI {
     //start function
     public void start() throws IOException, URISyntaxException {
         //print out prelogin ui to the screen
-        System.out.println("Welcome to CS240 Chess Game!");
+        System.out.println("Welcome to CS240 Chess Game Login Page!");
         System.out.println("Enter in a command or 'help' for your options");
 
         //take in input and form it into a list. Based on the first item in the list, that is the keyword
@@ -67,7 +67,7 @@ public class PreloginUI {
                         wr.close();
 
                         int responseCode = http.getResponseCode();
-                        String responseMessage = http.getResponseMessage();
+                        String responseMessage;
                         if(responseCode == 403){
                             responseMessage = "Error: already taken";
                             System.out.println("Response Message : " + responseMessage);
@@ -81,6 +81,7 @@ public class PreloginUI {
                                 result = IOUtils.toString(respBody);
                                 System.out.println(result);
                                 var user = new Gson().fromJson(result, AuthData.class);
+                                System.out.println("Successfully logged in as " + inputList[1]);
                                 PostloginUI p = new PostloginUI(user.authToken());
                                 p.postLogin();
                             }
@@ -99,33 +100,49 @@ public class PreloginUI {
                     System.out.println("insufficient arguments");
                     System.out.println(getHelp());
                 }
-                URI uri = new URI("http://localhost:8080/session");
-                HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
-                http.setRequestMethod("POST");
+                else {
+                    try {
+                        URI uri = new URI("http://localhost:8080/session");
+                        HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+                        http.setRequestMethod("POST");
 
-                String urlParameters = "{\"username\":" + inputList[1] + "}";
-                LoginRequest request = new LoginRequest(inputList[1], inputList[2]);
-                // Send post request
-                http.setDoOutput(true);
-                OutputStream wr = http.getOutputStream();
-                wr.write(new Gson().toJson(request).getBytes(StandardCharsets.UTF_8));
-                wr.flush();
-                wr.close();
+                        LoginRequest request = new LoginRequest(inputList[1], inputList[2]);
+                        // Send post request
+                        http.setDoOutput(true);
+                        OutputStream wr = http.getOutputStream();
+                        wr.write(new Gson().toJson(request).getBytes(StandardCharsets.UTF_8));
+                        wr.flush();
+                        wr.close();
 
-                int responseCode = http.getResponseCode();
-                System.out.println("\nSending 'POST' request to URL : " + uri);
-                System.out.println("Post parameters : " + urlParameters);
-                System.out.println("Response Code : " + responseCode);
-
-
-                // Make the request
-                //http.connect();
-
-                // Output the response body
-                try (InputStream respBody = http.getInputStream()) {
-                    String result = IOUtils.toString(respBody);
-                    //InputStreamReader inputStreamReader = new InputStreamReader(respBody);
-                    System.out.println(result);
+                        int responseCode = http.getResponseCode();
+                        String responseMessage;
+                        if(responseCode == 401){
+                            responseMessage = "Error: unauthorized";
+                            System.out.println("Response Message : " + responseMessage);
+                        } else if (responseCode == 400) {
+                            responseMessage = "Error: bad request";
+                            System.out.println("Response Message : " + responseMessage);
+                        }
+                        else {
+                            String result = "";
+                            try (InputStream respBody = http.getInputStream()) {
+                                result = IOUtils.toString(respBody);
+                                System.out.println(result);
+                                var user = new Gson().fromJson(result, AuthData.class);
+                                System.out.println("Successfully logged in as " + inputList[1]);
+                                PostloginUI p = new PostloginUI(user.authToken());
+                                p.postLogin();
+                            }
+                        }
+                        // Output the response body
+                        try (InputStream respBody = http.getInputStream()) {
+                            String result = IOUtils.toString(respBody);
+                            System.out.println(result);
+                        }
+                    }
+                    catch(Exception r) {
+                        System.out.println("Exception Message : " + r.getMessage());
+                    }
                 }
                 //      call login function in UserUI
 //sends input data to server.java

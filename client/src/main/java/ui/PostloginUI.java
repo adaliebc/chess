@@ -1,5 +1,16 @@
 package ui;
 
+import com.google.gson.Gson;
+import model.LoginRequest;
+import spark.utils.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class PostloginUI {
@@ -7,7 +18,7 @@ public class PostloginUI {
 
     }
 
-    public void postLogin () {
+    public void postLogin () throws IOException, URISyntaxException {
         //when called prints postlogin ui page
         System.out.println("Welcome to CS240 Chess Game!");
         System.out.println("Enter in a command or 'help' for your options");
@@ -18,15 +29,9 @@ public class PostloginUI {
         String userInput = in.nextLine();
         String[] inputList = userInput.split(" ");
 
-        while (!inputList[0].equalsIgnoreCase("quit")) {
-
             if (inputList[0].equalsIgnoreCase("help")) {
+
             }
-//input is formed into a list
-            //list[1] is keyword
-//if stataemnts to send input to where it needs to be
-            //if help
-            //list the options
             // if logout
             //send to userui
             //if create game
@@ -34,7 +39,31 @@ public class PostloginUI {
             //if join or observe
             //send to gameui, does same thing
             //list games
-            //send to gameui
+            URI uri = new URI("http://localhost:8080/game");
+            HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+            http.setRequestMethod("GET");
+
+            // Send post request
+            http.setDoOutput(true);
+            OutputStream wr = http.getOutputStream();
+
+            wr.flush();
+            wr.close();
+
+            int responseCode = http.getResponseCode();
+            System.out.println("\nSending 'GET' request to URL : " + uri);
+            System.out.println("Response Code : " + responseCode);
+
+
+            // Make the request
+            //http.connect();
+
+            // Output the response body
+            try (InputStream respBody = http.getInputStream()) {
+                String result = IOUtils.toString(respBody);
+
+                System.out.println(result);
+            }
             //esle
             //print out command unknown, try again, maybe the help screen
 
@@ -60,5 +89,14 @@ public class PostloginUI {
             //prints successfully logged out as username if success
             //returns user to PreloginUI
         }
+
+    private String getHelp() {
+        return """
+                'create' <name> = create a chess game
+                'join' <game ID> <white|black> = join a chess game
+                'observe' <gameID> = observe a chess game
+                'list' = list all chess games
+                'help' = show options
+                """;
     }
 }
