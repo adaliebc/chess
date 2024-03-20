@@ -1,10 +1,9 @@
 package ui;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
-import model.AuthData;
-import model.GameList;
-import model.LoginRequest;
-import model.UserData;
+import model.*;
+
 import spark.utils.IOUtils;
 
 import java.io.IOException;
@@ -66,6 +65,52 @@ public class PostloginUI {
                 }
             }
             //if create game
+            else if (inputList[0].equalsIgnoreCase("create")) {
+                if (inputList.length != 2) {
+                    System.out.println("insufficient arguments");
+                    System.out.println(getHelp());
+                } else {
+                    try {
+                        URI uri = new URI("http://localhost:8080/game");
+                        HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
+                        http.setRequestMethod("POST");
+                        http.addRequestProperty("Authorization", authToken);
+
+                        ChessGame request = new ChessGame(inputList[1]);
+                        // Send post request
+                        http.setDoOutput(true);
+                        OutputStream wr = http.getOutputStream();
+                        wr.write(new Gson().toJson(request).getBytes(StandardCharsets.UTF_8));
+                        wr.flush();
+                        wr.close();
+
+                        int responseCode = http.getResponseCode();
+                        String responseMessage;
+                        if (responseCode == 401) {
+                            responseMessage = "Error: unauthorized";
+                            System.out.println("Response Message : " + responseMessage);
+                        } else if (responseCode == 400) {
+                            responseMessage = "Error: bad request";
+                            System.out.println("Response Message : " + responseMessage);
+                        } else {
+                            String result = "";
+                            try (InputStream respBody = http.getInputStream()) {
+                                result = IOUtils.toString(respBody);
+                                System.out.println(result);
+                                var user = new Gson().fromJson(result, GameData.class);
+                                System.out.println("Successfully created game: " + user);
+                            }
+                        }
+                        // Output the response body
+                        try (InputStream respBody = http.getInputStream()) {
+                            String result = IOUtils.toString(respBody);
+                            System.out.println(result);
+                        }
+                    } catch (Exception r) {
+                        System.out.println("Exception Message : " + r.getMessage());
+                    }
+                }
+            }
             //send to gameUI
             //if join or observe
             //send to gameui, does same thing

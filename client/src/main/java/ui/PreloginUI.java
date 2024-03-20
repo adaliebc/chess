@@ -32,7 +32,7 @@ public class PreloginUI {
     //start function
     public void start() throws IOException, URISyntaxException {
         //print out prelogin ui to the screen
-        System.out.println("Welcome to CS240 Chess Game Login Page!");
+        System.out.println("Welcome to the Login Page!");
         System.out.println("Enter in a command or 'help' for your options");
 
         //take in input and form it into a list. Based on the first item in the list, that is the keyword
