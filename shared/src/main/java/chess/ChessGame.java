@@ -37,7 +37,7 @@ public class ChessGame {
 
     @Override
     public String toString() {
-        return board.toString();
+        return board.toStringWhite() + "\n\n\n" + board.toStringBlack();
     }
 
     /**

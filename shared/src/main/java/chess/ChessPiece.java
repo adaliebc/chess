@@ -1,5 +1,7 @@
 package chess;
 
+import ui.EscapeSequences;
+
 import java.util.*;
 
 
@@ -57,7 +59,6 @@ public class ChessPiece {
         if (!(o instanceof ChessPiece that)) return false;
         return pieceColor == that.pieceColor && type == that.type;
     }
-    @Override
     public String toString() {
         if (pieceColor == ChessGame.TeamColor.WHITE) {
             if (type == PieceType.QUEEN){

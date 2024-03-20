@@ -50,11 +50,26 @@ public class ChessBoard {
         return Arrays.deepHashCode(squares);
     }
 
-    @Override
-    public String toString() {
+    public String toStringWhite() {
         String box = "";
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
+                ChessPiece item = getPiece(new ChessPosition(i, j));
+                if(item != null) {
+                    box += item.toString();
+                } else {
+                    box += " ";
+                }
+            }
+            box += "\n";
+        }
+        return box;
+    }
+
+    public String toStringBlack() {
+        String box = "";
+        for(int i = 8; i >= 0; i--) {
+            for(int j = 8; j >= 0; j--) {
                 ChessPiece item = getPiece(new ChessPosition(i, j));
                 if(item != null) {
                     box += item.toString();
