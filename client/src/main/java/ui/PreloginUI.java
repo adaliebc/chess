@@ -14,8 +14,14 @@ public class PreloginUI {
     private boolean loggedIn;
 
     public PreloginUI() {
+        facade = new ServerFacade(8080);
+        postloginUI = new PostloginUI();
+        gamePlayUI = new GamePlayUI();
     }
-
+public static void main(String[] args){
+    PreloginUI p = new PreloginUI();
+    p.getInput();
+}
     public void getInput() {
         loggedIn = false;
         //when called prints postlogin ui page
@@ -29,7 +35,7 @@ public class PreloginUI {
         String[] inputList = userInput.split(" ");
         while (!inputList[0].equalsIgnoreCase("quit")) {
             if (inputList[0].equalsIgnoreCase("help")) {
-                if (loggedIn) {
+                if (!loggedIn) {
                     System.out.println(getHelp());
                 } else {
                     System.out.println(postloginUI.getHelp());
@@ -65,6 +71,8 @@ public class PreloginUI {
             }else if (inputList[0].equalsIgnoreCase("list")) {
                 facade.listGames();
             }
+            userInput = in.nextLine();
+           inputList = userInput.split(" ");
         }
     }
 

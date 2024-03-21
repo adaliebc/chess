@@ -12,8 +12,8 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 public class ServerFacade {
-    private static String serverUrl = null;
-    private PreloginUI preloginUI = new PreloginUI();
+    private static String serverUrl = "http://localhost:8080";
+
     private String authToken = "";
     private PostloginUI postloginUI = new PostloginUI();
 
@@ -21,10 +21,6 @@ public class ServerFacade {
         serverUrl = "http://localhost:" + port;
     }
 
-    public static void main(String[] args) {
-        PreloginUI p = new PreloginUI();
-        p.getInput();
-    }
 
     public void clear(){
         makeRequest("/db", "DELETE", null, "");
@@ -32,7 +28,7 @@ public class ServerFacade {
     public boolean register(String[] inputList) {
         if (inputList.length != 4) {
             System.out.println("insufficient arguments");
-            System.out.println(preloginUI.getHelp());
+            System.out.println(getHelp());
             return false;
         } else {
             UserData registerRequest = new UserData(inputList[1], inputList[2], inputList[3]);
@@ -64,7 +60,7 @@ public class ServerFacade {
     public boolean login(String[] inputList){
         if (inputList.length != 3) {
             System.out.println("insufficient arguments");
-            System.out.println(preloginUI.getHelp());
+            System.out.println(getHelp());
             return false;
         } else {
             LoginRequest loginRequest = new LoginRequest(inputList[1], inputList[2]);
@@ -94,7 +90,7 @@ public class ServerFacade {
     public int createGame(String[] inputList){
         if (inputList.length != 2) {
             System.out.println("insufficient arguments");
-            System.out.println(preloginUI.getHelp());
+            System.out.println(getHelp());
         } else {
             GameName request = new GameName(inputList[1]);
             byte[] inputResult = new Gson().toJson(request).getBytes(StandardCharsets.UTF_8);
@@ -188,5 +184,13 @@ public class ServerFacade {
             System.out.println("Exception Message : " + r.getMessage());
         }
         return null;
+    }
+    public String getHelp () {
+        return """
+                    'register' <Username> <Password> <Email> = register account
+                    'login' <Username> <Password> = login to your account
+                    'quit' = exit chess game
+                    'help' = show options
+                    """;
     }
 }
