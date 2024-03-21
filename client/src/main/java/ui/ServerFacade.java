@@ -35,7 +35,7 @@ public class ServerFacade {
             UserData registerRequest = new UserData(inputList[1], inputList[2], inputList[3]);
             byte[] request = new Gson().toJson(registerRequest).getBytes(StandardCharsets.UTF_8);
             String result = makeRequest("/user", "POST", request, authToken);
-            if (!result.isEmpty()) {
+            if (result != null) {
                 System.out.println("Successfully logged in as " + inputList[1]);
                 var user = new Gson().fromJson(result, AuthData.class);
                 authToken = user.authToken();
@@ -67,8 +67,8 @@ public class ServerFacade {
             LoginRequest loginRequest = new LoginRequest(inputList[1], inputList[2]);
             byte[] request = new Gson().toJson(loginRequest).getBytes(StandardCharsets.UTF_8);
             String result = makeRequest("/session", "POST", request, authToken);
-            assert result != null;
-            if (!result.isEmpty()) {
+
+            if (result != null) {
                 var user = new Gson().fromJson(result, AuthData.class);
                 System.out.println("Successfully logged in as " + inputList[1]);
                 authToken = user.authToken();
@@ -96,7 +96,7 @@ public class ServerFacade {
             GameName request = new GameName(inputList[1]);
             byte[] inputResult = new Gson().toJson(request).getBytes(StandardCharsets.UTF_8);
             String result = makeRequest("/game", "POST", inputResult, authToken);
-            if(!result.isEmpty()){
+            if(result != null){
                 var game = new Gson().fromJson(result, GameID.class);
                 System.out.println("Successfully created game: " + game);
                 return game.gameID();
