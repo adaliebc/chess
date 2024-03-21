@@ -127,5 +127,16 @@ public class ServerFacadeTests {
         facade.logout();
         Assertions.assertFalse(facade.listGames());
     }
-
+    @Test
+    @Order(11)
+    public void logoutUserPositiveTest() {
+        String[] list = new String[] {"login", "username", "password"};
+        facade.login(list);
+        Assertions.assertFalse(facade.logout());
+    }
+    @Test
+    @Order(12)
+    public void logoutUserNegativeTest() {
+        Assertions.assertTrue(facade.logout());
+    }
 }

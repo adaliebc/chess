@@ -80,7 +80,7 @@ public class ServerFacade {
 
     public boolean logout (){
         String result = makeRequest("/session", "DELETE", null,authToken);
-        return !result.isEmpty();
+        return result != null;
     }
 
     public int createGame(String[] inputList){
@@ -179,6 +179,6 @@ public class ServerFacade {
         } catch (Exception r) {
             System.out.println("Exception Message : " + r.getMessage());
         }
-        return "";
+        return null;
     }
 }
