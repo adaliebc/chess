@@ -1,7 +1,5 @@
 package chess;
 
-import ui.EscapeSequences;
-
 import java.util.*;
 
 
