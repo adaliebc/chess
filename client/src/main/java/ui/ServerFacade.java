@@ -48,7 +48,7 @@ public class ServerFacade {
 
     public boolean listGames(){
         String result = makeRequest("/game", "GET", null, authToken);
-        if(result == null){
+        if(result != null){
         var list = new Gson().fromJson(result, GameList.class);
         for (var game: list.games()) {
             System.out.println(game);
