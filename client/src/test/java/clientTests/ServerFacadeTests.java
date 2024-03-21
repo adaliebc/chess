@@ -25,6 +25,10 @@ public class ServerFacadeTests {
         facade = new ServerFacade(port);
     }
 
+    @BeforeEach
+    public void clear(){
+        facade.clear();
+    }
     @AfterAll
     static void stopServer() {
         server.stop();
@@ -53,7 +57,10 @@ public class ServerFacadeTests {
     @Test
     @Order(3)
     public void loginUserPositiveTest() {
-        String[] list = new String[] {"login", "username", "password"};
+        String[] list = new String[] {"register", "username", "password", "email"};
+        facade.register(list);
+        facade.logout();
+        list = new String[] {"login", "username", "password"};
         Assertions.assertTrue(facade.login(list));
     }
 
@@ -67,8 +74,8 @@ public class ServerFacadeTests {
     @Test
     @Order(5)
     public void createGamePositiveTest() {
-        String[] list = new String[] {"login", "username", "password"};
-        facade.login(list);
+        String[] list = new String[] {"register", "username", "password", "email"};
+        facade.register(list);
         list = new String[] {"create", "name"};
         Assertions.assertTrue(facade.createGame(list) != 0);
     }
@@ -83,8 +90,8 @@ public class ServerFacadeTests {
     @Test
     @Order(7)
     public void joinGamePositiveTest() {
-        String[] list = new String[] {"login", "username", "password"};
-        Assertions.assertTrue(facade.login(list));
+        String[] list = new String[] {"register", "username", "password", "email"};
+        facade.register(list);
         list = new String[] {"create", "name"};
         int gameIDint = facade.createGame(list);
         String gameID = Integer.toString(gameIDint);
@@ -95,8 +102,8 @@ public class ServerFacadeTests {
     @Test
     @Order(8)
     public void joinGameNegativeTest() {
-        String[] list = new String[] {"login", "username", "password"};
-        Assertions.assertTrue(facade.login(list));
+        String[] list = new String[] {"register", "username", "password", "email"};
+        facade.register(list);
         list = new String[] {"create", "name"};
         int gameIDint = facade.createGame(list);
         String gameID = Integer.toString(gameIDint);
@@ -107,8 +114,8 @@ public class ServerFacadeTests {
     @Test
     @Order(9)
     public void listGamePositiveTest() {
-        String[] list = new String[] {"login", "username", "password"};
-        facade.login(list);
+        String[] list = new String[] {"register", "username", "password", "email"};
+        facade.register(list);
         list = new String[] {"create", "name"};
         facade.createGame(list);
         Assertions.assertTrue(facade.listGames());
@@ -117,8 +124,8 @@ public class ServerFacadeTests {
     @Test
     @Order(10)
     public void listGameNegativeTest() {
-        String[] list = new String[] {"login", "username", "password"};
-        Assertions.assertTrue(facade.login(list));
+        String[] list = new String[] {"register", "username", "password", "email"};
+        facade.register(list);
         list = new String[] {"create", "name"};
         int gameIDint = facade.createGame(list);
         String gameID = Integer.toString(gameIDint);
@@ -130,8 +137,8 @@ public class ServerFacadeTests {
     @Test
     @Order(11)
     public void logoutUserPositiveTest() {
-        String[] list = new String[] {"login", "username", "password"};
-        facade.login(list);
+        String[] list = new String[] {"register", "username", "password", "email"};
+        facade.register(list);
         Assertions.assertTrue(facade.logout());
     }
     @Test

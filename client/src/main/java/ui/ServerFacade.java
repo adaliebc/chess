@@ -26,6 +26,9 @@ public class ServerFacade {
         p.getInput();
     }
 
+    public void clear(){
+        makeRequest("/db", "DELETE", null, "");
+    }
     public boolean register(String[] inputList) {
         if (inputList.length != 4) {
             System.out.println("insufficient arguments");
