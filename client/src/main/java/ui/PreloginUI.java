@@ -57,6 +57,8 @@ public class PreloginUI {
                     System.out.print("Successfully joined the game!");
                     gamePlayUI.printBoard(game);
                 }
+            }else if (inputList[0].equalsIgnoreCase("list")) {
+                facade.listGames();
             }
         }
     }

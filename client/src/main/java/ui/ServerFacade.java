@@ -46,6 +46,18 @@ public class ServerFacade {
         }
     }
 
+    public boolean listGames(){
+        String result = makeRequest("/game", "GET", null, authToken);
+        if(result.isEmpty()){
+        var list = new Gson().fromJson(result, GameList.class);
+        for (var game: list.games()) {
+            System.out.println(game);
+        }
+        return true;
+        }else {
+            return false;
+        }
+    }
     public boolean login(String[] inputList){
         if (inputList.length != 3) {
             System.out.println("insufficient arguments");
