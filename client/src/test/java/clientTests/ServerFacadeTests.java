@@ -60,4 +60,18 @@ public class ServerFacadeTests {
         Assertions.assertFalse(facade.login(list));
     }
 
+    @Test
+    public void createGamePositiveTest() {
+        String[] list = new String[] {"login", "username", "password"};
+        Assertions.assertTrue(facade.login(list));
+        list = new String[] {"create", "name"};
+        Assertions.assertTrue(facade.createGame(list) != 0);
+    }
+
+    @Test
+    public void createGameNegativeTest() {
+        String[] list = new String[] {"create", "username", "password"};
+        Assertions.assertEquals(0, facade.createGame(list));
+    }
+
 }

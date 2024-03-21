@@ -47,8 +47,8 @@ public class PreloginUI {
                     loggedIn = true;
                 }
             } else if (inputList[0].equalsIgnoreCase("create")) {
-                boolean success = facade.createGame(inputList);
-                if(success){
+                int gameID = facade.createGame(inputList);
+                if(gameID != 0){
                     System.out.println("Use GameID to join game");
                 }
             } else if (inputList[0].equalsIgnoreCase("join")|| inputList[0].equalsIgnoreCase("observe")) {

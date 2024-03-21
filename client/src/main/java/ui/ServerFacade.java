@@ -83,11 +83,10 @@ public class ServerFacade {
         return !result.isEmpty();
     }
 
-    public boolean createGame(String[] inputList){
+    public int createGame(String[] inputList){
         if (inputList.length != 2) {
             System.out.println("insufficient arguments");
             System.out.println(preloginUI.getHelp());
-            return false;
         } else {
             GameName request = new GameName(inputList[1]);
             byte[] inputResult = new Gson().toJson(request).getBytes(StandardCharsets.UTF_8);
@@ -95,11 +94,10 @@ public class ServerFacade {
             if(!result.isEmpty()){
                 var game = new Gson().fromJson(result, GameID.class);
                 System.out.println("Successfully created game: " + game);
-                return true;
-            } else{
-                return false;
+                return game.gameID();
             }
         }
+        return 0;
     }
 
     public ChessGame joinGame(String[] inputList){
