@@ -212,7 +212,8 @@ public class Server {
         }
         res.type("application/json");
         res.status(200);
-        return "";
+        var message = "";
+        return new Gson().toJson(message);
     }
     public void stop() {
         Spark.stop();

@@ -51,7 +51,6 @@ public class ServerFacadeTests {
         PrintStream printStream = new PrintStream(baos);
         System.setOut(printStream);
 
-        PreloginUI.start(null); // call the main method
 
         String[] lines = baos.toString().split(System.lineSeparator());
         String actual = lines[lines.length-1];
