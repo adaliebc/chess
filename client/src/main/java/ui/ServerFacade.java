@@ -67,6 +67,7 @@ public class ServerFacade {
             LoginRequest loginRequest = new LoginRequest(inputList[1], inputList[2]);
             byte[] request = new Gson().toJson(loginRequest).getBytes(StandardCharsets.UTF_8);
             String result = makeRequest("/session", "POST", request, authToken);
+            assert result != null;
             if (!result.isEmpty()) {
                 var user = new Gson().fromJson(result, AuthData.class);
                 System.out.println("Successfully logged in as " + inputList[1]);
