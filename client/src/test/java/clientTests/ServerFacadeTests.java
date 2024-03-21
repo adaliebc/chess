@@ -74,4 +74,26 @@ public class ServerFacadeTests {
         Assertions.assertEquals(0, facade.createGame(list));
     }
 
+    @Test
+    public void joinGamePositiveTest() {
+        String[] list = new String[] {"login", "username", "password"};
+        Assertions.assertTrue(facade.login(list));
+        list = new String[] {"create", "name"};
+        int gameIDint = facade.createGame(list);
+        String gameID = Integer.toString(gameIDint);
+        list = new String[] {"observe", gameID};
+        Assertions.assertNotNull(facade.joinGame(list));
+    }
+
+    @Test
+    public void joinGameNegativeTest() {
+        String[] list = new String[] {"login", "username", "password"};
+        Assertions.assertTrue(facade.login(list));
+        list = new String[] {"create", "name"};
+        int gameIDint = facade.createGame(list);
+        String gameID = Integer.toString(gameIDint);
+        list = new String[] {"observe", gameID, "pink"};
+        Assertions.assertNull(facade.joinGame(list));
+    }
+
 }
