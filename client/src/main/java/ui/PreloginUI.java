@@ -27,7 +27,7 @@ public class PreloginUI {
 
         String userInput = in.nextLine();
         String[] inputList = userInput.split(" ");
-        while (!inputList[0].equalsIgnoreCase("quit") && !loggedIn) {
+        while (!inputList[0].equalsIgnoreCase("quit")) {
             if (inputList[0].equalsIgnoreCase("help")) {
                 if (loggedIn) {
                     System.out.println(getHelp());
@@ -36,9 +36,9 @@ public class PreloginUI {
                 }
             } else if (inputList[0].equalsIgnoreCase("register")) {
                 loggedIn = facade.register(inputList);
-            } else if (inputList[0].equalsIgnoreCase("login") && !loggedIn){
+            } else if (inputList[0].equalsIgnoreCase("login")){
                 loggedIn = facade.login(inputList);
-            } else if (inputList[0].equalsIgnoreCase("logout") && loggedIn){
+            } else if (inputList[0].equalsIgnoreCase("logout")){
                 boolean success = facade.logout();
                 if(!success){
                     System.out.println("Successfully logged out");
@@ -46,7 +46,7 @@ public class PreloginUI {
                 } else {
                     loggedIn = true;
                 }
-            } else if (inputList[0].equalsIgnoreCase("create") && loggedIn) {
+            } else if (inputList[0].equalsIgnoreCase("create")) {
                 boolean success = facade.createGame(inputList);
                 if(success){
                     System.out.println("Use GameID to join game");

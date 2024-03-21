@@ -37,26 +37,15 @@ public class ServerFacadeTests {
     }
 
     @Test
-    public void registerUserPositiveTest() throws IOException, URISyntaxException {
-        String userInput = String.format("register %susername %spassword%s email%s",
-                System.lineSeparator(),
-                System.lineSeparator(),
-                System.lineSeparator(),
-                System.lineSeparator());
-        ByteArrayInputStream bais = new ByteArrayInputStream(userInput.getBytes());
-        System.setIn(bais);
+    public void registerUserPositiveTest() {
+        String[] list = new String[] {"register", "username", "password", "email"};
+        Assertions.assertTrue(facade.register(list));
+    }
 
-        String expected = "Successfully logged in as username";
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream printStream = new PrintStream(baos);
-        System.setOut(printStream);
-
-
-        String[] lines = baos.toString().split(System.lineSeparator());
-        String actual = lines[lines.length-1];
-
-        // checkout output
-        Assertions.assertEquals(expected,actual);
+    @Test
+    public void registerUserNegativeTest() {
+        String[] list = new String[] {"register", "username", "password"};
+        Assertions.assertFalse(facade.register(list));
     }
 
 }

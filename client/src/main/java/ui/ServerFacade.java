@@ -13,9 +13,9 @@ import java.nio.charset.StandardCharsets;
 
 public class ServerFacade {
     private static String serverUrl = null;
-    private PreloginUI preloginUI;
+    private PreloginUI preloginUI = new PreloginUI();
     private String authToken = "";
-    private PostloginUI postloginUI;
+    private PostloginUI postloginUI = new PostloginUI();
 
     public ServerFacade(int port) {
         serverUrl = "http://localhost:" + port;
@@ -34,7 +34,7 @@ public class ServerFacade {
         } else {
             UserData registerRequest = new UserData(inputList[1], inputList[2], inputList[3]);
             byte[] request = new Gson().toJson(registerRequest).getBytes(StandardCharsets.UTF_8);
-            String result = makeRequest("/user", "/POST", request, authToken);
+            String result = makeRequest("/user", "POST", request, authToken);
             if (!result.isEmpty()) {
                 System.out.println("Successfully logged in as " + inputList[1]);
                 var user = new Gson().fromJson(result, AuthData.class);
@@ -54,7 +54,7 @@ public class ServerFacade {
         } else {
             LoginRequest loginRequest = new LoginRequest(inputList[1], inputList[2]);
             byte[] request = new Gson().toJson(loginRequest).getBytes(StandardCharsets.UTF_8);
-            String result = makeRequest("/session", "/POST", request, authToken);
+            String result = makeRequest("/session", "POST", request, authToken);
             if (!result.isEmpty()) {
                 var user = new Gson().fromJson(result, AuthData.class);
                 System.out.println("Successfully logged in as " + inputList[1]);
