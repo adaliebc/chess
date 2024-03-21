@@ -48,4 +48,16 @@ public class ServerFacadeTests {
         Assertions.assertFalse(facade.register(list));
     }
 
+    @Test
+    public void loginUserPositiveTest() {
+        String[] list = new String[] {"login", "username", "password"};
+        Assertions.assertTrue(facade.login(list));
+    }
+
+    @Test
+    public void loginUserNegativeTest() {
+        String[] list = new String[] {"login", "username"};
+        Assertions.assertFalse(facade.login(list));
+    }
+
 }
