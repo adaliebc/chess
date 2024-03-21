@@ -80,7 +80,11 @@ public class ServerFacade {
 
     public boolean logout (){
         String result = makeRequest("/session", "DELETE", null,authToken);
-        return result != null;
+        if (result == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public int createGame(String[] inputList){

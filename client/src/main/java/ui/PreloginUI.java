@@ -35,12 +35,17 @@ public class PreloginUI {
                     System.out.println(postloginUI.getHelp());
                 }
             } else if (inputList[0].equalsIgnoreCase("register")) {
-                loggedIn = facade.register(inputList);
+                boolean success = facade.register(inputList);
+                if(success){
+                    loggedIn = true;
+                } else {
+                    loggedIn = false;
+                }
             } else if (inputList[0].equalsIgnoreCase("login")){
                 loggedIn = facade.login(inputList);
             } else if (inputList[0].equalsIgnoreCase("logout")){
                 boolean success = facade.logout();
-                if(!success){
+                if(success){
                     System.out.println("Successfully logged out");
                     loggedIn = false;
                 } else {

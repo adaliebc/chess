@@ -132,11 +132,11 @@ public class ServerFacadeTests {
     public void logoutUserPositiveTest() {
         String[] list = new String[] {"login", "username", "password"};
         facade.login(list);
-        Assertions.assertFalse(facade.logout());
+        Assertions.assertTrue(facade.logout());
     }
     @Test
     @Order(12)
     public void logoutUserNegativeTest() {
-        Assertions.assertTrue(facade.logout());
+        Assertions.assertFalse(facade.logout());
     }
 }
