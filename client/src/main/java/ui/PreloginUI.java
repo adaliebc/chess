@@ -20,13 +20,9 @@ import service.*;
 
 public class PreloginUI {
 
-    public PreloginUI() {
-
-    }
-
-    public static void main(String[] args) throws IOException, URISyntaxException {
-        PreloginUI p = new PreloginUI();
-        p.start();
+    private final String serverUrl;
+    public PreloginUI(String url) {
+        serverUrl = url;
     }
 
     //start function
@@ -54,7 +50,7 @@ public class PreloginUI {
                     System.out.println(getHelp());
                 } else {
                     try {
-                        URI uri = new URI("http://localhost:8080/user");
+                        URI uri = new URI(serverUrl + "/user");
                         HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
                         http.setRequestMethod("POST");
 
@@ -82,7 +78,7 @@ public class PreloginUI {
                                 System.out.println(result);
                                 var user = new Gson().fromJson(result, AuthData.class);
                                 System.out.println("Successfully logged in as " + inputList[1]);
-                                PostloginUI p = new PostloginUI(user.authToken());
+                                PostloginUI p = new PostloginUI(user.authToken(), serverUrl);
                                 p.postLogin();
                             }
                         }
@@ -101,7 +97,7 @@ public class PreloginUI {
                 }
                 else {
                     try {
-                        URI uri = new URI("http://localhost:8080/session");
+                        URI uri = new URI(serverUrl + "/session");
                         HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
                         http.setRequestMethod("POST");
 
@@ -129,7 +125,7 @@ public class PreloginUI {
                                 System.out.println(result);
                                 var user = new Gson().fromJson(result, AuthData.class);
                                 System.out.println("Successfully logged in as " + inputList[1]);
-                                PostloginUI p = new PostloginUI(user.authToken());
+                                PostloginUI p = new PostloginUI(user.authToken(), serverUrl);
                                 p.postLogin();
                             }
                         }

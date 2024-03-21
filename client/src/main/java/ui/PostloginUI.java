@@ -17,9 +17,11 @@ import java.util.Scanner;
 
 public class PostloginUI {
     public String authToken;
+    private String serverUrl;
     private GamePlayUI gamePlayUI = new GamePlayUI();
-    public PostloginUI (String inputAuthToken){
+    public PostloginUI (String inputAuthToken, String url){
         authToken = inputAuthToken;
+        serverUrl = url;
     }
     public void postLogin () throws IOException, URISyntaxException {
         //when called prints postlogin ui page
@@ -38,7 +40,7 @@ public class PostloginUI {
             // if logout
             else if (inputList[0].equalsIgnoreCase("logout")){
                 try {
-                    URI uri = new URI("http://localhost:8080/session");
+                    URI uri = new URI(serverUrl + "/session");
                     HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
                     http.setRequestMethod("DELETE");
                     http.addRequestProperty("Authorization", authToken);
@@ -72,7 +74,7 @@ public class PostloginUI {
                     System.out.println(getHelp());
                 } else {
                     try {
-                        URI uri = new URI("http://localhost:8080/game");
+                        URI uri = new URI( serverUrl + "/game");
                         HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
                         http.setRequestMethod("POST");
                         http.addRequestProperty("Authorization", authToken);
@@ -140,7 +142,7 @@ public class PostloginUI {
             //list games
             else if (inputList[0].equalsIgnoreCase("list")) {
                 try {
-                    URI uri = new URI("http://localhost:8080/game");
+                    URI uri = new URI(serverUrl + "/game");
                     HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
                     http.setRequestMethod("GET");
                     http.addRequestProperty("Authorization", authToken);
@@ -192,7 +194,7 @@ public class PostloginUI {
 
     private void runJoinOrObserve(JoinGameRequest request){
         try {
-            URI uri = new URI("http://localhost:8080/game");
+            URI uri = new URI(serverUrl + "/game");
             HttpURLConnection http = (HttpURLConnection) uri.toURL().openConnection();
             http.setRequestMethod("PUT");
             http.addRequestProperty("Authorization", authToken);
