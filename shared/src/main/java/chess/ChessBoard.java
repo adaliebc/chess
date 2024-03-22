@@ -52,34 +52,64 @@ public class ChessBoard {
 
     public String toStringWhite() {
         String box = "";
-        for(int i = 0; i < 9; i++) {
+        for(int i = 1; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
+                String piece;
                 ChessPiece item = getPiece(new ChessPosition(i, j));
                 if(item != null) {
-                    box += item.toString();
+                    piece = item.toString();
                 } else {
-                    box += " ";
+                    piece = " \u2003 ";
+                }
+                box += piece;
+                if (i % 2 == 0 && j % 2 == 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
+                } else if (i % 2 == 0 && j % 2 != 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + piece);
+                } else if (i % 2 != 0 && j % 2 == 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + piece);
+                } else if (i % 2 != 0 && j % 2 != 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
                 }
             }
+            System.out.println("");
             box += "\n";
         }
-        return box;
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        //return box;
+        return "";
     }
 
     public String toStringBlack() {
         String box = "";
-        for(int i = 8; i >= 0; i--) {
-            for(int j = 8; j >= 0; j--) {
+        for(int i = 8; i >= 1; i--) {
+            for(int j = 8; j >= 1; j--) {
+                String piece;
                 ChessPiece item = getPiece(new ChessPosition(i, j));
                 if(item != null) {
-                    box += item.toString();
+                    piece = item.toString();
                 } else {
-                    box += " ";
+                    piece = " \u2003 ";
+                }
+                box += piece;
+                if (i % 2 == 0 && j % 2 == 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
+                } else if (i % 2 == 0 && j % 2 != 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + piece);
+                } else if (i % 2 != 0 && j % 2 == 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + piece);
+                } else if (i % 2 != 0 && j % 2 != 0){
+                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
                 }
             }
+            System.out.println("");
             box += "\n";
         }
-        return box;
+        //return box;
+        return "";
     }
 
     /**
