@@ -53,7 +53,7 @@ public class ChessBoard {
     public String toStringWhite() {
         String box = "";
         for(int i = 1; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
+            for(int j = 1; j < 9; j++) {
                 String piece;
                 ChessPiece item = getPiece(new ChessPosition(i, j));
                 if(item != null) {

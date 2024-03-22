@@ -65,7 +65,7 @@ public static void main(String[] args){
             } else if (inputList[0].equalsIgnoreCase("join")|| inputList[0].equalsIgnoreCase("observe")) {
                 ChessGame game = facade.joinGame(inputList);
                 if(game != null){
-                    System.out.print("Successfully joined the game!");
+                    System.out.println("Successfully joined the game!");
                     gamePlayUI.printBoard(game);
                 }
             }else if (inputList[0].equalsIgnoreCase("list")) {
