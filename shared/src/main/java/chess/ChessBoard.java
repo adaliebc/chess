@@ -51,8 +51,14 @@ public class ChessBoard {
     }
 
     public String toStringWhite() {
-        String box = "";
+        //String box = "";
+        String[] columns = {"A", "B", "C", "D", "E", "F", "G", "H"};
+        for(String letter :columns) {
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + "\s\s" + letter);
+        }
+        System.out.println();
         for(int i = 1; i < 9; i++) {
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
             for(int j = 1; j < 9; j++) {
                 String piece;
                 ChessPiece item = getPiece(new ChessPosition(i, j));
@@ -61,7 +67,7 @@ public class ChessBoard {
                 } else {
                     piece = " \u2003 ";
                 }
-                box += piece;
+                //box += piece;
                 if (i % 2 == 0 && j % 2 == 0){
                     System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
                 } else if (i % 2 == 0 && j % 2 != 0){
@@ -72,43 +78,56 @@ public class ChessBoard {
                     System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
                 }
             }
-            System.out.println("");
-            box += "\n";
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
+            System.out.println();
+            //box += "\n";
         }
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
+        for(String letter :columns) {
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + "\s\s" + letter);
+        }
+        System.out.println();
+        System.out.println();
         //return box;
         return "";
     }
 
     public String toStringBlack() {
-        String box = "";
+        //String box = "";
+        String[] columns = {"H", "G", "F", "E", "D", "C", "B", "A"};
+        for(String letter :columns){
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + "\s\s" + letter);
+        }
+        System.out.println();
         for(int i = 8; i >= 1; i--) {
-            for(int j = 8; j >= 1; j--) {
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
+            for (int j = 8; j >= 1; j--) {
                 String piece;
                 ChessPiece item = getPiece(new ChessPosition(i, j));
-                if(item != null) {
+                if (item != null) {
                     piece = item.toString();
                 } else {
                     piece = " \u2003 ";
                 }
-                box += piece;
-                if (i % 2 == 0 && j % 2 == 0){
+                //box += piece;
+                if (i % 2 == 0 && j % 2 == 0) {
                     System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
-                } else if (i % 2 == 0 && j % 2 != 0){
+                } else if (i % 2 == 0 && j % 2 != 0) {
                     System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + piece);
-                } else if (i % 2 != 0 && j % 2 == 0){
+                } else if (i % 2 != 0 && j % 2 == 0) {
                     System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + piece);
-                } else if (i % 2 != 0 && j % 2 != 0){
+                } else if (i % 2 != 0 && j % 2 != 0) {
                     System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + piece);
                 }
             }
-            System.out.println("");
-            box += "\n";
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
+            System.out.println();
+            //box += "\n";
         }
         //return box;
+        for(String letter :columns) {
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + "\s\s" + letter);
+        }
+        System.out.println();
         return "";
     }
 
