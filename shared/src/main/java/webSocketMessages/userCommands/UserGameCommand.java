@@ -10,6 +10,9 @@ import java.util.Objects;
  */
 public class UserGameCommand {
 
+    //this guy sends commands to the server, then receives the messages back and send that to the user
+    //client talks to this guy through GamePlayUI
+
     public UserGameCommand(String authToken) {
         this.authToken = authToken;
     }
