@@ -1,5 +1,9 @@
 package webSocketMessages.userCommands;
 
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
+
 import java.util.Objects;
 
 /**
@@ -11,6 +15,7 @@ import java.util.Objects;
 public class UserGameCommand {
 
     //sends commands to websocket server
+    //we never pass it a command type
 
     public UserGameCommand(String authToken) {
         this.authToken = authToken;
@@ -49,5 +54,22 @@ public class UserGameCommand {
     @Override
     public int hashCode() {
         return Objects.hash(getCommandType(), getAuthString());
+    }
+
+    //not sure if this is the right place to do this
+    public void makeMove(ChessMove move, ChessGame game) throws InvalidMoveException {
+        game.makeMove(move);
+        // update game (game)
+        //send message through websocket
+    }
+
+    public void resign(String username){
+        //end the game
+        //mark other player as winner
+    }
+
+    public void leave(){
+        //call handler and have them remove the user's connection
+        //send the message
     }
 }

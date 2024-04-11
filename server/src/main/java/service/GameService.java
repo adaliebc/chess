@@ -66,6 +66,7 @@ public class GameService {
         String game = new Gson().toJson(chessGame);
         //pass serialized chessgame to update game in dao
         gdao.updateGame(gameID, game);
+        //send a message through websocket here or in game command
         return gdao.getGame(gameID);
     }
 }
