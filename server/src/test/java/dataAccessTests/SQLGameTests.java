@@ -26,7 +26,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         sql.createGame(game);
         sql.clear();
 
@@ -41,7 +41,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         sql.createGame(game);
 
         GameData gotGame = sql.getGame(gameID);
@@ -57,7 +57,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamenamenadfufgiuevveiuiueriurgufrguiiugfrgilurgilufrgiurgiufrgiufrgiurgiluergiuregiurgiufrgiurgiurguigiufrgiufrgiugiulfgriluguilfrgiulfrgilufrgilufgiufrgilufrgiulfrgilufrgu";
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         sql.createGame(game);
 
         Assertions.assertFalse(sql.createGame(game));
@@ -72,7 +72,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         sql.createGame(game);
 
         GameData gotGame = sql.getGame(gameID);
@@ -89,7 +89,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         sql.createGame(game);
 
         GameData gotGame = sql.getGame(9876);
@@ -107,7 +107,7 @@ public class SQLGameTests {
             sql.clear();
             int gameID = 1234;
             String gameName = "gamename";
-            GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+            GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
             sql.createGame(game);
 
             String playerColor = "whiteUsername";
@@ -138,7 +138,7 @@ public class SQLGameTests {
             sql.clear();
             int gameID = 1234;
             String gameName = "gamename";
-            GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+            GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
             sql.createGame(game);
 
             String playerColor = "whiteUsername";
@@ -163,7 +163,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         sql.createGame(game);
         gameRecord.add(game);
 
@@ -181,7 +181,7 @@ public class SQLGameTests {
         sql.clear();
         int gameID = 1234;
         String gameName = "gamename";
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         sql.createGame(game);
         gameRecord.add(game);
 

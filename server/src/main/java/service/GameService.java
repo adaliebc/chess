@@ -29,7 +29,7 @@ public class GameService {
             return null;
         }
         int gameID = generateGameID();
-        GameData game = new GameData(gameID, null, null, gameName, new ChessGame());
+        GameData game = new GameData(gameID, null, null, gameName, new ChessGame().getBoard());
         gdao.createGame(game);
         return new GameID(gameID);
     }

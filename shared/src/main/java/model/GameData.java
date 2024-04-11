@@ -1,10 +1,11 @@
 package model;
 
 import chess.*;
+import chess.ChessBoard;
 
 import java.util.Objects;
 
-public record GameData(int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game) {
+public record GameData(int gameID, String whiteUsername, String blackUsername, String gameName, chess.ChessBoard game) {
     //create new game
     //add players
 

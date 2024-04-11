@@ -1,6 +1,6 @@
 package ui;
 
-import chess.ChessGame;
+import chess.ChessBoard;
 
 public class GamePlayUI {
     String authToken = "";
@@ -34,7 +34,7 @@ public class GamePlayUI {
     //I need a function that creates a websocket that the connections add to
     // server facade talks to the websocket
 
-    public void printBoard(ChessGame game){
+    public void printBoard(ChessBoard game){
         //add in a specification, if black, print the board from blacks perspective
         //if white, print white
         //else if it is a obersevr, print both

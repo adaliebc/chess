@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessBoard;
 import chess.ChessGame;
 import model.GameData;
 
@@ -63,7 +64,7 @@ public static void main(String[] args){
                     System.out.println("Use GameID to join game");
                 }
             } else if (inputList[0].equalsIgnoreCase("join")|| inputList[0].equalsIgnoreCase("observe")) {
-                ChessGame game = facade.joinGame(inputList);
+                ChessBoard game = facade.joinGame(inputList);
                 if(game != null){
                     System.out.println("Successfully joined the game!");
                     gamePlayUI.printBoard(game);

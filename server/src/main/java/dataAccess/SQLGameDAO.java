@@ -45,7 +45,7 @@ public class SQLGameDAO implements GameDAO{
 
 
     public boolean createGame(GameData game) {try {
-        String serializedGame = new Gson().toJson(new ChessGame());
+        String serializedGame = new Gson().toJson(game.game());
         var sql = "insert into gameRecord (gameID, gameName, chessGame)"
                 + " values('" + game.gameID() + "','" + game.gameName().replaceAll("'", "''") + "','" + serializedGame +"')";
         Connection conn = DatabaseManager.getConnection();
@@ -156,7 +156,7 @@ public class SQLGameDAO implements GameDAO{
     private void createTable() throws ResponseException {
         try{
             DatabaseManager.createDatabase();
-            String createStatements =  "CREATE TABLE IF NOT EXISTS  gameRecord (gameID int NOT NULL,whiteUsername varchar(256), blackUsername varchar(100), gameName varchar(100) NOT NULL, chessGame varchar(1024))";
+            String createStatements =  "CREATE TABLE IF NOT EXISTS  gameRecord (gameID int NOT NULL,whiteUsername varchar(256), blackUsername varchar(100), gameName varchar(100) NOT NULL, chessGame TEXT)";
             Connection conn = DatabaseManager.getConnection();
             Statement stmt = conn.createStatement();
             int i = stmt.executeUpdate(createStatements);

@@ -1,6 +1,6 @@
 package ui;
 
-import chess.ChessGame;
+import chess.ChessBoard;
 import com.google.gson.Gson;
 import model.*;
 import spark.utils.IOUtils;
@@ -104,7 +104,7 @@ public class ServerFacade {
         return 0;
     }
 
-    public ChessGame joinGame(String[] inputList){
+    public ChessBoard joinGame(String[] inputList){
         int gameID;
         try{
             gameID = Integer.parseInt(inputList[1]);
