@@ -30,4 +30,10 @@ public class WebSocketHandler {
 
     //make a move message
     //send out a message that says username moved here
+
+    //in check message
+
+    //game is over message
+    //sends to webfacade and notification handler
+
 }

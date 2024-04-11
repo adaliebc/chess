@@ -14,8 +14,8 @@ import java.util.Objects;
  */
 public class UserGameCommand {
 
-    //sends commands to websocket server
-    //we never pass it a command type
+    //we create the commands here in facade and sends it to handler
+    //handler gets it and does the thing
 
     public UserGameCommand(String authToken) {
         this.authToken = authToken;
@@ -41,6 +41,10 @@ public class UserGameCommand {
         return this.commandType;
     }
 
+    public void setCommandType(CommandType commandType){
+        this.commandType = commandType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -56,7 +60,7 @@ public class UserGameCommand {
         return Objects.hash(getCommandType(), getAuthString());
     }
 
-    //not sure if this is the right place to do this
+    //not sure if this is the right place to do this, it's not, move it to handler
     public void makeMove(ChessMove move, ChessGame game) throws InvalidMoveException {
         game.makeMove(move);
         // update game (game)
