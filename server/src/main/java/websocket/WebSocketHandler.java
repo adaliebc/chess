@@ -1,7 +1,5 @@
 package websocket;
 
-import chess.ChessGame;
-import chess.ChessMove;
 import chess.InvalidMoveException;
 import com.google.gson.Gson;
 //import dataaccess.DataAccess;
@@ -14,8 +12,6 @@ import webSocketMessages.userCommands.UserGameCommand;
 //import webSocketMessages.Action;
 //import webSocketMessages.Notification;
 
-import java.io.IOException;
-import java.util.Timer;
 @WebSocket
 public class WebSocketHandler {
     ConnectionManager connectionManager= new ConnectionManager();
@@ -38,7 +34,7 @@ public class WebSocketHandler {
             switch (command.getCommandType()) {
                 case JOIN_PLAYER -> join(conn, msg);
                 case JOIN_OBSERVER -> observe(conn, msg);
-                case MAKE_MOVE -> makeMove(conn, msg););
+                case MAKE_MOVE -> makeMove(conn, msg);
                 case LEAVE -> leave(conn, msg);
                 case RESIGN -> resign(conn, msg);
             }
@@ -76,14 +72,22 @@ public class WebSocketHandler {
         //send message through websocket
     }
 
-    public void resign(String username){
+    public void resign(Connection conn, String msg){
         //end the game
         //mark other player as winner
     }
 
-    public void leave(){
+    public void leave(Connection conn, String msg){
         //call handler and have them remove the user's connection
         //send the message
+    }
+
+    private void join(Connection conn, String msg){
+
+    }
+
+    private void observe(Connection conn, String msg){
+
     }
 
 }
