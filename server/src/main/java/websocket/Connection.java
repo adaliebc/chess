@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Connection {
-    String username;
+    String authToken;
     Session session;
     //may need to change Session in connections to Connection
 
     //consructor
-    public Connection(String username, Session session){
-        this.username = username;
+    public Connection(String authToken, Session session){
+        this.authToken = authToken;
         this.session = session;
     }
 

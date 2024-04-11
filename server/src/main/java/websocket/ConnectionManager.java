@@ -10,5 +10,9 @@ public class ConnectionManager {
 
     //function to create a connection and add it to connections
     //function to remove that
+    //function to get the connection
+    public Connection getConnection(String authToken){
+        return connections.get(authToken);
+    }
     //broadcast function
 }

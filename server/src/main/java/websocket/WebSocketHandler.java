@@ -1,20 +1,53 @@
 package websocket;
 
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
 //import dataaccess.DataAccess;
 //import exception.ResponseException;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
+import service.GameService;
+import webSocketMessages.userCommands.UserGameCommand;
 //import webSocketMessages.Action;
 //import webSocketMessages.Notification;
 
 import java.io.IOException;
 import java.util.Timer;
-
+@WebSocket
 public class WebSocketHandler {
+    ConnectionManager connectionManager= new ConnectionManager();
+    GameService gameService;
+    private String authToken;
+
+    public WebSocketHandler(GameService gameService){
+        this.gameService = gameService;
+    }
     //Connection connection = new Connection();
     //establish a link to connections in connections
+
+
+    @OnWebSocketMessage
+    public void onMessage(Session session, String msg) throws Exception {
+        UserGameCommand command = new Gson().fromJson(msg, UserGameCommand.class);
+        authToken = command.getAuthString();
+        var conn = connectionManager.getConnection(command.getAuthString());
+        if (conn != null) {
+            switch (command.getCommandType()) {
+                case JOIN_PLAYER -> join(conn, msg);
+                case JOIN_OBSERVER -> observe(conn, msg);
+                case MAKE_MOVE -> makeMove(conn, msg););
+                case LEAVE -> leave(conn, msg);
+                case RESIGN -> resign(conn, msg);
+            }
+        } else {
+            Connection.sendError(session.getRemote(), "unknown user");
+        }
+    }
+
+
 
     //manage connections
 
@@ -35,5 +68,22 @@ public class WebSocketHandler {
 
     //game is over message
     //sends to webfacade and notification handler
+
+    public void makeMove(Connection connection, String request) throws InvalidMoveException {
+        //request needs to have a chess game and a move object
+        //game.makeMove(move);
+        // update game (game)
+        //send message through websocket
+    }
+
+    public void resign(String username){
+        //end the game
+        //mark other player as winner
+    }
+
+    public void leave(){
+        //call handler and have them remove the user's connection
+        //send the message
+    }
 
 }

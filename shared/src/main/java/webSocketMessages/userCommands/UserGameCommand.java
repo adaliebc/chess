@@ -59,21 +59,4 @@ public class UserGameCommand {
     public int hashCode() {
         return Objects.hash(getCommandType(), getAuthString());
     }
-
-    //not sure if this is the right place to do this, it's not, move it to handler
-    public void makeMove(ChessMove move, ChessGame game) throws InvalidMoveException {
-        game.makeMove(move);
-        // update game (game)
-        //send message through websocket
-    }
-
-    public void resign(String username){
-        //end the game
-        //mark other player as winner
-    }
-
-    public void leave(){
-        //call handler and have them remove the user's connection
-        //send the message
-    }
 }
