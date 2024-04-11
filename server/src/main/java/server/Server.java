@@ -4,13 +4,17 @@ import com.google.gson.Gson;
 import spark.*;
 import service.*;
 import model.*;
+import websocket.WebSocketHandler;
 
 public class Server {
+    //add functions to the bodies that send messages from handler
     UserService userService = new UserService();
     AuthService authService = new AuthService();
     GameService gameService = new GameService();
+    private WebSocketHandler webSocketHandler;
     public static void main(String[] args) {
         new Server().run(8080);
+        webSocketHandler = new WebSocketHandler();
     }
 
     public int run(int desiredPort) {
@@ -18,6 +22,8 @@ public class Server {
 
         Spark.staticFiles.location("web");
 
+        //connects to WebSocket
+        Spark.webSocket("/connect", webSocketHandler);
         // Register your endpoints and handle exceptions here.
         Spark.get("/hello", (req, resp) -> "Hello World");
         Spark.delete("/db", this::clearBody);

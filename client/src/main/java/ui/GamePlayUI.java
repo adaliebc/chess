@@ -3,10 +3,15 @@ package ui;
 import chess.ChessGame;
 
 public class GamePlayUI {
-    //create a main function
-    //local variable team color, and game ID
+    String authToken = "";
+    int gameID;
+    //player color: either a string that can say observer, black or white, or the actual team color
 
-    // a function that accepts user input
+    //create a main function
+    //makes a play game function
+
+    //playGame()
+    //accept user input
 
     //have to be able to join, leave, resign, make_move, help, show valid moves, redraw chess board,
     //while input is not leave or resign
