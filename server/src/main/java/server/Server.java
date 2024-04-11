@@ -14,7 +14,7 @@ public class Server {
     private WebSocketHandler webSocketHandler;
     public static void main(String[] args) {
         new Server().run(8080);
-        webSocketHandler = new WebSocketHandler();
+        //webSocketHandler = new WebSocketHandler();
     }
 
     public int run(int desiredPort) {

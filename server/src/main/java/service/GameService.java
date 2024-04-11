@@ -1,14 +1,12 @@
 package service;
 
 import chess.ChessGame;
-import dataAccess.MemoryGameDAO;
+import com.google.gson.Gson;
 import dataAccess.SQLGameDAO;
 import model.*;
 
 import java.util.Collection;
 import java.util.Random;
-import com.google.gson.Gson;
-import java.util.Objects;
 
 public class GameService {
 
@@ -62,5 +60,12 @@ public class GameService {
     public GameList getGameList() {
         Collection<GameData> gameRecord = gdao.getGameRecord();
         return new GameList(gameRecord);
+    }
+    public GameData updateGame(int gameID, ChessGame chessGame) throws ResponseException {
+        //serialize the chessgame
+        String game = new Gson().toJson(chessGame);
+        //pass serialized chessgame to update game in dao
+        gdao.updateGame(gameID, game);
+        return gdao.getGame(gameID);
     }
 }

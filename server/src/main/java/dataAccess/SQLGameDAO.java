@@ -1,8 +1,10 @@
 package dataAccess;
 
 import chess.ChessGame;
+import com.google.gson.Gson;
 import model.GameData;
 import model.GameInfo;
+import model.UserData;
 import service.ResponseException;
 
 import java.sql.Connection;
@@ -79,8 +81,8 @@ public class SQLGameDAO implements GameDAO{
                 game = user.getString(5);
             }
             user.close();
-            //fix game in phase 6
-            return new GameData(gotGameID, whiteUsername, blackUsername, gameName, new ChessGame());
+            var chessGame = new Gson().fromJson(game, ChessGame.class);
+            return new GameData(gotGameID, whiteUsername, blackUsername, gameName, chessGame);
         } catch (Exception e) {
             return null;
         }
@@ -88,22 +90,36 @@ public class SQLGameDAO implements GameDAO{
 
 
     public void addPlayer(int gameID, String playerColor, String username) throws ResponseException {
-        try{
-        var sql = "update gameRecord set " + playerColor + "=" + "'" + username + "'" + "where gameID = " + gameID;
-        Connection conn = DatabaseManager.getConnection();
-        Statement stmt = conn.createStatement();
-        int i = stmt.executeUpdate(sql);
-        if (i > 0) {
-            System.out.println("ROW UPDATED");
-        } else {
-            System.out.println("ROW NOT UPDATED");
-        }
-    } catch (Exception e) {
+        try {
+            var sql = "update gameRecord set " + playerColor + "=" + "'" + username + "'" + "where gameID = " + gameID;
+            Connection conn = DatabaseManager.getConnection();
+            Statement stmt = conn.createStatement();
+            int i = stmt.executeUpdate(sql);
+            if (i > 0) {
+                System.out.println("ROW UPDATED");
+            } else {
+                System.out.println("ROW NOT UPDATED");
+            }
+        } catch (Exception e) {
             throw new ResponseException(403, "{ \"message\": \"Error: Unable to Add User\" }");
+        }
     }
+        public void updateGame(int gameID, String chessGame) throws ResponseException {
+            try {
+                var sql = "update gameRecord set chessGame" + "=" + "'" + chessGame + "'" + "where gameID = " + gameID;
+                Connection conn = DatabaseManager.getConnection();
+                Statement stmt = conn.createStatement();
+                int i = stmt.executeUpdate(sql);
+                if (i > 0) {
+                    System.out.println("ROW UPDATED");
+                } else {
+                    System.out.println("ROW NOT UPDATED");
+                }
+            } catch (Exception e) {
+                throw new ResponseException(403, "{ \"message\": \"Error: Unable to Update Game\" }");
+            }
 
-
-}
+        }
 
 
     public Collection<GameData> getGameRecord() {
@@ -123,7 +139,8 @@ public class SQLGameDAO implements GameDAO{
                         blackUsername = rs.getString(3);
                         gameName = rs.getString(4);
                         chessGame = rs.getString(5);
-                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, new ChessGame());
+                        var game = new Gson().fromJson(chessGame, ChessGame.class);
+                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, game);
                         result.add(gameData);
                     }
                 }

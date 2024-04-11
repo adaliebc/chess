@@ -1,6 +1,11 @@
 package ui;
 
+import javax.websocket.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 public class WebSocketFacade {
-//talks to websocket handler
-    //sorta the middle man between server facade and websocket
+//sends commands to server
+    //i think we call the functions in UserGameCommand
 }

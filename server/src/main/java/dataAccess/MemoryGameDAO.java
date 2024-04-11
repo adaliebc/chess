@@ -2,6 +2,7 @@ package dataAccess;
 
 import model.GameData;
 import model.GameInfo;
+import service.ResponseException;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -27,6 +28,12 @@ public class MemoryGameDAO implements GameDAO{
         return null;
     }
     public void addPlayer(int gameID, String playerColor, String username){
+        //note, this no longer works
+        var placeholder = 0;
+    }
+
+
+    public void updateGame(int gameID, String chessGame) throws ResponseException {
         //note, this no longer works
         var placeholder = 0;
     }
