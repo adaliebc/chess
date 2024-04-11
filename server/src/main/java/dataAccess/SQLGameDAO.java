@@ -83,8 +83,8 @@ public class SQLGameDAO implements GameDAO{
                 game = user.getString(5);
             }
             user.close();
-            var chessGame = new Gson().fromJson(game, ChessBoard.class);
-            return new GameData(gotGameID, whiteUsername, blackUsername, gameName, chessGame.chessGame());
+            var chessGame = new Gson().fromJson(game, chess.ChessBoard.class);
+            return new GameData(gotGameID, whiteUsername, blackUsername, gameName, chessGame);
         } catch (Exception e) {
             return null;
         }
@@ -141,8 +141,8 @@ public class SQLGameDAO implements GameDAO{
                         blackUsername = rs.getString(3);
                         gameName = rs.getString(4);
                         chessGame = rs.getString(5);
-                        var game = new Gson().fromJson(chessGame, ChessBoard.class);
-                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, game.chessGame());
+                        var game = new Gson().fromJson(chessGame, chess.ChessBoard.class);
+                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, game);
                         result.add(gameData);
                     }
                 }
