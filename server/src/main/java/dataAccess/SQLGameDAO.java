@@ -2,6 +2,7 @@ package dataAccess;
 
 import chess.ChessGame;
 import com.google.gson.Gson;
+import model.ChessBoard;
 import model.GameData;
 import model.GameInfo;
 import model.UserData;
@@ -44,8 +45,9 @@ public class SQLGameDAO implements GameDAO{
 
 
     public boolean createGame(GameData game) {try {
+        String serializedGame = new Gson().toJson(new ChessGame());
         var sql = "insert into gameRecord (gameID, gameName, chessGame)"
-                + " values('" + game.gameID() + "','" + game.gameName().replaceAll("'", "''") + "','" + game.game() +"')";
+                + " values('" + game.gameID() + "','" + game.gameName().replaceAll("'", "''") + "','" + serializedGame +"')";
         Connection conn = DatabaseManager.getConnection();
         Statement stmt = conn.createStatement();
         int i = stmt.executeUpdate(sql);
@@ -81,8 +83,8 @@ public class SQLGameDAO implements GameDAO{
                 game = user.getString(5);
             }
             user.close();
-            var chessGame = new Gson().fromJson(game, ChessGame.class);
-            return new GameData(gotGameID, whiteUsername, blackUsername, gameName, chessGame);
+            var chessGame = new Gson().fromJson(game, ChessBoard.class);
+            return new GameData(gotGameID, whiteUsername, blackUsername, gameName, chessGame.chessGame());
         } catch (Exception e) {
             return null;
         }
@@ -139,8 +141,8 @@ public class SQLGameDAO implements GameDAO{
                         blackUsername = rs.getString(3);
                         gameName = rs.getString(4);
                         chessGame = rs.getString(5);
-                        var game = new Gson().fromJson(chessGame, ChessGame.class);
-                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, game);
+                        var game = new Gson().fromJson(chessGame, ChessBoard.class);
+                       GameData gameData = new GameData(gotGameID, whiteUsername, blackUsername, gameName, game.chessGame());
                         result.add(gameData);
                     }
                 }
