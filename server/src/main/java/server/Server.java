@@ -11,10 +11,11 @@ public class Server {
     UserService userService = new UserService();
     AuthService authService = new AuthService();
     GameService gameService = new GameService();
-    private WebSocketHandler webSocketHandler;
+    private WebSocketHandler webSocketHandler = new WebSocketHandler(gameService);
     public static void main(String[] args) {
-        new Server().run(8080);
-        this.webSocketHandler = new WebSocketHandler(gameService);
+       Server s = new Server();
+        s.webSocketHandler = new WebSocketHandler(s.gameService);
+       s.run(8080);
     }
 
     public int run(int desiredPort) {

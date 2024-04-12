@@ -1,5 +1,6 @@
 package websocket;
 
+import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
 
 import java.io.IOException;
@@ -25,4 +26,7 @@ public class Connection {
     }
 
     //send error function
+    public void sendError(RemoteEndpoint session, String msg) throws IOException {
+        //session.getRemote().sendString(msg);
+    }
 }

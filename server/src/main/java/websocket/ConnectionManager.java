@@ -9,6 +9,10 @@ public class ConnectionManager {
 
 
     //function to create a connection and add it to connections
+    public void add(String authToken, Session session) {
+        var connection = new Connection(authToken, session);
+        connections.put(authToken, connection);
+    }
     //function to remove that
     //function to get the connection
     public Connection getConnection(String authToken){

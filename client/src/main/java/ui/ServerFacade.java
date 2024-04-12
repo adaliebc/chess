@@ -21,7 +21,7 @@ public class ServerFacade {
         serverUrl = "http://localhost:" + port;
     }
 
-
+    public String getAuthToken() {return authToken;}
     public void clear(){
         makeRequest("/db", "DELETE", null, "");
     }

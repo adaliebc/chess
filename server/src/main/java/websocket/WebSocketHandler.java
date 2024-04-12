@@ -8,6 +8,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import service.GameService;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
 //import webSocketMessages.Action;
 //import webSocketMessages.Notification;
@@ -32,14 +33,18 @@ public class WebSocketHandler {
         var conn = connectionManager.getConnection(command.getAuthString());
         if (conn != null) {
             switch (command.getCommandType()) {
-                case JOIN_PLAYER -> join(conn, msg);
-                case JOIN_OBSERVER -> observe(conn, msg);
                 case MAKE_MOVE -> makeMove(conn, msg);
                 case LEAVE -> leave(conn, msg);
                 case RESIGN -> resign(conn, msg);
             }
         } else {
-            Connection.sendError(session.getRemote(), "unknown user");
+            connectionManager.add(authToken, session);
+            conn = connectionManager.getConnection(command.getAuthString());
+            switch (command.getCommandType()) {
+                case JOIN_PLAYER -> join(conn, command);
+                case JOIN_OBSERVER -> observe(conn, command);
+            }
+            //conn.sendError(session.getRemote(), "unknown user");
         }
     }
 
@@ -65,7 +70,7 @@ public class WebSocketHandler {
     //game is over message
     //sends to webfacade and notification handler
 
-    public void makeMove(Connection connection, String request) throws InvalidMoveException {
+    public void makeMove(Connection conn, String msg) throws InvalidMoveException {
         //request needs to have a chess game and a move object
         //game.makeMove(move);
         // update game (game)
@@ -82,11 +87,20 @@ public class WebSocketHandler {
         //send the message
     }
 
-    private void join(Connection conn, String msg){
+    private void join(Connection conn, UserGameCommand msg){
+        String command = msg.getCommand();
+        String[] commandList = command.split(",");
+        ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        message.setMessage(commandList[1] + " joined the game!");
+        try {
+            conn.send(new Gson().toJson(message));
+        } catch(Exception E){
+            System.out.println(E.getMessage());
+        }
 
     }
 
-    private void observe(Connection conn, String msg){
+    private void observe(Connection conn, UserGameCommand msg){
 
     }
 

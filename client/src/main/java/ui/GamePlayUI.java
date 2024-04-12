@@ -5,18 +5,18 @@ import webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Scanner;
 
-public class GamePlayUI implements ServerMessageObserver{
+public class GamePlayUI {
     String authToken = "";
     int gameID;
     //player color: either a string that can say observer, black or white, or the actual team color
-    @Override
+    /*@Override
     public void notify(ServerMessage message) {
         switch (message.getServerMessageType()) {
             case NOTIFICATION -> displayNotification(((NotificationMessage) message).getMessage());
             case ERROR -> displayError(((ErrorMessage) message).getErrorMessage());
             case LOAD_GAME -> loadGame(((LoadGameMessage) message).getGame());
         }
-    }
+    }*/
     //create a main function
     //makes a play game function
     public void playGame() {

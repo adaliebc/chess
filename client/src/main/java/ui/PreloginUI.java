@@ -10,12 +10,14 @@ import java.util.Scanner;
 public class PreloginUI {
 
     private ServerFacade facade;
+    private WebSocketFacade websocketFacade;
     private PostloginUI postloginUI;
     private GamePlayUI gamePlayUI;
     private boolean loggedIn;
 
     public PreloginUI() {
         facade = new ServerFacade(8080);
+        websocketFacade = new WebSocketFacade();
         postloginUI = new PostloginUI();
         gamePlayUI = new GamePlayUI();
     }
@@ -65,8 +67,10 @@ public static void main(String[] args){
                 }
             } else if (inputList[0].equalsIgnoreCase("join")|| inputList[0].equalsIgnoreCase("observe")) {
                 ChessBoard game = facade.joinGame(inputList);
+                //call join game fnction in wsfacade
                 if(game != null){
                     System.out.println("Successfully joined the game!");
+                    websocketFacade.joinGame(inputList, facade.getAuthToken());
                     gamePlayUI.printBoard(game);
                 }
             }else if (inputList[0].equalsIgnoreCase("list")) {

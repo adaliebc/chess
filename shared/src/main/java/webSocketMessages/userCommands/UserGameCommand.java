@@ -32,6 +32,7 @@ public class UserGameCommand {
     protected CommandType commandType;
 
     private final String authToken;
+    private String command;
 
     public String getAuthString() {
         return authToken;
@@ -40,7 +41,12 @@ public class UserGameCommand {
     public CommandType getCommandType() {
         return this.commandType;
     }
-
+    public String getCommand() {
+        return this.command;
+    }
+    public void setCommand(String command) {
+        this.command = command;
+    }
     public void setCommandType(CommandType commandType){
         this.commandType = commandType;
     }
