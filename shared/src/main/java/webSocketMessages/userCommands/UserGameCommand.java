@@ -55,7 +55,7 @@ public class UserGameCommand {
     public int getGameID(){
         return this.gameID;
     }
-    public void setGameID(int gameID){this.gameID = gameID}
+    public void setGameID(int gameID){this.gameID = gameID;}
     public ChessGame.TeamColor getPlayerColor(){return this.playerColor;}
 
     public void setPlayerColor(ChessGame.TeamColor playerColor) {

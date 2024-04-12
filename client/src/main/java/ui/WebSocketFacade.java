@@ -13,10 +13,12 @@ import webSocketMessages.userCommands.UserGameCommand;
 
 public class WebSocketFacade extends Endpoint{
     private Session session;
+    private NotificationHandler notificationHandler;
 //sends commands to server
     //i think we call the functions in UserGameCommand to send to handler
 
-    public WebSocketFacade() {
+    public WebSocketFacade(NotificationHandler notificationHandler) {
+        this.notificationHandler = notificationHandler;
         try {
             URI uri = new URI("ws://localhost:8080/connect");
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
@@ -25,7 +27,7 @@ public class WebSocketFacade extends Endpoint{
             this.session.addMessageHandler(new MessageHandler.Whole<String>() {
                 public void onMessage(String message) {
                     //System.out.println(message);
-                    onMessage(message);
+                    notifyMessage(message);
                 }
             });
         } catch (Exception e) {
@@ -36,10 +38,10 @@ public class WebSocketFacade extends Endpoint{
     public void send(String msg) throws Exception {this.session.getBasicRemote().sendText(msg);}
     public void onOpen(Session session, EndpointConfig endpointConfig) {}
 
-    public void onMessage(String inputMessage) {
+    public void notifyMessage(String inputMessage) {
         try {
             ServerMessage message = new Gson().fromJson(inputMessage, ServerMessage.class);
-            //observer.notify(message);
+            notificationHandler.notify(message);
         } catch(Exception ex) {
             //observer.notify(new ErrorMessage(ex.getMessage()));
         }

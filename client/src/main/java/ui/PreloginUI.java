@@ -13,11 +13,13 @@ public class PreloginUI {
     private WebSocketFacade websocketFacade;
     private PostloginUI postloginUI;
     private GamePlayUI gamePlayUI;
+    private NotificationHandler notificationHandler;
     private boolean loggedIn;
 
     public PreloginUI() {
         facade = new ServerFacade(8080);
-        websocketFacade = new WebSocketFacade();
+        notificationHandler = new NotificationHandler();
+        websocketFacade = new WebSocketFacade(notificationHandler);
         postloginUI = new PostloginUI();
         gamePlayUI = new GamePlayUI();
     }

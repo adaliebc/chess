@@ -98,11 +98,14 @@ public class WebSocketHandler {
         ChessGame.TeamColor playerColor = msg.getPlayerColor();
         ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
         ChessBoard game = gameService.getGame(gameID);
+        ChessGame chessGame = new ChessGame();
+        chessGame.setBoard(game);
+        message.setGame(chessGame);
         if(playerColor == ChessGame.TeamColor.WHITE){
-            message.setMessage(game.toStringWhite());
+            message.setMessage("white");
         }
         else {
-            message.setMessage(game.toStringBlack());
+            message.setMessage("black");
         }
         //String username = userService.getUsername(authToken);
         //send this as a broadcast
