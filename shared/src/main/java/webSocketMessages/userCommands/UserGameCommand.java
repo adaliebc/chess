@@ -33,6 +33,8 @@ public class UserGameCommand {
 
     private final String authToken;
     private String command;
+    private int gameID;
+    private ChessGame.TeamColor playerColor;
 
     public String getAuthString() {
         return authToken;
@@ -49,6 +51,15 @@ public class UserGameCommand {
     }
     public void setCommandType(CommandType commandType){
         this.commandType = commandType;
+    }
+    public int getGameID(){
+        return this.gameID;
+    }
+    public void setGameID(int gameID){this.gameID = gameID}
+    public ChessGame.TeamColor getPlayerColor(){return this.playerColor;}
+
+    public void setPlayerColor(ChessGame.TeamColor playerColor) {
+        this.playerColor = playerColor;
     }
 
     @Override

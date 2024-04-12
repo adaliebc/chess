@@ -1,5 +1,6 @@
 package service;
 
+import chess.ChessBoard;
 import chess.ChessGame;
 import com.google.gson.Gson;
 import dataAccess.SQLGameDAO;
@@ -61,12 +62,17 @@ public class GameService {
         Collection<GameData> gameRecord = gdao.getGameRecord();
         return new GameList(gameRecord);
     }
-    public GameData updateGame(int gameID, ChessGame chessGame) throws ResponseException {
+    public GameData updateGame(int gameID, ChessBoard chessGame) throws ResponseException {
         //serialize the chessgame
         String game = new Gson().toJson(chessGame);
         //pass serialized chessgame to update game in dao
         gdao.updateGame(gameID, game);
         //send a message through websocket here or in game command
         return gdao.getGame(gameID);
+    }
+
+    public ChessBoard getGame(int gameID){
+        GameData gameData = gdao.getGame(gameID);
+        return gameData.game();
     }
 }

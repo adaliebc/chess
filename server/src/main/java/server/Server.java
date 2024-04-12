@@ -11,10 +11,10 @@ public class Server {
     UserService userService = new UserService();
     AuthService authService = new AuthService();
     GameService gameService = new GameService();
-    private WebSocketHandler webSocketHandler = new WebSocketHandler(gameService);
+    private WebSocketHandler webSocketHandler = new WebSocketHandler(gameService, userService);
     public static void main(String[] args) {
        Server s = new Server();
-        s.webSocketHandler = new WebSocketHandler(s.gameService);
+        //s.webSocketHandler = new WebSocketHandler(s.gameService, s.userService);
        s.run(8080);
     }
 

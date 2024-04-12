@@ -1,5 +1,7 @@
 package websocket;
 
+import chess.ChessBoard;
+import chess.ChessGame;
 import chess.InvalidMoveException;
 import com.google.gson.Gson;
 //import dataaccess.DataAccess;
@@ -8,6 +10,7 @@ import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import service.GameService;
+import service.UserService;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
 //import webSocketMessages.Action;
@@ -17,10 +20,12 @@ import webSocketMessages.userCommands.UserGameCommand;
 public class WebSocketHandler {
     ConnectionManager connectionManager= new ConnectionManager();
     GameService gameService;
+    UserService userService;
     private String authToken;
 
-    public WebSocketHandler(GameService gameService){
+    public WebSocketHandler(GameService gameService, UserService userService){
         this.gameService = gameService;
+        this.userService = userService;
     }
     //Connection connection = new Connection();
     //establish a link to connections in connections
@@ -88,10 +93,21 @@ public class WebSocketHandler {
     }
 
     private void join(Connection conn, UserGameCommand msg){
-        String command = msg.getCommand();
-        String[] commandList = command.split(",");
-        ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
-        message.setMessage(commandList[1] + " joined the game!");
+        String authToken = msg.getAuthString();
+        int gameID = msg.getGameID();
+        ChessGame.TeamColor playerColor = msg.getPlayerColor();
+        ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
+        ChessBoard game = gameService.getGame(gameID);
+        if(playerColor == ChessGame.TeamColor.WHITE){
+            message.setMessage(game.toStringWhite());
+        }
+        else {
+            message.setMessage(game.toStringBlack());
+        }
+        //String username = userService.getUsername(authToken);
+        //send this as a broadcast
+        //ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        //message.setMessage(username + " joined the game!");
         try {
             conn.send(new Gson().toJson(message));
         } catch(Exception E){
