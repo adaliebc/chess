@@ -71,8 +71,8 @@ public class GameService {
         return gdao.getGame(gameID);
     }
 
-    public ChessBoard getGame(int gameID){
+    public  GameData getGame(int gameID){
         GameData gameData = gdao.getGame(gameID);
-        return gameData.game();
+        return gameData;
     }
 }
