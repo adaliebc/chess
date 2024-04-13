@@ -35,6 +35,7 @@ public class UserGameCommand {
     private String command;
     private int gameID;
     private ChessGame.TeamColor playerColor;
+    private ChessMove move;
 
     public String getAuthString() {
         return authToken;
@@ -61,7 +62,13 @@ public class UserGameCommand {
     public void setPlayerColor(ChessGame.TeamColor playerColor) {
         this.playerColor = playerColor;
     }
+    public ChessMove getMove() {
+        return move;
+    }
 
+    public void setMove(ChessMove move) {
+        this.move = move;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o)
