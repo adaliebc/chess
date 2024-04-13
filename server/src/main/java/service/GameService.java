@@ -72,7 +72,6 @@ public class GameService {
     }
 
     public  GameData getGame(int gameID){
-        GameData gameData = gdao.getGame(gameID);
-        return gameData;
+        return gdao.getGame(gameID);
     }
 }

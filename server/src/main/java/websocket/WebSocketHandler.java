@@ -101,24 +101,30 @@ public class WebSocketHandler {
         String authToken = msg.getAuthString();
         String username = userService.getUsername(authToken);
         int gameID = msg.getGameID();
+        ChessBoard game = gameService.getGame(gameID).game();
         ChessGame.TeamColor playerColor = msg.getPlayerColor();
-        if(checkAvailability(gameID, playerColor, username)) {
-            message = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
-            ChessBoard game = gameService.getGame(gameID).game();
-            ChessGame chessGame = new ChessGame();
-            chessGame.setBoard(game);
-            message.setGame(chessGame);
-            notification.setMessage(username + " joined the game!");
-            if (playerColor == ChessGame.TeamColor.WHITE) {
-                message.setMessage("white");
+            if(checkValidTeam(gameID, playerColor)) {
+                if (checkAvailability(gameID, playerColor, username)) {
+                    message = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
+                    ChessGame chessGame = new ChessGame();
+                    chessGame.setBoard(game);
+                    message.setGame(chessGame);
+                    notification.setMessage(username + " joined the game!");
+                    if (playerColor == ChessGame.TeamColor.WHITE) {
+                        message.setMessage("white");
+                    } else {
+                        message.setMessage("black");
+                    }
+                } else {
+                    message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+                    message.setErrorMessage("Error: Color is already taken");
+                    notification.setMessage(username + " could not join the game!");
+                }
             } else {
-                message.setMessage("black");
+                message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+                message.setErrorMessage("Error: Game could not be joined");
+                notification.setMessage(username + " could not join the game!");
             }
-        } else {
-            message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
-            message.setErrorMessage("Error: Color is already taken");
-            notification.setMessage(username + " could not join the game!");
-        }
         //String username = userService.getUsername(authToken);
         //send this as a broadcast
         //ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
@@ -142,6 +148,16 @@ public class WebSocketHandler {
             return gameData.whiteUsername().equals(username);
         } else if(playerColor == ChessGame.TeamColor.BLACK){
             return gameData.blackUsername().equals(username);
+        }
+        return false;
+    }
+
+    private Boolean checkValidTeam(int gameID, ChessGame.TeamColor playerColor){
+        GameData gameData = gameService.getGame(gameID);
+        if(playerColor == ChessGame.TeamColor.WHITE){
+            return gameData.whiteUsername() != null;
+        } else if(playerColor == ChessGame.TeamColor.BLACK){
+            return gameData.blackUsername() != null;
         }
         return false;
     }
