@@ -13,6 +13,8 @@ import service.GameService;
 import service.UserService;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
+
+import javax.management.Notification;
 //import webSocketMessages.Action;
 //import webSocketMessages.Notification;
 
@@ -94,6 +96,7 @@ public class WebSocketHandler {
 
     private void join(Connection conn, UserGameCommand msg){
         String authToken = msg.getAuthString();
+        String username = userService.getUsername(authToken);
         int gameID = msg.getGameID();
         ChessGame.TeamColor playerColor = msg.getPlayerColor();
         ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
@@ -101,6 +104,8 @@ public class WebSocketHandler {
         ChessGame chessGame = new ChessGame();
         chessGame.setBoard(game);
         message.setGame(chessGame);
+        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        notification.setMessage(username + " joined the game!");
         if(playerColor == ChessGame.TeamColor.WHITE){
             message.setMessage("white");
         }
@@ -112,6 +117,7 @@ public class WebSocketHandler {
         //ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
         //message.setMessage(username + " joined the game!");
         try {
+            connectionManager.broadcast(authToken, notification);
             conn.send(new Gson().toJson(message));
         } catch(Exception E){
             System.out.println(E.getMessage());

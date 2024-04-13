@@ -26,6 +26,7 @@ public class NotificationHandler {
     }
     //load game
     public void loadGame(ChessGame game){
+        //instead of printing it we want to send it to the right collection
         ChessBoard board = game.getBoard();
         if(message.getMessage().equalsIgnoreCase("white")){
             System.out.println(board.toStringWhite());

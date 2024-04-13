@@ -20,7 +20,7 @@ public class ServerMessage {
         ERROR,
         NOTIFICATION
     }
-
+    public ServerMessage(){}
     public ServerMessage(ServerMessageType type) {
         this.serverMessageType = type;
     }
