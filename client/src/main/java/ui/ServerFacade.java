@@ -3,13 +3,14 @@ package ui;
 import chess.ChessBoard;
 import com.google.gson.Gson;
 import model.*;
-import spark.utils.IOUtils;
+//import spark.utils.IOUtils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 public class ServerFacade {
     private static String serverUrl = "http://localhost:8080";
@@ -175,7 +176,9 @@ public class ServerFacade {
             } else {
                 String result = "";
                 try (InputStream respBody = http.getInputStream()) {
-                    result = IOUtils.toString(respBody);
+                    //result = IOUtils.toString(respBody);
+                    Scanner s = new Scanner(respBody).useDelimiter("\\A");
+                    result = s.hasNext() ? s.next() : "";
                     System.out.println(result);
                     return result;
                 }
