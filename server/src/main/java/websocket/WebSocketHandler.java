@@ -18,21 +18,23 @@ import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.management.Notification;
+import java.util.HashMap;
 //import webSocketMessages.Action;
 //import webSocketMessages.Notification;
 
 @WebSocket
 public class WebSocketHandler {
-    ConnectionManager connectionManager= new ConnectionManager();
+    ConnectionManager connectionManager;
     GameService gameService;
     UserService userService;
     private String authToken;
     private ChessGame chessGame;
-    private boolean gameEnded = false;
+    public HashMap<Integer, Boolean> gamesEnded = new HashMap<Integer, Boolean>();
 
     public WebSocketHandler(GameService gameService, UserService userService){
         this.gameService = gameService;
         this.userService = userService;
+        this.connectionManager = new ConnectionManager();
     }
     //Connection connection = new Connection();
     //establish a link to connections in connections
@@ -50,7 +52,7 @@ public class WebSocketHandler {
                 case RESIGN -> resign(conn, command);
             }
         } else {
-            connectionManager.add(authToken, session);
+            connectionManager.add(authToken, session, command.getGameID());
             conn = connectionManager.getConnection(command.getAuthString());
             switch (command.getCommandType()) {
                 case JOIN_PLAYER -> join(conn, command);
@@ -60,16 +62,6 @@ public class WebSocketHandler {
         }
     }
     public void makeMove(Connection conn, UserGameCommand command) {
-        if(gameEnded){
-            ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
-            message.setErrorMessage("Cannot make move, game is over");
-            try {
-                conn.send(new Gson().toJson(message));
-            } catch(Exception E){
-                System.out.println(E.getMessage());
-            }
-            return;
-        }
         //request needs to have a chess game and a move object
         ServerMessage message = null;
         var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
@@ -78,7 +70,16 @@ public class WebSocketHandler {
         String authToken = command.getAuthString();
         String username = userService.getUsername(authToken);
         ChessGame.TeamColor playerColor = getPlayerColor(gameID, username);
-
+        if(gamesEnded.get(gameID)) {
+            message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+            message.setErrorMessage("Cannot make move, game is over");
+            try {
+                conn.send(new Gson().toJson(message));
+            } catch (Exception E) {
+                System.out.println(E.getMessage());
+            }
+            return;
+        }
         if(playerColor == null) {
             message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
             message.setErrorMessage("Observers cannot make moves");
@@ -186,7 +187,8 @@ public class WebSocketHandler {
         var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
         String authToken = msg.getAuthString();
         String username = userService.getUsername(authToken);
-        if(gameEnded){
+        int gameID = msg.getGameID();
+        if(gamesEnded.get(gameID)){
             message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
             message.setErrorMessage("Game is already over");
             try {
@@ -210,7 +212,8 @@ public class WebSocketHandler {
             message.setMessage("You have successfully resigned");
             notification.setMessage(username + "has successfully resigned");
             //end the game
-            gameEnded = true;
+            gamesEnded.remove(gameID);
+            gamesEnded.put(gameID, true);
             //mark other player as winner
             sendMessageAndNotifications(conn, authToken, notification, message);
             connectionManager.remove(authToken);
@@ -237,6 +240,7 @@ public class WebSocketHandler {
         int gameID = msg.getGameID();
         ChessBoard game = gameService.getGame(gameID).game();
         ChessGame.TeamColor playerColor = msg.getPlayerColor();
+        gamesEnded.putIfAbsent(gameID, false);
             if(checkValidTeam(gameID, playerColor)) {
                 if (checkAvailability(gameID, playerColor, username)) {
                     message = new ServerMessage(ServerMessage.ServerMessageType.LOAD_GAME);
