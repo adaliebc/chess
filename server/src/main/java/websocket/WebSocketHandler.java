@@ -78,11 +78,30 @@ public class WebSocketHandler {
         String authToken = command.getAuthString();
         String username = userService.getUsername(authToken);
         ChessGame.TeamColor playerColor = getPlayerColor(gameID, username);
+
         if(playerColor == null) {
             message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
             message.setErrorMessage("Observers cannot make moves");
             //notification.setMessage("Observers cannot make moves");
             //sendMessageAndNotifications(conn, authToken, notification, message);
+            try {
+                conn.send(new Gson().toJson(message));
+            } catch(Exception E){
+                System.out.println(E.getMessage());
+            }
+            return;
+        } else if(!checkAvailability(gameID, playerColor, username)) {
+            message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+            message.setErrorMessage("You cannot make a move for this color");
+            try {
+                conn.send(new Gson().toJson(message));
+            } catch(Exception E){
+                System.out.println(E.getMessage());
+            }
+            return;
+        } else if(chessGame.getBoard().getPiece(command.getMove().getStartPosition()).getTeamColor() != playerColor) {
+            message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+            message.setErrorMessage("You cannot make a move for this color");
             try {
                 conn.send(new Gson().toJson(message));
             } catch(Exception E){
