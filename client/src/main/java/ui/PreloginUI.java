@@ -83,6 +83,7 @@ public static void main(String[] args){
                 } else {
                     gamePlayUI.playerColor = null;
                 }
+                gamePlayUI.playGame();
             }else if (inputList[0].equalsIgnoreCase("list")) {
                 facade.listGames();
             }

@@ -56,12 +56,12 @@ public class GamePlayUI {
         }
     }
 
-    /*public void printBoard(ChessBoard game){
+    public void printBoard(ChessBoard game){
         //add in a specification, if black, print the board from blacks perspective
         //if white, print white
         //else if it is a obersevr, print both
-        game.toString();
-    }*/
+        System.out.println(game.toString());
+    }
 
     public String getHelp () {
         return """
