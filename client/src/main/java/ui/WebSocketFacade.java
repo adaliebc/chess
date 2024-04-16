@@ -1,5 +1,6 @@
 package ui;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.UserGameCommand;
@@ -49,15 +50,18 @@ public class WebSocketFacade extends Endpoint{
         try {
             UserGameCommand command = new UserGameCommand(authToken);
             command.setCommandType(UserGameCommand.CommandType.JOIN_PLAYER);
-            command.setCommand(inputList[1] + "," + inputList[2]);
+            command.setGameID(Integer.parseInt(inputList[1]));
+            if (inputList[2].equalsIgnoreCase("white")) {
+                command.setPlayerColor(ChessGame.TeamColor.WHITE);
+            } else if(inputList[2].equalsIgnoreCase("black")){
+                command.setPlayerColor(ChessGame.TeamColor.BLACK);
+            }
             String message = new Gson().toJson(command);
             send(message);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        //System.out.println("made it... yay!");
-        //call reload game
     }
 
 }

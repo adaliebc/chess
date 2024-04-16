@@ -32,7 +32,6 @@ public class UserGameCommand {
     protected CommandType commandType;
 
     private final String authToken;
-    private String command;
     private int gameID;
     private ChessGame.TeamColor playerColor;
     private ChessMove move;
@@ -43,12 +42,6 @@ public class UserGameCommand {
 
     public CommandType getCommandType() {
         return this.commandType;
-    }
-    public String getCommand() {
-        return this.command;
-    }
-    public void setCommand(String command) {
-        this.command = command;
     }
     public void setCommandType(CommandType commandType){
         this.commandType = commandType;

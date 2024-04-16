@@ -1,6 +1,7 @@
 package ui;
 
 import chess.ChessBoard;
+import chess.ChessGame;
 import webSocketMessages.serverMessages.ServerMessage;
 
 import java.util.Scanner;
@@ -9,6 +10,7 @@ public class GamePlayUI {
     String authToken = "";
     int gameID;
     //player color: either a string that can say observer, black or white, or the actual team color
+    ChessGame.TeamColor playerColor;
     //create a main function
     //makes a play game function
     public void playGame() {
@@ -19,12 +21,11 @@ public class GamePlayUI {
 
         String userInput = in.nextLine();
         String[] inputList = userInput.split(" ");
-        while (!inputList[0].equalsIgnoreCase("leave") && !inputList[0].equalsIgnoreCase("resign")) {
+        while (!inputList[0].equalsIgnoreCase("leave") && (!inputList[0].equalsIgnoreCase("resign") && playerColor != null)) {
             if (inputList[0].equalsIgnoreCase("help")) {
                 System.out.println(getHelp());
             }
-            //have to be able to leave, resign, make_move, help, show valid moves, redraw chess board,
-            //while input is not leave or resign
+
             //if input is make_move
             //user gives in starter coordinates and then ending coordinates
             //give error message if move is illegal
