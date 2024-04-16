@@ -186,7 +186,16 @@ public class WebSocketHandler {
         var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
         String authToken = msg.getAuthString();
         String username = userService.getUsername(authToken);
-        if(!checkAvailability(msg.getGameID(), msg.getPlayerColor(), username)){
+        if(gameEnded){
+            message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+            message.setErrorMessage("Game is already over");
+            try {
+                conn.send(new Gson().toJson(message));
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            return;
+        } else if(!checkAvailability(msg.getGameID(), getPlayerColor(msg.getGameID(), username), username)){
             message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
             message.setErrorMessage("Observers cannot resign, please leave the game");
             try {
