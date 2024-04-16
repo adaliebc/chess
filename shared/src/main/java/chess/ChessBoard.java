@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
+import static chess.EscapeSequences.SET_BG_COLOR_DARK_GREEN;
+import static chess.EscapeSequences.SET_BG_COLOR_GREEN;
+
 /**
  * A chessboard that can hold and rearrange chess pieces.
  * <p>
@@ -50,35 +53,54 @@ public class ChessBoard {
         return Arrays.deepHashCode(squares);
     }
 
-    public String toStringWhite() {
+    private boolean isValidMove(Collection<ChessMove> validMoves, ChessPosition potentialPosition){
+        if(validMoves.isEmpty()){
+            return false;
+        }
+        for (ChessMove move : validMoves){
+            if(move.endPosition == potentialPosition){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String toStringWhite(Collection<ChessMove> validMoves) {
         //String box = "";
         String[] columns = {"A", "B", "C", "D", "E", "F", "G", "H"};
         for(String letter :columns) {
             System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + "\s\s" + letter);
         }
         System.out.println();
-        for(int i = 1; i < 9; i++) {
-            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
-            for(int j = 1; j < 9; j++) {
+        for(int x = 1; x < 9; x++) {
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + x);
+            for(int y = 1; y < 9; y++) {
                 String whitePiece;
-                ChessPiece item = getPiece(new ChessPosition(i, j));
+                ChessPiece item = getPiece(new ChessPosition(x, y));
                 if(item != null) {
                     whitePiece = item.toString();
                 } else {
                     whitePiece = " \u2003 ";
                 }
+                ChessPosition potentialMove = new ChessPosition(x, y);
+                String bgColorLight = EscapeSequences.SET_BG_COLOR_LIGHT_GREY;
+                String bgColorDark = EscapeSequences.SET_BG_COLOR_DARK_GREY;
+                if(isValidMove(validMoves, potentialMove)){
+                    bgColorLight = SET_BG_COLOR_GREEN;
+                    bgColorDark = SET_BG_COLOR_DARK_GREEN;
+                }
                 //box += piece;
-                if (i % 2 == 0 && j % 2 == 0){
-                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + whitePiece);
-                } else if (i % 2 == 0 && j % 2 != 0){
-                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + whitePiece);
-                } else if (i % 2 != 0 && j % 2 == 0){
-                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + whitePiece);
-                } else if (i % 2 != 0 && j % 2 != 0){
-                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + whitePiece);
+                if (x % 2 == 0 && y % 2 == 0){
+                    System.out.print(bgColorLight + whitePiece);
+                } else if (x % 2 == 0 && y % 2 != 0){
+                    System.out.print(bgColorDark + whitePiece);
+                } else if (x % 2 != 0 && y % 2 == 0){
+                    System.out.print(bgColorDark + whitePiece);
+                } else if (x % 2 != 0 && y % 2 != 0){
+                    System.out.print(bgColorLight + whitePiece);
                 }
             }
-            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + x);
             System.out.println();
             //box += "\n";
         }
@@ -91,35 +113,43 @@ public class ChessBoard {
         return "";
     }
 
-    public String toStringBlack() {
+    public String toStringBlack(Collection<ChessMove> validMoves) {
         //String box = "";
         String[] columns = {"H", "G", "F", "E", "D", "C", "B", "A"};
         for(String letter :columns){
             System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + "\s\s" + letter);
         }
         System.out.println();
-        for(int i = 8; i >= 1; i--) {
-            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
-            for (int j = 8; j >= 1; j--) {
+        for(int x = 8; x >= 1; x--) {
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + x);
+            for (int y = 8; y >= 1; y--) {
                 String blackPiece;
-                ChessPiece item = getPiece(new ChessPosition(i, j));
+                ChessPiece item = getPiece(new ChessPosition(x, y));
                 if (item != null) {
                     blackPiece = item.toString();
                 } else {
                     blackPiece = " \u2003 ";
                 }
                 //box += piece;
-                if (i % 2 == 0 && j % 2 == 0) {
-                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + blackPiece);
-                } else if (i % 2 == 0 && j % 2 != 0) {
-                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + blackPiece);
-                } else if (i % 2 != 0 && j % 2 == 0) {
-                    System.out.print(EscapeSequences.SET_BG_COLOR_DARK_GREY + blackPiece);
-                } else if (i % 2 != 0 && j % 2 != 0) {
-                    System.out.print(EscapeSequences.SET_BG_COLOR_LIGHT_GREY + blackPiece);
+                ChessPosition potentialMove = new ChessPosition(x, y);
+                String bgColorLight = EscapeSequences.SET_BG_COLOR_LIGHT_GREY;
+                String bgColorDark = EscapeSequences.SET_BG_COLOR_DARK_GREY;
+                if(isValidMove(validMoves, potentialMove)){
+                    bgColorLight = SET_BG_COLOR_GREEN;
+                    bgColorDark = SET_BG_COLOR_DARK_GREEN;
+                }
+                //box += piece;
+                if (x % 2 == 0 && y % 2 == 0){
+                    System.out.print(bgColorLight + blackPiece);
+                } else if (x % 2 == 0 && y % 2 != 0){
+                    System.out.print(bgColorDark + blackPiece);
+                } else if (x % 2 != 0 && y % 2 == 0){
+                    System.out.print(bgColorDark + blackPiece);
+                } else if (x % 2 != 0 && y % 2 != 0){
+                    System.out.print(bgColorLight + blackPiece);
                 }
             }
-            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + i);
+            System.out.print(EscapeSequences.SET_BG_COLOR_BLACK + x);
             System.out.println();
             //box += "\n";
         }
