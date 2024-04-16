@@ -1,6 +1,7 @@
 package ui;
 
 import chess.ChessBoard;
+import chess.ChessGame;
 
 import java.util.Scanner;
 
@@ -16,10 +17,10 @@ public class PreloginUI {
 
     public PreloginUI() {
         facade = new ServerFacade(8080);
-        notificationHandler = new NotificationHandler();
+        notificationHandler = new NotificationHandler(gamePlayUI);
         websocketFacade = new WebSocketFacade(notificationHandler);
         postloginUI = new PostloginUI();
-        gamePlayUI = new GamePlayUI();
+        gamePlayUI = new GamePlayUI(websocketFacade);
     }
 public static void main(String[] args){
     PreloginUI p = new PreloginUI();
@@ -67,11 +68,20 @@ public static void main(String[] args){
                 }
             } else if (inputList[0].equalsIgnoreCase("join")|| inputList[0].equalsIgnoreCase("observe")) {
                 ChessBoard game = facade.joinGame(inputList);
+                websocketFacade.setBoard(game);
                 //call join game fnction in wsfacade
+                gamePlayUI.gameID = Integer.parseInt(inputList[1]);
                 if(game != null){
                     System.out.println("Successfully joined the game!");
                     websocketFacade.joinGame(inputList, facade.getAuthToken());
-                    gamePlayUI.printBoard(game);
+                    //gamePlayUI.printBoard(game);
+                }
+                if(inputList[2].equalsIgnoreCase("white")){
+                    gamePlayUI.playerColor = ChessGame.TeamColor.WHITE;
+                } else if (inputList[2].equalsIgnoreCase("black")){
+                    gamePlayUI.playerColor = ChessGame.TeamColor.BLACK;
+                } else {
+                    gamePlayUI.playerColor = null;
                 }
             }else if (inputList[0].equalsIgnoreCase("list")) {
                 facade.listGames();

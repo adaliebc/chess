@@ -29,7 +29,7 @@ public class WebSocketHandler {
     UserService userService;
     private String authToken;
     private ChessGame chessGame;
-    public HashMap<Integer, Boolean> gamesEnded = new HashMap<Integer, Boolean>();
+    private HashMap<Integer, Boolean> gamesEnded = new HashMap<Integer, Boolean>();
 
     public WebSocketHandler(GameService gameService, UserService userService){
         this.gameService = gameService;

@@ -9,8 +9,13 @@ import java.util.Scanner;
 public class GamePlayUI {
     String authToken = "";
     int gameID;
+    ChessBoard board;
     //player color: either a string that can say observer, black or white, or the actual team color
     ChessGame.TeamColor playerColor;
+    WebSocketFacade webSocketFacade;
+    public GamePlayUI(WebSocketFacade webSocketFacade){
+        this.webSocketFacade = webSocketFacade;
+    }
     //create a main function
     //makes a play game function
     public void playGame() {
@@ -25,41 +30,44 @@ public class GamePlayUI {
             if (inputList[0].equalsIgnoreCase("help")) {
                 System.out.println(getHelp());
             }
-
-            //if input is make_move
-            //user gives in starter coordinates and then ending coordinates
-            //give error message if move is illegal
-
-            //then we have user game commands which we send to the websocket
-            //join_player, join_observer, make_move, leave, resign
-            //are those joins triggered by the other joins?
-
-            //then we have the websocket messages
-            //load_game, error, notification
-
+            else if(inputList[0].equalsIgnoreCase("redraw")){
+                webSocketFacade.redraw();
+            }
+            else if(inputList[0].equalsIgnoreCase("make_move")){
+                if(inputList.length != 6){
+                    System.out.println("Incorrect number of input");
+                    System.out.println(getHelp());
+                }
+                else{
+                    webSocketFacade.makeMove(inputList, authToken, playerColor);
+                }
+            }
+            else if(inputList[0].equalsIgnoreCase("highlight")){
+                if(inputList.length != 3){
+                    System.out.println("Incorrect number of inputs");
+                    System.out.println(getHelp());
+                }
+                else{
+                    webSocketFacade.highlight(inputList, playerColor);
+                }
+            }
             userInput = in.nextLine();
             inputList = userInput.split(" ");
         }
     }
 
-
-    //i need a websocket client who starts when someone joins the game, then passes from player to player
-    //So I need a function that creates a connection
-    //I need a function that creates a websocket that the connections add to
-    // server facade talks to the websocket
-
-    public void printBoard(ChessBoard game){
+    /*public void printBoard(ChessBoard game){
         //add in a specification, if black, print the board from blacks perspective
         //if white, print white
         //else if it is a obersevr, print both
         game.toString();
-    }
+    }*/
 
     public String getHelp () {
         return """
                     'redraw' = redraws board onto screen at your command
                     'leave' = leave the game
-                    'make_move' <beginning coordinate> <ending coordinate> = make a move
+                    'make_move' <beginning coordinate (A 6)> <ending coordinate> <Promotion Piece>= make a move, add a space between coordinate digits
                     'resign' = quit and exit the game
                     'highlight' <starting coordinates> = print out a screen to highlight legal moves
                     """;

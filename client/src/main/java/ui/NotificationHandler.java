@@ -5,7 +5,9 @@ import chess.ChessGame;
 import webSocketMessages.serverMessages.ServerMessage;
 
 public class NotificationHandler {
+    public NotificationHandler(GamePlayUI gamePlayUI){this.gamePlayUI = gamePlayUI;}
     ServerMessage message;
+    GamePlayUI gamePlayUI;
     //notifies user through interface
 //display notification
     //@Override
@@ -26,14 +28,16 @@ public class NotificationHandler {
     }
     //load game
     public void loadGame(ChessGame game){
+        System.out.println(message.getMessage());
         //instead of printing it we want to send it to the right collection
         ChessBoard board = game.getBoard();
-        if(message.getMessage().equalsIgnoreCase("white")){
+        gamePlayUI.webSocketFacade.setBoard(board);
+        if(gamePlayUI.playerColor == ChessGame.TeamColor.WHITE){
             System.out.println(board.toStringWhite(null));
-        } else if (message.getMessage().equalsIgnoreCase("black")){
+        } else if (gamePlayUI.playerColor == ChessGame.TeamColor.BLACK){
             System.out.println(board.toStringBlack(null));
         } else {
-            System.out.println(game.toString());
+            System.out.println(game);
         }
     }
 }
