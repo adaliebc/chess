@@ -18,7 +18,8 @@ public class GamePlayUI {
     }
     //create a main function
     //makes a play game function
-    public void playGame() {
+    public void playGame(String authToken) {
+        this.authToken = authToken;
         System.out.println("Enter in a command or 'help' for your options");
 
         //take in input and form it into a list. Based on the first item in the list, that is the keyword
