@@ -94,20 +94,12 @@ public class WebSocketHandler {
         } else if(!checkAvailability(gameID, playerColor, username)) {
             message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
             message.setErrorMessage("You cannot make a move for this color");
-            try {
-                conn.send(new Gson().toJson(message));
-            } catch(Exception E){
-                System.out.println(E.getMessage());
-            }
+            sendMessage(conn, message);
             return;
         } else if(chessGame.getBoard().getPiece(command.getMove().getStartPosition()).getTeamColor() != playerColor) {
             message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
             message.setErrorMessage("You cannot make a move for this color");
-            try {
-                conn.send(new Gson().toJson(message));
-            } catch(Exception E){
-                System.out.println(E.getMessage());
-            }
+            sendMessage(conn, message);
             return;
         }
         ChessMove move = command.getMove();
@@ -121,11 +113,7 @@ public class WebSocketHandler {
             message.setErrorMessage("Error: Not a valid move");
             //notification.setMessage(username + " made an invalid move");
             //sendMessageAndNotifications(conn, authToken, notification, message);
-            try {
-                conn.send(new Gson().toJson(message));
-            } catch(Exception E){
-                System.out.println(E.getMessage());
-            }
+            sendMessage(conn, message);
             return;
         }
         // update game (game)
@@ -137,11 +125,7 @@ public class WebSocketHandler {
             message.setErrorMessage("Error: Game could not be updated");
             //notification.setMessage("Game could not be updated");
             //sendMessageAndNotifications(conn, authToken, notification, message);
-            try {
-                conn.send(new Gson().toJson(message));
-            } catch(Exception e){
-                System.out.println(e.getMessage());
-            }
+            sendMessage(conn, message);
             return;
         }
         if(chessGame.isInCheckmate(playerColor)){
@@ -175,11 +159,7 @@ public class WebSocketHandler {
         broadcastLoadGame.setGame(chessGame);
         sendMessageAndNotifications(conn, authToken, broadcastLoadGame, message);
 
-        try {
-            connectionManager.broadcast(authToken, notification);
-        } catch(Exception E){
-            System.out.println(E.getMessage());
-        }
+        sendBroadcast(authToken, notification);
     }
 
     public void resign(Connection conn, UserGameCommand msg){
@@ -323,6 +303,20 @@ public class WebSocketHandler {
         try {
             connectionManager.broadcast(authToken, notification);
             conn.send(new Gson().toJson(message));
+        } catch(Exception E){
+            System.out.println(E.getMessage());
+        }
+    }
+    private void sendMessage(Connection conn, ServerMessage message){
+        try {
+            conn.send(new Gson().toJson(message));
+        } catch(Exception E){
+            System.out.println(E.getMessage());
+        }
+    }
+    private void sendBroadcast(String authToken, ServerMessage notification){
+        try {
+            connectionManager.broadcast(authToken, notification);
         } catch(Exception E){
             System.out.println(E.getMessage());
         }

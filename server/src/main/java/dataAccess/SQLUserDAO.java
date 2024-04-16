@@ -20,11 +20,11 @@ public class SQLUserDAO implements UserDAO{
     }
 
     public boolean clear(){
-        var sql = "TRUNCATE userRecord";
+        var sqlStatement = "TRUNCATE userRecord";
         try {
-            Connection conn = DatabaseManager.getConnection();
-            Statement stmt = conn.createStatement();
-            int i = stmt.executeUpdate(sql);
+            Connection con = DatabaseManager.getConnection();
+            Statement stmt = con.createStatement();
+            int i = stmt.executeUpdate(sqlStatement);
             if (i > 0) {
                 System.out.println("CLEAR UNSUCCESSFUL");
             } else {

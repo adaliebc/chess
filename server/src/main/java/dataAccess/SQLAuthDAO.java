@@ -19,11 +19,11 @@ public class SQLAuthDAO implements AuthDAO {
     }
 
     public boolean clear(){
-        var sql = "TRUNCATE authRecord";
+        var statement = "TRUNCATE authRecord";
         try {
-            Connection conn = DatabaseManager.getConnection();
-            Statement stmt = conn.createStatement();
-            int i = stmt.executeUpdate(sql);
+            Connection connection = DatabaseManager.getConnection();
+            Statement stmt = connection.createStatement();
+            int i = stmt.executeUpdate(statement);
             if (i > 0) {
                 System.out.println("CLEAR UNSUCCESSFUL");
             } else {
