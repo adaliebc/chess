@@ -28,6 +28,7 @@ public class WebSocketHandler {
     UserService userService;
     private String authToken;
     private ChessGame chessGame;
+    private boolean gameEnded = false;
 
     public WebSocketHandler(GameService gameService, UserService userService){
         this.gameService = gameService;
@@ -45,8 +46,8 @@ public class WebSocketHandler {
         if (conn != null) {
             switch (command.getCommandType()) {
                 case MAKE_MOVE -> makeMove(conn, command);
-                case LEAVE -> leave(conn, msg);
-                case RESIGN -> resign(conn, msg);
+                case LEAVE -> leave(conn, command);
+                case RESIGN -> resign(conn, command);
             }
         } else {
             connectionManager.add(authToken, session);
@@ -58,30 +59,17 @@ public class WebSocketHandler {
             //conn.sendError(session.getRemote(), "unknown user");
         }
     }
-
-
-
-    //manage connections
-
-    //add a connection
-    // create a new connection
-    //send a message to everyone saying this guy joined
-    //call broadcast function to do that
-
-    //remove a connection
-    //remove it from connections list and send message
-
-    //send messages
-
-    //make a move message
-    //send out a message that says username moved here
-
-    //in check message
-
-    //game is over message
-    //sends to webfacade and notification handler
-
     public void makeMove(Connection conn, UserGameCommand command) {
+        if(gameEnded){
+            ServerMessage message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+            message.setErrorMessage("Cannot make move, game is over");
+            try {
+                conn.send(new Gson().toJson(message));
+            } catch(Exception E){
+                System.out.println(E.getMessage());
+            }
+            return;
+        }
         //request needs to have a chess game and a move object
         ServerMessage message = null;
         var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
@@ -174,14 +162,43 @@ public class WebSocketHandler {
         }
     }
 
-    public void resign(Connection conn, String msg){
-        //end the game
-        //mark other player as winner
+    public void resign(Connection conn, UserGameCommand msg){
+        ServerMessage message;
+        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        String authToken = msg.getAuthString();
+        String username = userService.getUsername(authToken);
+        if(!checkAvailability(msg.getGameID(), msg.getPlayerColor(), username)){
+            message = new ServerMessage(ServerMessage.ServerMessageType.ERROR);
+            message.setErrorMessage("Observers cannot resign, please leave the game");
+            try {
+                conn.send(new Gson().toJson(message));
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            return;
+        }
+        else {
+            message = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+            message.setMessage("You have successfully resigned");
+            notification.setMessage(username + "has successfully resigned");
+            //end the game
+            gameEnded = true;
+            //mark other player as winner
+            sendMessageAndNotifications(conn, authToken, notification, message);
+            connectionManager.remove(authToken);
+        }
     }
 
-    public void leave(Connection conn, String msg){
-        //call handler and have them remove the user's connection
-        //send the message
+    public void leave(Connection conn, UserGameCommand msg){
+        ServerMessage message;
+        var notification = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+        String authToken = msg.getAuthString();
+        String username = userService.getUsername(authToken);
+            message = new ServerMessage(ServerMessage.ServerMessageType.NOTIFICATION);
+            message.setMessage("You have successfully left the game");
+            notification.setMessage(username + "has successfully left");
+            sendMessageAndNotifications(conn, authToken, notification, message);
+            connectionManager.remove(authToken);
     }
 
     private void join(Connection conn, UserGameCommand msg){
