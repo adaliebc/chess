@@ -1,14 +1,11 @@
 package ui;
 
-import service.ResponseException;
+import com.google.gson.Gson;
 import webSocketMessages.serverMessages.ServerMessage;
+import webSocketMessages.userCommands.UserGameCommand;
 
 import javax.websocket.*;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import com.google.gson.*;
-import webSocketMessages.userCommands.UserGameCommand;
 
 
 public class WebSocketFacade extends Endpoint{
